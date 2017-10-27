@@ -1,0 +1,13 @@
+info utili :
+
+---> git add // tracci ail file
+---> git commit -m "inserite le modifiche che avete apportato" //apporta le modifiche
+---> git push // carica il file
+---> git status // info varie 
+---> git pull // scarica l'ultima versione presente su bitbucket
+-----------------------------------------------------------------
+Link utili:
+
+https://confluence.atlassian.com/get-started-with-bitbucket/get-started-with-bitbucket-cloud-856845168.html
+
+http://rogerdudler.github.io/git-guide/index.it.html
