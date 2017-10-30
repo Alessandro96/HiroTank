@@ -2,6 +2,8 @@
 -- Level Director
 -- main.lua
 -- Created on ven ott 27 13:34:32 2017
+
+--good
 -----------------------------------------------------------------------------------------
 
 display.setStatusBar( display.HiddenStatusBar )
@@ -13,7 +15,6 @@ require("lib.LD_LoaderX")
 physics = require ("physics")
 physics.start()
 
-local camera = perspective.createView()
 
 local myLevel = {}
 myLevel= LD_Loader:new()
@@ -44,13 +45,59 @@ local function sx()
     ruota2:applyTorque(-1)
 end
 
-local tastoDx = display.newImageRect("sx.png", 60, 40)
-tastoDx.x = display.contentWidth-50
-tastoDx.y = 100
+--------------------------------------------------------------------------------
+-- creazione pulsanti
+--------------------------------------------------------------------------------
+local m = {}
+m.result = "none"
+m.rotate = {}
 
-local tastoSx = display.newImageRect("sx.png", 60, 40)
-tastoSx.x = 50
-tastoSx.y = 100
+m.rotate.left = display.newImageRect("sx.png", 60, 40)
+	m.rotate.left.x = display.screenOriginX + m.rotate.left.contentWidth + 10
+	m.rotate.left.y = display.contentHeight - m.rotate.left.contentHeight - 10
+	m.rotate.left.result = "rotate:left"
+
+m.rotate.right = display.newImageRect("dx.png", 60, 40)
+	m.rotate.right.x = display.contentWidth - display.screenOriginX - m.rotate.right.contentWidth - 10
+	m.rotate.right.y = display.contentHeight - m.rotate.right.contentHeight - 10
+	m.rotate.right.result = "rotate:right"
+	
+	--------------------------------------------------------------------------------
+-- avanti e indietro
+--------------------------------------------------------------------------------
+function m.touch(event)
+	local t = event.target
+
+	if "began" == event.phase then
+		display.getCurrentStage():setFocus(t)
+		t.isFocus = true
+		m.result = t.result
+
+		if t.result == "rotate:left" then 
+			ruota1:applyTorque(-1)
+			ruota2:applyTorque(-1)
+		elseif t.result == "rotate:right" then
+			ruota1:applyTorque(1)
+            ruota2:applyTorque(1)
+			end
+		
+	    elseif t.isFocus then
+		if "moved" == event.phase then
+		
+		elseif "ended" == event.phase then
+			display.getCurrentStage():setFocus(nil)
+			t.isFocus = false
+			m.result = "none"
+		end
+	end
+end
+
+m.rotate.left:addEventListener("touch", m.touch)
+m.rotate.right:addEventListener("touch", m.touch)
+
+
+
+
 
 local chassis = display.newImageRect("blocco.png", 120, 15)
 chassis.x = display.contentCenterX-700
@@ -88,14 +135,30 @@ pistonJoint2:setLimits(-10, 10)
 local pivotJoint1 = physics.newJoint("pivot", sospensione1, ruota1, ruota1.x, ruota1.y)
 local pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ruota2.y)
 
-camera.damping = 10 -- A bit more fluid tracking
-camera:setFocus(chassis) -- Set the focus to the player
-camera:track() -- Begin auto-tracking
+--------------------------------------------------------------------------------
+-- Runtime Loop // qui c'è il trucco
+--------------------------------------------------------------------------------
+local function enterFrame(event)
+	if m.result == "rotate:left" then
+			ruota1:applyTorque(-1)
+			ruota2:applyTorque(-1)
+	elseif m.result == "rotate:right" then
+		    ruota1:applyTorque(1)
+            ruota2:applyTorque(1)
 
+	elseif m.result == "none" then
+			ruota1:applyTorque(0)
+            ruota2:applyTorque(0)
+	end
+end
+
+--------------------------------------------------------------------------------
+-- Add Listeners
+--------------------------------------------------------------------------------
+Runtime:addEventListener("enterFrame", enterFrame)
 
 chassis:addEventListener("touch", trascinaChassis)
-tastoDx:addEventListener("tap", dx)
-tastoSx:addEventListener("tap", sx)
+
 
 
 
