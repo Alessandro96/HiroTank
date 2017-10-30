@@ -7,17 +7,17 @@ function M:loadAssets()
 	local assets={}
 	assets.spriteSheetData={}
 	assets['grass_0']={file ='grass.png',name='grass_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='grass',frameCount=1,
-		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Rectangle',shape={},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=0,maskBits=0,groupIndex=0},}	}  }
+		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Rectangle',shape={},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},}	}  }
 	assets['sky_0']={file ='sky.jpg',name='sky_0',class='',aX=0.5,aY=0.5,width=480,height=320,frame=0,spriteSheetName='sky',frameCount=1,
 		 }
 	assets['grassHillLeft_0']={file ='grassHillLeft.png',name='grassHillLeft_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='grassHillLeft',frameCount=1,
-		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Polygon',shape={-34,35,35,35,35,-35},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=0,maskBits=0,groupIndex=0},{bodyShape='Polygon',shape={-33,34,33,-32,35,34},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=0,maskBits=0,groupIndex=0},}	}  }
+		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Polygon',shape={-34,35,35,35,35,-35},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},{bodyShape='Polygon',shape={-33,34,33,-32,35,34},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},}	}  }
 	assets['sandCenter_rounded_0']={file ='sandCenter_rounded.png',name='sandCenter_rounded_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='sandCenter_rounded',frameCount=1,
-		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Rectangle',shape={},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=0,maskBits=0,groupIndex=0},}	}  }
+		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Rectangle',shape={},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},}	}  }
 	assets['grassCliffRight_0']={file ='grassCliffRight.png',name='grassCliffRight_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='grassCliffRight',frameCount=1,
 		 }
 	return assets
-end -- loadAssets 
+end -- loadAssets
 
 ------------------------------------------
 function M:createLevel(LD_Helper_Instance)
@@ -27,40 +27,40 @@ function M:createLevel(LD_Helper_Instance)
 	local level={}
     local obj=nil
 	local k=0
-	local objects = nil 
+	local objects = nil
 	if (instance.viewGroup == nil) then
-		level.view=display.newGroup() 
+		level.view=display.newGroup()
 	else
 		level.view=instance.viewGroup
 	end
-	level.view.anchorChildren =false 
+	level.view.anchorChildren =false
 	display.setDefault( 'background',102/255,102/255,102/255,255/255)
 	display.setDefault( "anchorX",0.5 )
-	display.setDefault( "anchorY",0.5 )	
+	display.setDefault( "anchorY",0.5 )
 	display.setDrawMode("wireframe",false)
-	level.name='Level01' 
+	level.name='Level01'
 	-- Load Assets
 	level.assets=self:loadAssets()
 	-- Physics properties
-	physics.setGravity(0,9.8) 
+	physics.setGravity(0,9.8)
 	physics.setDrawMode('normal')
-	physics.setPositionIterations(8)	
-	physics.setVelocityIterations(3)	
+	physics.setPositionIterations(8)
+	physics.setVelocityIterations(3)
 	level.parallaxEnabled=false
 	-- Layers --
-	level.layers={} 
+	level.layers={}
 	---- bg ------------------------------------------------------------------------------------
-	level.layers['bg']={} 
-	level.layers['bg'].view=display.newGroup() 
-	level.layers['bg'].name='bg' 
+	level.layers['bg']={}
+	level.layers['bg'].view=display.newGroup()
+	level.layers['bg'].name='bg'
 	if (level.parallaxEnabled) then
 		level.layers['bg'].speed={x=0,y=0}
 		level.layers['bg'].repeated=false
 		level.layers['bg'].cullingMethod=0
 	else
-		level.layers['bg'].cullingMethod=0 
+		level.layers['bg'].cullingMethod=0
 	end
-	level.layers['bg'].objects={} 
+	level.layers['bg'].objects={}
 	objects = {
 	{name='sky_0',objType='LDImage',class='',width=1912.73,height=1078.18,x=961,y=539,xScale=3.98485*1,yScale=3.36932*1,assetName='sky_0',
 		userProps = {},
@@ -72,23 +72,23 @@ function M:createLevel(LD_Helper_Instance)
 		if (obj and objProps.userProps) then
 			obj.property = {}
 			for u, userProp in pairs (objProps.userProps) do
-				obj.property[userProp.name] = userProp.value 
-			end 
-		end 
+				obj.property[userProp.name] = userProp.value
+			end
+		end
 	end
 	instance:insertLayer(level,level.layers['bg'])
 	---- terreno ------------------------------------------------------------------------------------
-	level.layers['terreno']={} 
-	level.layers['terreno'].view=display.newGroup() 
-	level.layers['terreno'].name='terreno' 
+	level.layers['terreno']={}
+	level.layers['terreno'].view=display.newGroup()
+	level.layers['terreno'].name='terreno'
 	if (level.parallaxEnabled) then
 		level.layers['terreno'].speed={x=0,y=0}
 		level.layers['terreno'].repeated=false
 		level.layers['terreno'].cullingMethod=0
 	else
-		level.layers['terreno'].cullingMethod=0 
+		level.layers['terreno'].cullingMethod=0
 	end
-	level.layers['terreno'].objects={} 
+	level.layers['terreno'].objects={}
 	objects = {
 	{name='sandCenter_rounded_0',objType='LDImage',class='',width=70,height=70,x=39,y=1051,xScale=1*1,yScale=1*1,assetName='sandCenter_rounded_0',
 		userProps = {},
@@ -313,23 +313,23 @@ function M:createLevel(LD_Helper_Instance)
 		if (obj and objProps.userProps) then
 			obj.property = {}
 			for u, userProp in pairs (objProps.userProps) do
-				obj.property[userProp.name] = userProp.value 
-			end 
-		end 
+				obj.property[userProp.name] = userProp.value
+			end
+		end
 	end
 	instance:insertLayer(level,level.layers['terreno'])
 	---- salita ------------------------------------------------------------------------------------
-	level.layers['salita']={} 
-	level.layers['salita'].view=display.newGroup() 
-	level.layers['salita'].name='salita' 
+	level.layers['salita']={}
+	level.layers['salita'].view=display.newGroup()
+	level.layers['salita'].name='salita'
 	if (level.parallaxEnabled) then
 		level.layers['salita'].speed={x=0,y=0}
 		level.layers['salita'].repeated=false
 		level.layers['salita'].cullingMethod=0
 	else
-		level.layers['salita'].cullingMethod=0 
+		level.layers['salita'].cullingMethod=0
 	end
-	level.layers['salita'].objects={} 
+	level.layers['salita'].objects={}
 	objects = {
 	{name='grassHillLeft_0',objType='LDImage',class='',width=112,height=70,x=491,y=946,xScale=1.6*1,yScale=1*1,assetName='grassHillLeft_0',
 		rotation=17,enableDrag=false,anchorX=0.5,anchorY=0.5,alpha=1,isVisible=true,blendMode='normal',
@@ -370,9 +370,9 @@ function M:createLevel(LD_Helper_Instance)
 		if (obj and objProps.userProps) then
 			obj.property = {}
 			for u, userProp in pairs (objProps.userProps) do
-				obj.property[userProp.name] = userProp.value 
-			end 
-		end 
+				obj.property[userProp.name] = userProp.value
+			end
+		end
 	end
 	instance:insertLayer(level,level.layers['salita'])
 	--level.ldVersion=1.1.0	-- Level Director Version
@@ -387,4 +387,3 @@ function M:createLevel(LD_Helper_Instance)
 	return level
 end -- createLevel
 return M
-
