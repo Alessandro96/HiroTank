@@ -39,12 +39,10 @@ local function trascinaChassis(event)
 end
 
 local function dx()
-    ruota1:applyTorque(1)
     ruota2:applyTorque(1)
 end
 
 local function sx()
-    ruota1:applyTorque(-1)
     ruota2:applyTorque(-1)
 end
 
@@ -142,14 +140,12 @@ local pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ru
 local weldJoint = physics.newJoint("weld", chassis, tank, chassis.x, chassis.y)
 
 --------------------------------------------------------------------------------
--- Runtime Loop // qui c'Ã¨ il trucco
+-- Runtime Loop // qui c'è il trucco
 --------------------------------------------------------------------------------
 local function enterFrame(event)
 	if m.result == "rotate:left" then
-			ruota1:applyTorque(-1)
 			ruota2:applyTorque(-1)
 	elseif m.result == "rotate:right" then
-		    ruota1:applyTorque(1)
             ruota2:applyTorque(1)
 
 	elseif m.result == "none" then
