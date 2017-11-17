@@ -98,12 +98,12 @@ m.rotate.right:addEventListener("touch", m.touch)
 
 local tank = display.newImageRect("tank1.png", 120, 45)
 tank.x = display.contentCenterX-700
-tank.y = display.contentCenterY-300
+tank.y = display.contentCenterY
 physics.addBody(tank, {filter = tankCollider})
 
 local chassis = display.newImageRect("blocco.png", 120, 15)
 chassis.x = display.contentCenterX-700
-chassis.y = display.contentCenterY-300
+chassis.y = display.contentCenterY
 physics.addBody(chassis, {filter =  chassisCollider})
 
 local sospensione1 = display.newImageRect("blocco.png", 15, 33)
