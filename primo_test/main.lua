@@ -12,7 +12,8 @@ local ruota1, ruota2
 local tankCollider = {categoryBits = 1, maskBits = 1}
 local chassisCollider = {categoryBits = 2, maskBits = 2}
 
-local perspective = require("perspective")
+local perspective = require("8675733.perspective")
+local camera = perspective.createView()
 
 require("lib.LD_LoaderX")
 physics = require ("physics")
@@ -63,7 +64,7 @@ m.rotate.right = display.newImageRect("dx.png", 60, 40)
 	m.rotate.right.y = display.contentHeight - m.rotate.right.contentHeight - 10
 	m.rotate.right.result = "rotate:right"
 
-	--------------------------------------------------------------------------------
+	------------------------------------------------------------------------------
 -- avanti e indietro
 --------------------------------------------------------------------------------
 function m.touch(event)
@@ -96,14 +97,18 @@ end
 m.rotate.left:addEventListener("touch", m.touch)
 m.rotate.right:addEventListener("touch", m.touch)
 
+
+--------------------------------------------------------------------------------
+--INIZIALIZZAZIONE TANK
+--------------------------------------------------------------------------------
 local tank = display.newImageRect("tank1.png", 120, 45)
 tank.x = display.contentCenterX-700
-tank.y = display.contentCenterY
+tank.y = display.contentCenterY+300
 physics.addBody(tank, {filter = tankCollider})
 
 local chassis = display.newImageRect("blocco.png", 120, 15)
-chassis.x = display.contentCenterX-700
-chassis.y = display.contentCenterY
+chassis.x = tank.x
+chassis.y = tank.y
 physics.addBody(chassis, {filter =  chassisCollider})
 
 local sospensione1 = display.newImageRect("blocco.png", 15, 33)
@@ -140,7 +145,7 @@ local pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ru
 local weldJoint = physics.newJoint("weld", chassis, tank, chassis.x, chassis.y)
 
 --------------------------------------------------------------------------------
--- Runtime Loop // qui c'è il trucco
+-- Runtime Loop // qui c'ï¿½ il trucco
 --------------------------------------------------------------------------------
 local function enterFrame(event)
 	if m.result == "rotate:left" then
@@ -154,13 +159,36 @@ local function enterFrame(event)
 	end
 end
 
-chassis:toBack()
-sospensione1:toBack()
-sospensione2:toBack()
+--------------------------------------------------------------------------------
+--MOVIMENTO TELECAMERA
+--------------------------------------------------------------------------------
+local classTerreno = myLevel:layerObjectsWithClass("terreno", "pianura")
+local classSalita = myLevel:layerObjectsWithClass("salita", "salita")
+local cielo = myLevel:getLayerObject("bg", 'sky_0').view
+local objTerreno = {}
+local objSalita = {}
+
+for i=1, #classTerreno, 1 do
+    objTerreno[i] = myLevel:getLayerObject("terreno", classTerreno[i].name).view
+    camera:add(objTerreno[i], 3, false)
+end
+
+for i=1, #classSalita, 1 do
+    objSalita[i] = myLevel:getLayerObject("salita", classSalita[i].name).view
+    camera:add(objSalita[i], 2, false)
+end
+
+camera:add(cielo, 5, false)
+camera:add(tank, 1, true)
+camera:add(chassis, 6, false)
+camera:add(sospensione1, 6, false)
+camera:add(sospensione2, 6, false)
+camera:add(ruota1, 4, false)
+camera:add(ruota2, 4, false)
+camera:track()
 
 --------------------------------------------------------------------------------
 -- Add Listeners
 --------------------------------------------------------------------------------
 Runtime:addEventListener("enterFrame", enterFrame)
-
 chassis:addEventListener("touch", trascinaChassis)

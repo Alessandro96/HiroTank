@@ -1,0 +1,163 @@
+local obj1 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_0').view
+local obj2 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_3').view
+local obj3 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_4').view
+local obj4 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_5').view
+local obj5 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_7').view
+local obj6 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_6').view
+local obj7 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_8').view
+local obj8 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_9').view
+local obj9 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_10').view
+local obj10 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_11').view
+local obj11 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_12').view
+local obj72 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_13').view
+local obj12 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_14').view
+local obj13 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_18').view
+local obj14 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_24').view
+local obj15 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_35').view
+local obj16 = myLevel:getLayerObject("terreno", 'grass_0').view
+local obj17 = myLevel:getLayerObject("terreno", 'grass_39').view
+local obj18 = myLevel:getLayerObject("terreno", 'grass_40').view
+local obj19 = myLevel:getLayerObject("terreno", 'grass_41').view
+local obj20 = myLevel:getLayerObject("terreno", 'grass_42').view
+local obj21 = myLevel:getLayerObject("terreno", 'grass_43').view
+local obj22 = myLevel:getLayerObject("terreno", 'grass_44').view
+local obj23 = myLevel:getLayerObject("terreno", 'grass_45').view
+local obj24 = myLevel:getLayerObject("terreno", 'grass_46').view
+local obj25 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_49').view
+local obj26 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_50').view
+local obj27 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_51').view
+local obj28 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_52').view
+local obj29 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_53').view
+local obj30 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_54').view
+local obj31 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_55').view
+local obj32 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_56').view
+local obj33 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_58').view
+local obj34 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_59').view
+local obj35 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_61').view
+local obj36 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_62').view
+local obj37 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_63').view
+local obj38 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_64').view
+local obj39 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_65').view
+local obj40 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_66').view
+local obj41 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_67').view
+local obj42 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_69').view
+local obj43 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_70').view
+local obj44 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_71').view
+local obj45 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_72').view
+local obj46 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_73').view
+local obj47 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_74').view
+local obj48 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_60').view
+local obj49 = myLevel:getLayerObject("terreno", 'grass_56').view
+local obj50 = myLevel:getLayerObject("terreno", 'grass_57').view
+local obj51 = myLevel:getLayerObject("terreno", 'grass_58').view
+local obj52 = myLevel:getLayerObject("terreno", 'grass_59').view
+local obj53 = myLevel:getLayerObject("terreno", 'grass_60').view
+local obj54 = myLevel:getLayerObject("terreno", 'grass_61').view
+local obj55 = myLevel:getLayerObject("terreno", 'grass_62').view
+local obj56 = myLevel:getLayerObject("terreno", 'grass_63').view
+local obj57 = myLevel:getLayerObject("terreno", 'grass_64').view
+local obj58 = myLevel:getLayerObject("terreno", 'grass_65').view
+local obj59 = myLevel:getLayerObject("terreno", 'grass_66').view
+local obj60 = myLevel:getLayerObject("terreno", 'grass_67').view
+local obj61 = myLevel:getLayerObject("terreno", 'grass_68').view
+local obj62 = myLevel:getLayerObject("terreno", 'grass_69').view
+local obj63 = myLevel:getLayerObject("terreno", 'grass_70').view
+local obj64 = myLevel:getLayerObject("terreno", 'grass_71').view
+local obj65 = myLevel:getLayerObject("terreno", 'grass_72').view
+local obj66 = myLevel:getLayerObject("terreno", 'grass_73').view
+local obj67 = myLevel:getLayerObject("terreno", 'sandCenter_rounded_77').view
+local obj68 = myLevel:getLayerObject("terreno", 'grass_74').view
+local obj69 = myLevel:getLayerObject("terreno", 'grass_75').view
+local obj70 = myLevel:getLayerObject("terreno", 'grass_76').view
+local obj71 = myLevel:getLayerObject("terreno", 'grass_77').view
+local obj76 = myLevel:getLayerObject("salita", 'grass_0').view
+local obj77 = myLevel:getLayerObject("salita", 'grass_5').view
+local obj78 = myLevel:getLayerObject("salita", 'grass_6').view
+local obj79 = myLevel:getLayerObject("salita", 'grass_7').view
+local obj80 = myLevel:getLayerObject("salita", 'grass_8').view
+local obj73 = myLevel:getLayerObject("salita", 'grassHillLeft_0').view
+local obj74 = myLevel:getLayerObject("salita", 'grassHillLeft_2').view
+local obj75 = myLevel:getLayerObject("salita", 'grassHillLeft_3').view
+local obj81 = myLevel:getLayerObject("bg", 'sky_0').view
+
+camera:add(obj1, 3, false)
+camera:add(obj2, 3, false)
+camera:add(obj3, 3, false)
+camera:add(obj4, 3, false)
+camera:add(obj5, 3, false)
+camera:add(obj6, 3, false)
+camera:add(obj7, 3, false)
+camera:add(obj8, 3, false)
+camera:add(obj9, 3, false)
+camera:add(obj10, 3, false)
+camera:add(obj11, 3, false)
+camera:add(obj72, 3, false)
+camera:add(obj12, 3, false)
+camera:add(obj13, 3, false)
+camera:add(obj14, 3, false)
+camera:add(obj15, 3, false)
+camera:add(obj16, 3, false)
+camera:add(obj17, 3, false)
+camera:add(obj18, 3, false)
+camera:add(obj19, 3, false)
+camera:add(obj20, 3, false)
+camera:add(obj21, 3, false)
+camera:add(obj22, 3, false)
+camera:add(obj23, 3, false)
+camera:add(obj24, 3, false)
+camera:add(obj25, 3, false)
+camera:add(obj26, 3, false)
+camera:add(obj27, 3, false)
+camera:add(obj28, 3, false)
+camera:add(obj29, 3, false)
+camera:add(obj30, 3, false)
+camera:add(obj31, 3, false)
+camera:add(obj32, 3, false)
+camera:add(obj33, 3, false)
+camera:add(obj34, 3, false)
+camera:add(obj35, 3, false)
+camera:add(obj36, 3, false)
+camera:add(obj37, 3, false)
+camera:add(obj38, 3, false)
+camera:add(obj39, 3, false)
+camera:add(obj40, 3, false)
+camera:add(obj41, 3, false)
+camera:add(obj42, 3, false)
+camera:add(obj43, 3, false)
+camera:add(obj44, 3, false)
+camera:add(obj45, 3, false)
+camera:add(obj46, 3, false)
+camera:add(obj47, 3, false)
+camera:add(obj48, 3, false)
+camera:add(obj49, 3, false)
+camera:add(obj50, 3, false)
+camera:add(obj51, 3, false)
+camera:add(obj52, 3, false)
+camera:add(obj53, 3, false)
+camera:add(obj54, 3, false)
+camera:add(obj55, 3, false)
+camera:add(obj56, 3, false)
+camera:add(obj57, 3, false)
+camera:add(obj58, 3, false)
+camera:add(obj59, 3, false)
+camera:add(obj60, 3, false)
+camera:add(obj61, 3, false)
+camera:add(obj62, 3, false)
+camera:add(obj63, 3, false)
+camera:add(obj64, 3, false)
+camera:add(obj65, 3, false)
+camera:add(obj66, 3, false)
+camera:add(obj67, 3, false)
+camera:add(obj68, 3, false)
+camera:add(obj69, 3, false)
+camera:add(obj70, 3, false)
+camera:add(obj71, 3, false)
+camera:add(obj73, 2, false)
+camera:add(obj74, 2, false)
+camera:add(obj75, 2, false)
+camera:add(obj76, 2, false)
+camera:add(obj77, 2, false)
+camera:add(obj78, 2, false)
+camera:add(obj79, 2, false)
+camera:add(obj80, 2, false)
+camera:add(obj81, 5, false)
