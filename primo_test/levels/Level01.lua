@@ -8,7 +8,7 @@ function M:loadAssets()
 	assets.spriteSheetData={}
 	assets['grass_0']={file ='grass.png',name='grass_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='grass',frameCount=1,
 		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Rectangle',shape={},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},}	}  }
-	assets['sky_0']={file ='sky.jpg',name='sky_0',class='',aX=0.5,aY=0.5,width=480,height=320,frame=0,spriteSheetName='sky',frameCount=1,
+	assets['sky_0']={file ='sky.jpg',name='sky_0',class='',aX=0.5,aY=0.5,width=0,height=0,frame=0,spriteSheetName='sky',frameCount=1,
 		 }
 	assets['grassHillLeft_0']={file ='grassHillLeft.png',name='grassHillLeft_0',class='',aX=0.5,aY=0.5,width=70,height=70,frame=0,spriteSheetName='grassHillLeft',frameCount=1,
 		physics={isEnabled=true,source='Asset',bodyType='static',isFixedRotation=false,isSleepingAllowed=false,isSensor=false,linearDamping=0,angularDamping=0,gravityScale=1,isBullet=false,shapes={{bodyShape='Polygon',shape={-34,35,35,35,35,-35},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},{bodyShape='Polygon',shape={-33,34,33,-32,35,34},bounce=0.2,friction=0.3,density=1,radius=0,categoryBits=1,maskBits=1,groupIndex=0},}	}  }

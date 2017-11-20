@@ -7,6 +7,12 @@
 -----------------------------------------------------------------------------------------
 
 display.setStatusBar( display.HiddenStatusBar )
+
+local image = display.newImageRect( "images/sky.jpg",
+               display.contentWidth, display.contentHeight) 
+image.x = display.contentCenterX
+image.y = display.contentCenterY
+
 local ruota1, ruota2
 
 local tankCollider = {categoryBits = 1, maskBits = 1}
@@ -23,6 +29,7 @@ physics.start()
 local myLevel = {}
 myLevel= LD_Loader:new()
 myLevel:loadLevel("Level01") --replace with your level name here
+
 
 local function trascinaChassis(event)
     local chassis = event.target
@@ -186,6 +193,7 @@ camera:add(sospensione2, 6, false)
 camera:add(ruota1, 4, false)
 camera:add(ruota2, 4, false)
 camera:track()
+camera:setBounds(-20000, 20000, -20000, 550)
 
 --------------------------------------------------------------------------------
 -- Add Listeners
