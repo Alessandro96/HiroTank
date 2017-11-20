@@ -8,11 +8,6 @@
 
 display.setStatusBar( display.HiddenStatusBar )
 
-local image = display.newImageRect( "images/sky.jpg",
-               display.contentWidth, display.contentHeight) 
-image.x = display.contentCenterX
-image.y = display.contentCenterY
-
 local ruota1, ruota2
 
 local tankCollider = {categoryBits = 1, maskBits = 1}
@@ -108,6 +103,10 @@ m.rotate.right:addEventListener("touch", m.touch)
 --------------------------------------------------------------------------------
 --INIZIALIZZAZIONE TANK
 --------------------------------------------------------------------------------
+local cielo = display.newImageRect( "images/sky.jpg", display.contentWidth+2000, display.contentHeight)
+cielo.x = display.contentCenterX
+cielo.y = display.contentCenterY
+
 local tank = display.newImageRect("tank1.png", 120, 45)
 tank.x = display.contentCenterX-700
 tank.y = display.contentCenterY+300
@@ -151,18 +150,79 @@ local pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ru
 
 local weldJoint = physics.newJoint("weld", chassis, tank, chassis.x, chassis.y)
 
+local distanceJoint = physics.newJoint("distance", ruota1, ruota2, ruota1.x, ruota1.y, ruota2.x, ruota2.y)
+
+--------------------------------------------------------------------------------
+-- CANNONE
+--------------------------------------------------------------------------------
+physics = require("physics")
+physics.start()
+physics.setGravity(0,9.8)
+
+local cannon = display.newImageRect("Untitled.png", 40, 60  )
+cannon.x = tank.x+20
+cannon.y = tank.y-40
+
+physics.addBody( cannon, "dynamic", { density=0, friction=100, bounce=0, isSensor=true} )
+cannon.rotation=0
+
+--local perno
+
+local function rotazioneDx(self, event)
+  cannon.rotation = cannon.rotation + 5
+end
+
+local function rotazioneSx(self, event)
+  cannon.rotation = cannon.rotation -5
+end
+
+local sx = display.newImageRect("bottone.png", 50, 50)
+sx.x = display.contentCenterX-150
+sx.y = display.contentCenterY
+
+
+local dx = display.newImageRect("bottone.png", 50, 50)
+dx.x = display.contentCenterX+150
+dx.y = display.contentCenterY
+
+sx:addEventListener("tap", rotazioneSx)
+dx:addEventListener("tap", rotazioneDx)
+
+local sparo = display.newImageRect("missile2.png", 34, 67)
+sparo.x = 100
+sparo.y = 200
+
+local function shoot (event)
+        local ball = display.newCircle( cannon.x, cannon.y, 10 )
+        physics.addBody( ball, "dynamic",{density = 0, friction = 0.3, bounce = 0.5, radius =20, filter =  chassisCollider})
+        ball.isBullet = true
+        ball.rotation = -30
+        local speed = 500
+        local angle = math.rad(cannon.rotation-90)
+        ball:setLinearVelocity(math.cos(angle) * speed, math.sin(angle) * speed)
+        camera:add(ball, 2, false)
+    end
+sparo:addEventListener("tap", shoot)
+--perno = display.newCircle( cannon.x, cannon.y, 0.001 )
+--physics.addBody( perno, "static", { density=-2, friction=300, isSensor=true})
+--local pernoJoint = physics.newJoint("pivot", perno, cannon, perno.x, perno.y)
+local cannonJoint = physics.newJoint("pivot", cannon, tank, cannon.x, cannon.y)
+
+
 --------------------------------------------------------------------------------
 -- Runtime Loop // qui c'� il trucco
 --------------------------------------------------------------------------------
 local function enterFrame(event)
 	if m.result == "rotate:left" then
-			ruota2:applyTorque(-1)
+      ruota1:applyTorque(-0.5)
+		  ruota2:applyTorque(-0.5)
 	elseif m.result == "rotate:right" then
-            ruota2:applyTorque(1)
+      ruota1:applyTorque(0.5)
+      ruota2:applyTorque(0.5)
 
 	elseif m.result == "none" then
 			ruota1:applyTorque(0)
-            ruota2:applyTorque(0)
+      ruota2:applyTorque(0)
 	end
 end
 
@@ -171,7 +231,7 @@ end
 --------------------------------------------------------------------------------
 local classTerreno = myLevel:layerObjectsWithClass("terreno", "pianura")
 local classSalita = myLevel:layerObjectsWithClass("salita", "salita")
-local cielo = myLevel:getLayerObject("bg", 'sky_0').view
+--local cielo = myLevel:getLayerObject("bg", 'sky_0').view
 local objTerreno = {}
 local objSalita = {}
 
@@ -186,12 +246,14 @@ for i=1, #classSalita, 1 do
 end
 
 camera:add(cielo, 5, false)
-camera:add(tank, 1, true)
+camera:add(tank, 2, true)
 camera:add(chassis, 6, false)
 camera:add(sospensione1, 6, false)
 camera:add(sospensione2, 6, false)
 camera:add(ruota1, 4, false)
 camera:add(ruota2, 4, false)
+camera:add(cannon, 1, false)
+
 camera:track()
 camera:setBounds(-20000, 20000, -20000, 550)
 
