@@ -15,27 +15,16 @@ physics.start()
 
 local btn = nil
 local myLevel = {}
-local bottoneGioca
-
-local function gotoGame()
-		composer.gotoScene("game")
-end
 
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
-	local sceneGroup = self.view
-	
-	bottoneGioca = display.newImageRect("images/play.png",522, 186)
-	bottoneGioca.x = 1500
-	bottoneGioca.y = 500
-	
+	local screenGroup = self.view
 	local myLevel = {}
 	myLevel= LD_Loader:new(self.view)
-	myLevel:loadLevel("Level02") -- set your scene/level name here
+	myLevel:loadLevel("Level01")
 	
-	
-	bottoneGioca:addEventListener("tap", gotoGame)
+	myLevel= LD:loadLevel("scene1")
 	
 	-- Touch event listener for button
 	function onButtonClick( event )
@@ -57,7 +46,6 @@ end
 
 -- Called immediately after scene has moved onscreen:
 function scene:show( event )
-    local sceneGroup = self.view
 	local phase = event.phase
 
     if ( phase == "will" ) then
@@ -81,7 +69,6 @@ end
 
 -- Called when scene is about to move offscreen:
 function scene:hide( event )
-	local sceneGroup = self.view
 	
 	print( "1: hide event" )
 	

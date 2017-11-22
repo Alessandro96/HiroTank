@@ -11,7 +11,7 @@ display.setStatusBar( display.HiddenStatusBar )
 
 local physics = require("physics")
 physics.start()
-local perspective = require("8675733.perspective")
+local perspective = require("lib.perspective")
 require("lib.LD_LoaderX")
 
 local m = {}
@@ -152,32 +152,32 @@ function scene:create( event )
 --TANK
 --------------------------------------------------------------------------------
 
-	tank = display.newImageRect("tank1.png", 120, 45)
+	tank = display.newImageRect("images/tank1.png", 120, 45)
 	tank.x = display.contentCenterX-700
 	tank.y = display.contentCenterY+300
 	physics.addBody(tank, {filter = tankCollider})
 
-	chassis = display.newImageRect("blocco.png", 120, 15)
+	chassis = display.newImageRect("images/blocco.png", 120, 15)
 	chassis.x = tank.x
 	chassis.y = tank.y
 	physics.addBody(chassis, {filter =  chassisCollider})
 
-	sospensione1 = display.newImageRect("blocco.png", 15, 33)
+	sospensione1 = display.newImageRect("images/blocco.png", 15, 33)
 	sospensione1.x = chassis.x-40
 	sospensione1.y = chassis.y+10
 	physics.addBody(sospensione1, {filter =  chassisCollider})
 
-	sospensione2 = display.newImageRect("blocco.png", 15, 33)
+	sospensione2 = display.newImageRect("images/blocco.png", 15, 33)
 	sospensione2.x = chassis.x+40
 	sospensione2.y = chassis.y+10
 	physics.addBody(sospensione2, {filter =  chassisCollider})
 
-	ruota1 = display.newImageRect("ruota.png", 30,30)
+	ruota1 = display.newImageRect("images/ruota.png", 30,30)
 	ruota1.x = sospensione1.x
 	ruota1.y = sospensione1.y+30
 	physics.addBody(ruota1, {radius=15, friction = 10, bounce = 0.5, filter = tankCollider})
 
-	ruota2 = display.newImageRect("ruota.png", 30,30)
+	ruota2 = display.newImageRect("images/ruota.png", 30,30)
 	ruota2.x = sospensione2.x
 	ruota2.y = sospensione2.y+30
 	physics.addBody(ruota2, {radius=15, friction = 10, bounce = 0.5, filter = tankCollider})
@@ -186,7 +186,7 @@ function scene:create( event )
 --CANNONE
 --------------------------------------------------------------------------------
 
-  cannon = display.newImageRect("Untitled.png", 40, 60  )
+  cannon = display.newImageRect("images/Untitled.png", 40, 60  )
   cannon.x = tank.x+20
   cannon.y = tank.y-40
   physics.addBody( cannon, "dynamic", { density=0, friction=100, bounce=0, isSensor=true} )
@@ -196,7 +196,7 @@ function scene:create( event )
 --PROIETTILE
 --------------------------------------------------------------------------------
 
-  sparo = display.newImageRect("missile2.png", 34, 67)
+  sparo = display.newImageRect("images/missile2.png", 34, 67)
   sparo.x = 100
   sparo.y = 200
 
@@ -204,11 +204,11 @@ function scene:create( event )
 --PULSANTI CANNONE
 --------------------------------------------------------------------------------
 
-  sx = display.newImageRect("bottone.png", 50, 50)
+  sx = display.newImageRect("images/bottone.png", 50, 50)
   sx.x = display.contentCenterX-150
   sx.y = display.contentCenterY
 
-  dx = display.newImageRect("bottone.png", 50, 50)
+  dx = display.newImageRect("images/bottone.png", 50, 50)
   dx.x = display.contentCenterX+150
   dx.y = display.contentCenterY
 
@@ -223,12 +223,12 @@ function scene:create( event )
 --PULSANTI MOVIMENTO TANK
 --------------------------------------------------------------------------------
 
-  m.rotate.left = display.newImageRect("sx.png", 60, 40)
+  m.rotate.left = display.newImageRect("images/sx.png", 60, 40)
   	m.rotate.left.x = display.screenOriginX + m.rotate.left.contentWidth + 10
   	m.rotate.left.y = display.contentHeight - m.rotate.left.contentHeight - 10
   	m.rotate.left.result = "rotate:left"
 
-  m.rotate.right = display.newImageRect("dx.png", 60, 40)
+  m.rotate.right = display.newImageRect("images/dx.png", 60, 40)
   	m.rotate.right.x = display.contentWidth - display.screenOriginX - m.rotate.right.contentWidth - 10
   	m.rotate.right.y = display.contentHeight - m.rotate.right.contentHeight - 10
   	m.rotate.right.result = "rotate:right"
