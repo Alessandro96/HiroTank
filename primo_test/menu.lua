@@ -25,32 +25,32 @@ end
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
-	
-	bottoneGioca = display.newImageRect("images/play.png",522, 186)
-	bottoneGioca.x = 1500
-	bottoneGioca.y = 500
-	
+
 	local myLevel = {}
 	myLevel= LD_Loader:new(self.view)
 	myLevel:loadLevel("Level02") -- set your scene/level name here
-	
-	
+	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
+
+	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",522, 186)
+	bottoneGioca.x = 1500
+	bottoneGioca.y = 500
+
 	bottoneGioca:addEventListener("tap", gotoGame)
-	
+
 	-- Touch event listener for button
 	function onButtonClick( event )
 		print ("touch")
 		if event.phase == "began" then
-			
+
 			composer.gotoScene( "scene2", "zoomOutInFade", 300  )
-			
+
 			return true
 		end
 	end
-	
+
 	-- btn = myLevel:getLayerObject( "layer1","btnNext" )
 	-- btn.onPress = onButtonClick
-	
+
 	print( "\n1: create event")
 end
 
@@ -66,25 +66,25 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
-		local prevScene = composer.getSceneName( "previous" )	
+		local prevScene = composer.getSceneName( "previous" )
 		-- remove previous scene's view
 		if (prevScene) then
 			composer.removeScene( prevScene )
 		end
-    end	
-	
+    end
+
 	print( "1: show event - ", phase )
-	
-	
+
+
 end
 
 
 -- Called when scene is about to move offscreen:
 function scene:hide( event )
 	local sceneGroup = self.view
-	
+
 	print( "1: hide event" )
-	
+
 end
 
 
@@ -99,11 +99,10 @@ end
 -- END OF YOUR IMPLEMENTATION
 ---------------------------------------------------------------------------------
 
-scene:addEventListener( "create", scene ) 
-scene:addEventListener( "show", scene ) 
-scene:addEventListener( "hide", scene ) 
-scene:addEventListener( "destroy", scene ) 
+scene:addEventListener( "create", scene )
+scene:addEventListener( "show", scene )
+scene:addEventListener( "hide", scene )
+scene:addEventListener( "destroy", scene )
 ---------------------------------------------------------------------------------
 
 return scene
-
