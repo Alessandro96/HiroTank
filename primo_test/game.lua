@@ -18,6 +18,7 @@ local m = {}
 local proiettile = require("class.proiettile")
 local cannone = require("class.cannon")
 local carrarmato = require("class.carrarmato")
+local pulsante = require("class.carrarmato").pulsante()
 m.result = "none"
 m.rotate = {}
 local image
@@ -39,58 +40,6 @@ local chassisCollider = {categoryBits = 2, maskBits = 2}
 local camera
 local backGroup
 local mainGroup
-
---------------------------------------------------------------------------------
---FUNZIONI PULSANTI MOVIMENTO RUOTE
---------------------------------------------------------------------------------
-
-function m.touch(event)
-	local t = event.target
-
-	if "began" == event.phase then
-		display.getCurrentStage():setFocus(t)
-		t.isFocus = true
-		m.result = t.result
-
-		if t.result == "rotate:left" then
-			ruota1:applyTorque(-1)
-			ruota2:applyTorque(-1)
-		elseif t.result == "rotate:right" then
-			ruota1:applyTorque(1)
-      ruota2:applyTorque(1)
-		end
-
-	  elseif t.isFocus then
-		  if "moved" == event.phase then
-		elseif "ended" == event.phase then
-			display.getCurrentStage():setFocus(nil)
-			t.isFocus = false
-			m.result = "none"
-		end
-	end
-end
-
-local function enterFrame(event)
-	if m.result == "rotate:left" then
-      ruota1:applyTorque(-1)
-			ruota2:applyTorque(-1)
-	elseif m.result == "rotate:right" then
-      ruota2:applyTorque(1)
-      ruota2:applyTorque(1)
-	elseif m.result == "none" then
-			ruota1:applyTorque(0)
-      ruota2:applyTorque(0)
-	end
-end
-
---------------------------------------------------------------------------------
---FUNZIONE PROIETTILE
---------------------------------------------------------------------------------
-
-local function shoot (event)
-    local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
-    ball:shoot(cannon.rotation, camera)
-end
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -152,9 +101,8 @@ function scene:create( event )
 --PULSANTI MOVIMENTO TANK
 --------------------------------------------------------------------------------
 
-  m.rotate.left = carrarmato.pulsanteSx()
-
-  m.rotate.right = carrarmato.pulsanteDx()
+  m.rotate.left = pulsante.rotate.sx()
+  m.rotate.right = pulsante.rotate.dx()
 
 --------------------------------------------------------------------------------
 --JOINT
@@ -162,11 +110,11 @@ function scene:create( event )
 
 	pistonJoint1 = physics.newJoint("piston", chassis, sospensione1, sospensione1.x, sospensione1.y, 0, 1)
 	pistonJoint1.isLimitEnabled = true
-	pistonJoint1:setLimits(-10, 10)
+	pistonJoint1:setLimits(-5, 5)
 
 	pistonJoint2 = physics.newJoint("piston", chassis, sospensione2, sospensione2.x, sospensione2.y, 0, 1)
 	pistonJoint2.isLimitEnabled = true
-	pistonJoint2:setLimits(-10, 10)
+	pistonJoint2:setLimits(-5, 5)
 
 	pivotJoint1 = physics.newJoint("pivot", sospensione1, ruota1, ruota1.x, ruota1.y)
 	pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ruota2.y)
@@ -203,14 +151,23 @@ function scene:create( event )
   camera:setBounds(-20000, 20000, -20000, 550)
 
 --------------------------------------------------------------------------------
---RICHIAMO LE FUNZIONI
+--NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
 
   sx:addEventListener("tap", function() cannon.rotation = cannon.rotation-5 end)
   dx:addEventListener("tap", function() cannon.rotation = cannon.rotation+5 end)
-  sparo:addEventListener("tap", shoot)
-  m.rotate.left:addEventListener("touch", m.touch)
-  m.rotate.right:addEventListener("touch", m.touch)
+
+  sparo:addEventListener("tap", function()
+																	local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
+																	ball:shoot(cannon.rotation, camera)
+																end)
+																
+	m.rotate.left:addEventListener("touch", function(event)
+																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																					end)
+  m.rotate.right:addEventListener("touch", function(event)
+																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																					 end)
 
 end
 
@@ -227,7 +184,9 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
     physics.start()
-    Runtime:addEventListener("enterFrame", enterFrame)
+    Runtime:addEventListener("enterFrame",  function(event)
+																							pulsante.enterFrame(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																						end)
 	end
 end
 
