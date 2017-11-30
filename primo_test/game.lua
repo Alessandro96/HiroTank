@@ -19,9 +19,13 @@ local proiettile = require("class.proiettile")
 local cannone = require("class.cannon")
 local carrarmato = require("class.carrarmato")
 local pulsante = require("class.carrarmato").pulsante()
+local aereo = require("class.aereo")
+local collisioni = require("class.collisioni")
+local aereiTable = {}
+local bombeTable = {}
+local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
-local image
 local myLevel = {}
 local classTerreno
 local classSalita
@@ -38,8 +42,7 @@ local distanceJoint
 local tankCollider = {categoryBits = 1, maskBits = 1}
 local chassisCollider = {categoryBits = 2, maskBits = 2}
 local camera
-local backGroup
-local mainGroup
+local aereiText, bombeText
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -56,13 +59,8 @@ function scene:create( event )
   myLevel= LD_Loader:new()
   myLevel:loadLevel("Level01")
 
---------------------------------------------------------------------------------
---BACKGROUND
---------------------------------------------------------------------------------
-
-  cielo = display.newImageRect("images/sky.jpg", display.contentWidth, display.contentHeight)
-  cielo.x = display.contentCenterX
-  cielo.y = display.contentCenterY
+  aereiText = display.newText("aerei: "..#aereiTable, display.contentCenterX, display.contentCenterY, native.systemFont, 60)
+  bombeText = display.newText("bombe: "..#bombeTable, display.contentCenterX, display.contentCenterY+60, native.systemFont, 60)
 
 --------------------------------------------------------------------------------
 --TANK
@@ -82,13 +80,21 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
-  cannon = cannone.newCannon({tankX = tank.x, tankY = tank.y, camera = camera})
+	cannon = cannone.newCannon({tankX = tank.x, tankY = tank.y, camera = camera})
 
-  sparo = cannone.pulsanteSparo()
+	sparo = cannone.pulsanteSparo()
 
   sx = cannone.pulsanteSx()
 
-  dx = cannone.pulsanteDx()
+	dx = cannone.pulsanteDx()
+
+--------------------------------------------------------------------------------
+--BACKGROUND
+--------------------------------------------------------------------------------
+
+  cielo = display.newImageRect("images/sky.jpg", display.contentWidth, display.contentHeight)
+  cielo.x = display.contentCenterX
+  cielo.y = display.contentCenterY
 
 --------------------------------------------------------------------------------
 --LAYOUT TERRENO
@@ -161,14 +167,13 @@ function scene:create( event )
 																	local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
 																	ball:shoot(cannon.rotation, camera)
 																end)
-																
+
 	m.rotate.left:addEventListener("touch", function(event)
 																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
 																					end)
   m.rotate.right:addEventListener("touch", function(event)
 																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
-																					 end)
-
+																					end)
 end
 
 
@@ -184,9 +189,18 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
     physics.start()
+		Runtime:addEventListener("collision", function(event)
+																						collisioni.onCollision(event, aereiTable,  tank)
+																					end)
     Runtime:addEventListener("enterFrame",  function(event)
-																							pulsante.enterFrame(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																							pulsante.enterFrame(event, {m=m, ruota1=ruota1, ruota2=ruota2, tank=tank})
 																						end)
+		gameLoopTimer = timer.performWithDelay(1000, function()
+																									 gameLoop.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
+																								 end, 0)
+	  bombLoopTimer = timer.performWithDelay(100, function()
+																									 aereo.fire(aereiTable, bombeTable, camera, bombeText)
+																					       end, 0)
 	end
 end
 
@@ -199,11 +213,16 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
+		timer.cancell(gameLoopTimer)
+		timer.cancell(bombLoopTimer)
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
     camera:destroy()
     Runtime:removeEventListener( "enterFrame", enterFrame )
+		Runtime:removeEventListener("collision", function(event)
+																								collisioni.onCollision(event, aereiTable,  tank)
+																						 end)
     physics.pause()
     composer.removeScene( "game" )
 	end

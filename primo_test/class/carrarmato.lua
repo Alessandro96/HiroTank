@@ -7,6 +7,7 @@ function l.newTank(tankCollider)
   local tank = display.newImageRect("images/tank1.png", 120, 45)
 	tank.x = display.contentCenterX-700
 	tank.y = display.contentCenterY+300
+  tank.myName = "tank"
 	physics.addBody(tank, {filter = tankCollider})
   return tank
 end
@@ -42,17 +43,20 @@ function l.pulsante()
   function m.enterFrame(event, params)
   	if params.m.result == "rotate:left" then
   			params.m.rotate.left:rotate(params.ruota1, params.ruota2)
+			--params.tank:applyTorque(0.5)
   	elseif params.m.result == "rotate:right" then
   			params.m.rotate.right:rotate(params.ruota1, params.ruota2)
+			--params.tank:applyTorque(-0.5)
+
   	elseif params.m.result == "none" then
   			params.ruota1:applyTorque(0)
-        params.ruota2:applyTorque(0)
+         params.ruota2:applyTorque(0)
   	end
   end
 
   function m.rotate.dx()
-    local pulsanteDx = display.newImageRect("images/dx.png", 60, 40)
-    pulsanteDx.x = display.contentWidth - display.screenOriginX - pulsanteDx.contentWidth - 10
+    local pulsanteDx = display.newImage("images/dx.png")
+    pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 250
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
 
@@ -64,7 +68,7 @@ function l.pulsante()
   end
 
   function m.rotate.sx()
-    local pulsanteSx = display.newImageRect("images/sx.png", 60, 40)
+    local pulsanteSx = display.newImage("images/sx.png")
     pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 10
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 10
     pulsanteSx.result = "rotate:left"
