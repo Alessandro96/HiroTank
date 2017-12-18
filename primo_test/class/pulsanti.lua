@@ -3,16 +3,7 @@
 
 local l = {}
 
-function l.newTank(tankCollider)
-  local tank = display.newImageRect("images/tank1.png", 120, 45)
-	tank.x = display.contentCenterX-700
-	tank.y = display.contentCenterY+300
-  tank.myName = "tank"
-	physics.addBody(tank, {filter = tankCollider})
-  return tank
-end
-
-function l.pulsante()
+function l.pulsantiMovimentoCingolo()
   local m = {}
   m.rotate = {}
 
@@ -61,8 +52,8 @@ function l.pulsante()
     pulsanteDx.result = "rotate:right"
 
     function pulsanteDx:rotate(ruota1, ruota2)
-      ruota1:applyTorque(1)
-      ruota2:applyTorque(1)
+      ruota1:applyTorque(100)
+      ruota2:applyTorque(100)
     end
     return pulsanteDx
   end
@@ -74,8 +65,8 @@ function l.pulsante()
     pulsanteSx.result = "rotate:left"
 
     function pulsanteSx:rotate(ruota1, ruota2)
-      ruota1:applyTorque(-1)
-      ruota2:applyTorque(-1)
+      ruota1:applyTorque(-100)
+      ruota2:applyTorque(-100)
     end
     return pulsanteSx
   end
@@ -83,44 +74,25 @@ function l.pulsante()
   return m
 end
 
-function l.newChassis(tankX, tankY, chassisCollider)
-  local chassis = display.newImageRect("images/blocco.png", 120, 15)
-  chassis.x = tankX
-  chassis.y = tankY
-  physics.addBody(chassis, {filter =  chassisCollider})
-  return chassis
+function l.pulsanteCannoneDx()
+  local pulsanteDx = display.newImageRect("images/bottone.png", 75, 75)
+  pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 253
+  pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 150
+  return pulsanteDx
 end
 
-function l.newSospensioneSx(chassisX, chassisY, chassisCollider)
-  local sospensione1 = display.newImageRect("images/blocco.png", 15, 33)
-  sospensione1.x = chassisX-40
-  sospensione1.y = chassisY+10
-  physics.addBody(sospensione1, {filter =  chassisCollider})
-  return sospensione1
+function l.pulsanteCannoneSx()
+  local pulsanteSx = display.newImageRect("images/bottone.png", 75, 75)
+  pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth+15
+    pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 150
+  return pulsanteSx
 end
 
-function l.newSospensioneDx(chassisX, chassisY, chassisCollider)
-  local sospensione2 = display.newImageRect("images/blocco.png", 15, 33)
-  sospensione2.x = chassisX+40
-  sospensione2.y = chassisY+10
-  physics.addBody(sospensione2, {filter =  chassisCollider})
-  return sospensione2
-end
-
-function l.newRuotaSx(sospensione1X, sospensione1Y, tankCollider)
-  local ruota1 = display.newImageRect("images/ruota.png", 30,30)
-  ruota1.x = sospensione1X
-  ruota1.y = sospensione1Y+30
-  physics.addBody(ruota1, {radius=15, friction = 10, bounce = 0.5, filter = tankCollider})
-  return ruota1
-end
-
-function l.newRuotaDx(sospensione2X, sospensione2Y, tankCollider)
-  local ruota2 = display.newImageRect("images/ruota.png", 30,30)
-  ruota2.x = sospensione2X
-  ruota2.y = sospensione2Y+30
-  physics.addBody(ruota2, {radius=15, friction = 10, bounce = 0.5, filter = tankCollider})
-  return ruota2
+function l.pulsanteSparo()
+  local pulsanteSparo = display.newImage("images/missile2.png")
+  pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+130
+  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight - 90
+  return pulsanteSparo
 end
 
 return l

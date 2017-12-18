@@ -17,10 +17,10 @@ require("lib.LD_LoaderX")
 local m = {}
 local proiettile = require("class.proiettile")
 local cannone = require("class.cannon")
-local carrarmato = require("class.carrarmato")
-local pulsante = require("class.carrarmato").pulsante()
+local pulsanti = require("class.pulsanti")
 local aereo = require("class.aereo")
 local collisioni = require("class.collisioni")
+local cingolo = require("class.cingolo")
 local aereiTable = {}
 local bombeTable = {}
 local gameLoop = require("class.gameLoop")
@@ -32,17 +32,13 @@ local classSalita
 local cielo
 local objTerreno = {}
 local objSalita = {}
-local ruota1, ruota2
-local chassis, sospensione1, sospensione2, tank
 local cannon, sx, dx, sparo
-local pistonJoint1, pistonJoint2
-local pivotJoint1, pivotJoint2, pivotJointCannon
-local weldJoint
-local distanceJoint
+local weldJoint, pivotJointCannon
 local tankCollider = {categoryBits = 1, maskBits = 1}
 local chassisCollider = {categoryBits = 2, maskBits = 2}
 local camera
 local aereiText, bombeText
+local cingoloProva
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -63,30 +59,26 @@ function scene:create( event )
   bombeText = display.newText("bombe: "..#bombeTable, display.contentCenterX, display.contentCenterY+60, native.systemFont, 60)
 
 --------------------------------------------------------------------------------
+--CINGOLO
+--------------------------------------------------------------------------------
+	cingoloTank = cingolo.newCingolo(camera)
+
+--------------------------------------------------------------------------------
 --TANK
 --------------------------------------------------------------------------------
-	tank = carrarmato.newTank(tankCollider)
-
-	chassis = carrarmato.newChassis(tank.x, tank.y, chassisCollider)
-
-	sospensione1 = carrarmato.newSospensioneSx(chassis.x, chassis.y, chassisCollider)
-
-	sospensione2 = carrarmato.newSospensioneDx(chassis.x, chassis.y, chassisCollider)
-
-	ruota1 = carrarmato.newRuotaSx(sospensione1.x, sospensione1.y, tankCollider)
-
-	ruota2 = carrarmato.newRuotaDx(sospensione2.x, sospensione2.y, tankCollider)
+	tank = cingolo.newTank(cingoloTank)
+	tank:scale(1.5, 1)
 
 --------------------------------------------------------------------------------
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
 	cannon = cannone.newCannon({tankX = tank.x, tankY = tank.y, camera = camera})
 
-	sparo = cannone.pulsanteSparo()
+	sparo = pulsanti.pulsanteSparo()
 
-  sx = cannone.pulsanteSx()
+  sx = pulsanti.pulsanteCannoneSx()
 
-	dx = cannone.pulsanteDx()
+	dx = pulsanti.pulsanteCannoneDx()
 
 --------------------------------------------------------------------------------
 --BACKGROUND
@@ -107,28 +99,15 @@ function scene:create( event )
 --PULSANTI MOVIMENTO TANK
 --------------------------------------------------------------------------------
 
-  m.rotate.left = pulsante.rotate.sx()
-  m.rotate.right = pulsante.rotate.dx()
+  m.rotate.left = pulsanti.pulsantiMovimentoCingolo().rotate.sx()
+  m.rotate.right = pulsanti.pulsantiMovimentoCingolo().rotate.dx()
 
 --------------------------------------------------------------------------------
 --JOINT
 --------------------------------------------------------------------------------
-
-	pistonJoint1 = physics.newJoint("piston", chassis, sospensione1, sospensione1.x, sospensione1.y, 0, 1)
-	pistonJoint1.isLimitEnabled = true
-	pistonJoint1:setLimits(-5, 5)
-
-	pistonJoint2 = physics.newJoint("piston", chassis, sospensione2, sospensione2.x, sospensione2.y, 0, 1)
-	pistonJoint2.isLimitEnabled = true
-	pistonJoint2:setLimits(-5, 5)
-
-	pivotJoint1 = physics.newJoint("pivot", sospensione1, ruota1, ruota1.x, ruota1.y)
-	pivotJoint2 = physics.newJoint("pivot", sospensione2, ruota2, ruota2.x, ruota2.y)
   pivotJointCannon = physics.newJoint("pivot", cannon, tank, cannon.x, cannon.y)
 
-	weldJoint = physics.newJoint("weld", chassis, tank, chassis.x, chassis.y)
-
-	distanceJoint = physics.newJoint("distance", ruota1, ruota2, ruota1.x, ruota1.y, ruota2.x, ruota2.y)
+	weldJoint = physics.newJoint("weld", cingoloTank.quadro[14], tank, cingoloTank.quadro[14].x, cingoloTank.quadro[14].y-60)
 
 --------------------------------------------------------------------------------
 --CAMERA
@@ -146,11 +125,6 @@ function scene:create( event )
 
   camera:add(cielo, 5, false)
   camera:add(tank, 2, true)
-  camera:add(chassis, 6, false)
-  camera:add(sospensione1, 6, false)
-  camera:add(sospensione2, 6, false)
-  camera:add(ruota1, 4, false)
-  camera:add(ruota2, 4, false)
   camera:add(cannon, 1, false)
 
   camera:track()
@@ -169,10 +143,10 @@ function scene:create( event )
 																end)
 
 	m.rotate.left:addEventListener("touch", function(event)
-																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																						pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4]})
 																					end)
   m.rotate.right:addEventListener("touch", function(event)
-																						pulsante.touch(event, {m=m, ruota1=ruota1, ruota2=ruota2})
+																						pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4]})
 																					end)
 end
 
@@ -193,7 +167,7 @@ function scene:show( event )
 																						collisioni.onCollision(event, aereiTable,  tank)
 																					end)
     Runtime:addEventListener("enterFrame",  function(event)
-																							pulsante.enterFrame(event, {m=m, ruota1=ruota1, ruota2=ruota2, tank=tank})
+																							pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], tank=tank})
 																						end)
 		gameLoopTimer = timer.performWithDelay(1000, function()
 																									 gameLoop.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
