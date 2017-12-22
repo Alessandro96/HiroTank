@@ -22,20 +22,14 @@ function M.onCollision(event, aereiTable,  tank)
 				end
 			end
 
-			-- Increase score
-			--score = score + 10
-			--scoreText.text = "Score: " .. score
+			return 10
 
 		elseif ( ( obj1.myName == "tank" and obj2.myName == "bomba" ) or
 				 ( obj1.myName == "bomba" and obj2.myName == "tank" ) )
 		then
 
-				--life = life - 20
-				--lifeText.text = "Life: " .. life
-
-				--if ( life == 0 ) then
-					--endGame()
-      tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+		tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+		return 20
 		end
 	end
 end

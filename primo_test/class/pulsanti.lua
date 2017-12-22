@@ -16,9 +16,9 @@ function l.pulsantiMovimentoCingolo()
   		params.m.result = t.result
 
   		if t.result == "rotate:left" then
-  			params.m.rotate.left:rotate(params.ruota1, params.ruota2)
+  			params.m.rotate.left:rotate(params.ruota1, params.ruota2, params.ruota3, params.ruota4)
   		elseif t.result == "rotate:right" then
-  			params.m.rotate.right:rotate(params.ruota1, params.ruota2)
+  			params.m.rotate.right:rotate(params.ruota1, params.ruota2, params.ruota3, params.ruota4)
   		end
 
   	  elseif t.isFocus then
@@ -33,15 +33,18 @@ function l.pulsantiMovimentoCingolo()
 
   function m.enterFrame(event, params)
   	if params.m.result == "rotate:left" then
-  			params.m.rotate.left:rotate(params.ruota1, params.ruota2)
+  			params.m.rotate.left:rotate(params.ruota1, params.ruota2, params.ruota3, params.ruota4)
 			--params.tank:applyTorque(0.5)
   	elseif params.m.result == "rotate:right" then
-  			params.m.rotate.right:rotate(params.ruota1, params.ruota2)
+  			params.m.rotate.right:rotate(params.ruota1, params.ruota2, params.ruota3, params.ruota4)
 			--params.tank:applyTorque(-0.5)
 
   	elseif params.m.result == "none" then
-  			params.ruota1:applyTorque(0)
+  		 params.ruota1:applyTorque(0)
          params.ruota2:applyTorque(0)
+		 params.ruota3:applyTorque(0)
+         params.ruota4:applyTorque(0)
+
   	end
   end
 
@@ -51,9 +54,11 @@ function l.pulsantiMovimentoCingolo()
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
 
-    function pulsanteDx:rotate(ruota1, ruota2)
-      ruota1:applyTorque(100)
-      ruota2:applyTorque(100)
+    function pulsanteDx:rotate(ruota1, ruota2, ruota3, ruota4)
+      ruota1:applyTorque(80)
+      ruota2:applyTorque(80)
+	  ruota3:applyTorque(80)
+      ruota4:applyTorque(80)
     end
     return pulsanteDx
   end
@@ -64,9 +69,12 @@ function l.pulsantiMovimentoCingolo()
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 10
     pulsanteSx.result = "rotate:left"
 
-    function pulsanteSx:rotate(ruota1, ruota2)
-      ruota1:applyTorque(-100)
-      ruota2:applyTorque(-100)
+    function pulsanteSx:rotate(ruota1, ruota2, ruota3, ruota4)
+      ruota1:applyTorque(-80)
+      ruota2:applyTorque(-80)
+	  ruota3:applyTorque(-80)
+      ruota4:applyTorque(-80)
+
     end
     return pulsanteSx
   end

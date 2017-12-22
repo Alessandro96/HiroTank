@@ -12,8 +12,6 @@ display.setStatusBar( display.HiddenStatusBar )
 local physics = require("physics")
 physics.start()
 local perspective = require("lib.perspective")
-require("lib.LD_LoaderX")
-
 local m = {}
 local proiettile = require("class.proiettile")
 local cannone = require("class.cannon")
@@ -26,18 +24,15 @@ local bombeTable = {}
 local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
-local myLevel = {}
-local classTerreno
-local classSalita
 local cielo
-local objTerreno = {}
-local objSalita = {}
 local cannon, sx, dx, sparo
 local weldJoint, pivotJointCannon
 local tankCollider = {categoryBits = 1, maskBits = 1}
 local chassisCollider = {categoryBits = 2, maskBits = 2}
 local camera
-local aereiText, bombeText
+local scoreText, lifeText
+local life=100
+local score=0
 local cingoloProva
 
 -- -----------------------------------------------------------------------------------
@@ -52,11 +47,12 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
-  myLevel= LD_Loader:new()
-  myLevel:loadLevel("Level01")
+ -- physics.setDrawMode("hybrid")
 
-  aereiText = display.newText("aerei: "..#aereiTable, display.contentCenterX, display.contentCenterY, native.systemFont, 60)
-  bombeText = display.newText("bombe: "..#bombeTable, display.contentCenterX, display.contentCenterY+60, native.systemFont, 60)
+  scoreText = display.newText("score: "..score, 200, 100, native.systemFont, 60)
+  scoreText:setFillColor(0,0,0)
+  lifeText = display.newText("life: "..life, 200, 170, native.systemFont, 60)
+  lifeText:setFillColor(0,0,0)
 
 --------------------------------------------------------------------------------
 --CINGOLO
@@ -68,6 +64,10 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 	tank = cingolo.newTank(cingoloTank)
 	tank:scale(1.5, 1)
+	local joints = {}
+	for i=1, 4, 1 do
+		joints = physics.newJoint("rope", cingoloTank.ruote[i], tank, 0, 0, 0, 0)
+	end
 
 --------------------------------------------------------------------------------
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
@@ -76,7 +76,7 @@ function scene:create( event )
 
 	sparo = pulsanti.pulsanteSparo()
 
-  sx = pulsanti.pulsanteCannoneSx()
+    sx = pulsanti.pulsanteCannoneSx()
 
 	dx = pulsanti.pulsanteCannoneDx()
 
@@ -87,13 +87,18 @@ function scene:create( event )
   cielo = display.newImageRect("images/sky.jpg", display.contentWidth, display.contentHeight)
   cielo.x = display.contentCenterX
   cielo.y = display.contentCenterY
+  cielo:scale(5,2)
 
 --------------------------------------------------------------------------------
 --LAYOUT TERRENO
 --------------------------------------------------------------------------------
 
-  classTerreno = myLevel:layerObjectsWithClass("terreno", "pianura")
-  classSalita = myLevel:layerObjectsWithClass("salita", "salita")
+  local scaleFactor = 1.0
+  local physicsData = (require "images.grd").physicsData(scaleFactor)
+  local shape = display.newImage("images/terreno.png")
+  physics.addBody( shape, "static", physicsData:get("terreno") )
+  shape.y=display.contentHeight+600
+  shape.x=5000
 
 --------------------------------------------------------------------------------
 --PULSANTI MOVIMENTO TANK
@@ -107,28 +112,17 @@ function scene:create( event )
 --------------------------------------------------------------------------------
   pivotJointCannon = physics.newJoint("pivot", cannon, tank, cannon.x, cannon.y)
 
-	weldJoint = physics.newJoint("weld", cingoloTank.quadro[14], tank, cingoloTank.quadro[14].x, cingoloTank.quadro[14].y-60)
+  weldJoint = physics.newJoint("weld", cingoloTank.quadro[14], tank, cingoloTank.quadro[14].x, cingoloTank.quadro[14].y-60)
 
 --------------------------------------------------------------------------------
 --CAMERA
 --------------------------------------------------------------------------------
-
-  for i=1, #classTerreno, 1 do
-      objTerreno[i] = myLevel:getLayerObject("terreno", classTerreno[i].name).view
-      camera:add(objTerreno[i], 3, false)
-  end
-
-  for i=1, #classSalita, 1 do
-      objSalita[i] = myLevel:getLayerObject("salita", classSalita[i].name).view
-      camera:add(objSalita[i], 2, false)
-  end
-
+  camera:add(shape, 1, false)
   camera:add(cielo, 5, false)
   camera:add(tank, 2, true)
   camera:add(cannon, 1, false)
 
   camera:track()
-  camera:setBounds(-20000, 20000, -20000, 550)
 
 --------------------------------------------------------------------------------
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
@@ -138,16 +132,17 @@ function scene:create( event )
   dx:addEventListener("tap", function() cannon.rotation = cannon.rotation+5 end)
 
   sparo:addEventListener("tap", function()
-																	local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
-																	ball:shoot(cannon.rotation, camera)
-																end)
+									local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
+									ball:shoot(cannon.rotation, camera)
+								end)
 
 	m.rotate.left:addEventListener("touch", function(event)
-																						pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4]})
-																					end)
-  m.rotate.right:addEventListener("touch", function(event)
-																						pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4]})
-																					end)
+												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3]})
+											end)
+											
+    m.rotate.right:addEventListener("touch",  function(event)
+		 										pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3]})
+											end)
 end
 
 
@@ -163,18 +158,25 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
     physics.start()
-		Runtime:addEventListener("collision", function(event)
-																						collisioni.onCollision(event, aereiTable,  tank)
-																					end)
+		Runtime:addEventListener("collision",   function(event)
+													local ret = collisioni.onCollision(event, aereiTable,  tank)
+													if(ret==10)then
+														score=score+10
+														scoreText.text="score: "..score
+													elseif(ret==20)then
+														life=life-20
+														lifeText.text="life: "..life
+													end
+												end)
     Runtime:addEventListener("enterFrame",  function(event)
-																							pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], tank=tank})
-																						end)
-		gameLoopTimer = timer.performWithDelay(1000, function()
-																									 gameLoop.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
-																								 end, 0)
-	  bombLoopTimer = timer.performWithDelay(100, function()
-																									 aereo.fire(aereiTable, bombeTable, camera, bombeText)
-																					       end, 0)
+												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3], tank=tank})
+											end)
+		gameLoopTimer = timer.performWithDelay(1000000, function()
+														gameLoop.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
+													 end, 0)
+	  bombLoopTimer = timer.performWithDelay(1000000, function()
+													 aereo.fire(aereiTable, bombeTable, camera, bombeText)
+												  end, 0)
 	end
 end
 
@@ -195,8 +197,8 @@ function scene:hide( event )
     camera:destroy()
     Runtime:removeEventListener( "enterFrame", enterFrame )
 		Runtime:removeEventListener("collision", function(event)
-																								collisioni.onCollision(event, aereiTable,  tank)
-																						 end)
+													collisioni.onCollision(event, aereiTable,  tank)
+												 end)
     physics.pause()
     composer.removeScene( "game" )
 	end
