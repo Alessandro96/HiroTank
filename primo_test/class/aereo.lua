@@ -1,18 +1,20 @@
 local M = {}
 
-function M.creaAereo(aereiTable, camera, aereiText)
-	local newAereo = display.newImageRect("images/aereo.png", 450, 130 )
+function M.creaAereo(aereiTable, camera, corpoCarrarmato)
+	local scaleFactor = 1.0
+  local physicsData = (require "images.aereo").physicsData(scaleFactor)
+  local newAereo = display.newImage("images/aereo.png")
 	table.insert( aereiTable, newAereo )
-	physics.addBody(newAereo, "dynamic", {radius=200} )
+  physics.addBody(newAereo, "dynamic", physicsData:get("aereo") )
 	newAereo.myName = "aereo"
-	newAereo.x = 2000
-	newAereo.y = 430
+	newAereo.x = corpoCarrarmato.x+100
+	newAereo.y = corpoCarrarmato.y-300
 	newAereo.gravityScale=0
 	newAereo:setLinearVelocity(-300,0 )
 	camera:add(newAereo,1,false)
 end
 
-function M.fire(aereiTable, bombeTable, camera, bombeText)
+function M.fire(aereiTable, bombeTable, camera)
 	if(#aereiTable>=1) then
 		for i=1, #aereiTable, 1 do
 			local newBomba = display.newImageRect("images/bomba.png", 30, 50 )

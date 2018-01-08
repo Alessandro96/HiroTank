@@ -1,7 +1,7 @@
 local M = {}
 
 function M.newBall(params)
-    local ball = display.newCircle( params.x, params.y, 10 )
+    local ball = display.newCircle(params.x, params.y, 10)
     physics.addBody( ball, "dynamic",{density = 0, friction = 0.3, bounce = 0.5, radius =20, filter =  chassisCollider})
     ball.isBullet = true
     ball.isSensor = true
@@ -10,7 +10,7 @@ function M.newBall(params)
 
     function ball:shoot(cannonRotation , camera)
       local speed = 650
-      local angle = math.rad(cannonRotation-90)
+      local angle = math.rad(cannonRotation+180)
       ball:setLinearVelocity(math.cos(angle) * speed, math.sin(angle) * speed)
       camera:add(ball, 2, false)
     end

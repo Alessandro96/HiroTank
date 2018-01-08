@@ -1,8 +1,8 @@
 local M = {}
 
-function M.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
+function M.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato)
 
-	aereo.creaAereo(aereiTable, camera, aereiText)
+	aereo.creaAereo(aereiTable, camera, corpoCarrarmato)
 
 	for i = #aereiTable, 1, -1 do
 		local thisAereo = aereiTable[i]

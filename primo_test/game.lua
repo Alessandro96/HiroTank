@@ -18,7 +18,7 @@ local cannone = require("class.cannon")
 local pulsanti = require("class.pulsanti")
 local aereo = require("class.aereo")
 local collisioni = require("class.collisioni")
-local cingolo = require("class.cingolo")
+local carrarmato = require("class.carrarmato")
 local aereiTable = {}
 local bombeTable = {}
 local gameLoop = require("class.gameLoop")
@@ -33,7 +33,8 @@ local camera
 local scoreText, lifeText
 local life=100
 local score=0
-local cingoloProva
+local cingolo
+local corpoCarrarmato
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -57,48 +58,46 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --CINGOLO
 --------------------------------------------------------------------------------
-	cingoloTank = cingolo.newCingolo(camera)
+	cingolo = carrarmato.newCingolo(camera)
 
 --------------------------------------------------------------------------------
 --TANK
 --------------------------------------------------------------------------------
-	tank = cingolo.newTank(cingoloTank)
-	tank:scale(1.5, 1)
+	corpoCarrarmato = carrarmato.newTank(cingolo, camera)
 	local joints = {}
 	for i=1, 4, 1 do
-		joints = physics.newJoint("rope", cingoloTank.ruote[i], tank, 0, 0, 0, 0)
+		joints[i] = physics.newJoint("rope", cingolo.ruote[i], corpoCarrarmato.corpo, 0, 0, 0, 0)
+		joints[4+i] = physics.newJoint("distance", cingolo.ruote[i], corpoCarrarmato.corpo, cingolo.ruote[i].x, cingolo.ruote[i].y, corpoCarrarmato.corpo.x, corpoCarrarmato.corpo.y)
 	end
 
 --------------------------------------------------------------------------------
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
-	cannon = cannone.newCannon({tankX = tank.x, tankY = tank.y, camera = camera})
+	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
 
 	sparo = pulsanti.pulsanteSparo()
 
-    sx = pulsanti.pulsanteCannoneSx()
+  sx = pulsanti.pulsanteCannoneSx()
 
 	dx = pulsanti.pulsanteCannoneDx()
 
 --------------------------------------------------------------------------------
 --BACKGROUND
 --------------------------------------------------------------------------------
-
-  cielo = display.newImageRect("images/sky.jpg", display.contentWidth, display.contentHeight)
+  cielo = display.newImage("images/sky.jpg")
   cielo.x = display.contentCenterX
   cielo.y = display.contentCenterY
-  cielo:scale(5,2)
-
+  cielo:scale(5,4)
 --------------------------------------------------------------------------------
 --LAYOUT TERRENO
 --------------------------------------------------------------------------------
 
   local scaleFactor = 1.0
-  local physicsData = (require "images.grd").physicsData(scaleFactor)
-  local shape = display.newImage("images/terreno.png")
-  physics.addBody( shape, "static", physicsData:get("terreno") )
+  local physicsData = (require "images.terreno1").physicsData(scaleFactor)
+  local shape = display.newImage("images/terreno1.png")
+  physics.addBody( shape, "static", physicsData:get("terreno1") )
   shape.y=display.contentHeight+600
-  shape.x=5000
+  shape.x=3000
 
 --------------------------------------------------------------------------------
 --PULSANTI MOVIMENTO TANK
@@ -110,16 +109,15 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --JOINT
 --------------------------------------------------------------------------------
-  pivotJointCannon = physics.newJoint("pivot", cannon, tank, cannon.x, cannon.y)
+  pivotJointCannon = physics.newJoint("pivot", cannon, corpoCarrarmato.corpo, cannon.x, cannon.y)
 
-  weldJoint = physics.newJoint("weld", cingoloTank.quadro[14], tank, cingoloTank.quadro[14].x, cingoloTank.quadro[14].y-60)
+  weldJoint = physics.newJoint("weld", cingolo.quadro[14], corpoCarrarmato.corpo, cingolo.quadro[14].x, cingolo.quadro[14].y-60)
 
 --------------------------------------------------------------------------------
 --CAMERA
 --------------------------------------------------------------------------------
   camera:add(shape, 1, false)
-  camera:add(cielo, 5, false)
-  camera:add(tank, 2, true)
+	camera:add(cielo, 5, false)
   camera:add(cannon, 1, false)
 
   camera:track()
@@ -137,11 +135,11 @@ function scene:create( event )
 								end)
 
 	m.rotate.left:addEventListener("touch", function(event)
-												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3]})
+												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
 											end)
-											
-    m.rotate.right:addEventListener("touch",  function(event)
-		 										pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3]})
+
+  m.rotate.right:addEventListener("touch",  function(event)
+		 										pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
 											end)
 end
 
@@ -159,7 +157,7 @@ function scene:show( event )
 		-- Code here runs when the scene is entirely on screen
     physics.start()
 		Runtime:addEventListener("collision",   function(event)
-													local ret = collisioni.onCollision(event, aereiTable,  tank)
+													local ret = collisioni.onCollision(event, aereiTable,  corpoCarrarmato.corpo)
 													if(ret==10)then
 														score=score+10
 														scoreText.text="score: "..score
@@ -169,12 +167,15 @@ function scene:show( event )
 													end
 												end)
     Runtime:addEventListener("enterFrame",  function(event)
-												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingoloTank.ruote[1], ruota2=cingoloTank.ruote[4], ruota3=cingoloTank.ruote[2], ruota4=cingoloTank.ruote[3], tank=tank})
+												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
+												cielo.y=corpoCarrarmato.corpo.y
+												cielo.x=corpoCarrarmato.corpo.x
+												--cannon.rotation=corpoCarrarmato.corpo.rotation
 											end)
 		gameLoopTimer = timer.performWithDelay(1000000, function()
-														gameLoop.loop(aereo, aereiTable, camera, aereiText, bombeText, bombeTable)
+														gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
 													 end, 0)
-	  bombLoopTimer = timer.performWithDelay(1000000, function()
+	  bombLoopTimer = timer.performWithDelay(10000000, function()
 													 aereo.fire(aereiTable, bombeTable, camera, bombeText)
 												  end, 0)
 	end
@@ -197,7 +198,7 @@ function scene:hide( event )
     camera:destroy()
     Runtime:removeEventListener( "enterFrame", enterFrame )
 		Runtime:removeEventListener("collision", function(event)
-													collisioni.onCollision(event, aereiTable,  tank)
+													collisioni.onCollision(event, aereiTable,  corpoCarrarmato)
 												 end)
     physics.pause()
     composer.removeScene( "game" )

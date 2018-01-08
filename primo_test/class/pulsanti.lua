@@ -55,10 +55,10 @@ function l.pulsantiMovimentoCingolo()
     pulsanteDx.result = "rotate:right"
 
     function pulsanteDx:rotate(ruota1, ruota2, ruota3, ruota4)
-      ruota1:applyTorque(80)
-      ruota2:applyTorque(80)
-	  ruota3:applyTorque(80)
-      ruota4:applyTorque(80)
+      ruota1:applyTorque(150)
+      ruota2:applyTorque(150)
+	    ruota3:applyTorque(150)
+      ruota4:applyTorque(150)
     end
     return pulsanteDx
   end
@@ -70,10 +70,10 @@ function l.pulsantiMovimentoCingolo()
     pulsanteSx.result = "rotate:left"
 
     function pulsanteSx:rotate(ruota1, ruota2, ruota3, ruota4)
-      ruota1:applyTorque(-80)
-      ruota2:applyTorque(-80)
-	  ruota3:applyTorque(-80)
-      ruota4:applyTorque(-80)
+      ruota1:applyTorque(-150)
+      ruota2:applyTorque(-150)
+	    ruota3:applyTorque(-150)
+      ruota4:applyTorque(-150)
 
     end
     return pulsanteSx
