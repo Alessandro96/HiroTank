@@ -96,7 +96,7 @@ function scene:create( event )
   local physicsData = (require "images.terreno1").physicsData(scaleFactor)
   local shape = display.newImage("images/terreno1.png")
   physics.addBody( shape, "static", physicsData:get("terreno1") )
-  shape.y=display.contentHeight+600
+  shape.y=display.contentHeight
   shape.x=3000
 
 --------------------------------------------------------------------------------
@@ -116,8 +116,8 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --CAMERA
 --------------------------------------------------------------------------------
-  camera:add(shape, 1, false)
-	camera:add(cielo, 5, false)
+  camera:add(shape, 5, false)
+  camera:add(cielo, 7, false)
   camera:add(cannon, 1, false)
 
   camera:track()
@@ -172,10 +172,10 @@ function scene:show( event )
 												cielo.x=corpoCarrarmato.corpo.x
 												--cannon.rotation=corpoCarrarmato.corpo.rotation
 											end)
-		gameLoopTimer = timer.performWithDelay(1000000, function()
+		gameLoopTimer = timer.performWithDelay(10000, function()
 														gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
 													 end, 0)
-	  bombLoopTimer = timer.performWithDelay(10000000, function()
+	  bombLoopTimer = timer.performWithDelay(1000, function()
 													 aereo.fire(aereiTable, bombeTable, camera, bombeText)
 												  end, 0)
 	end

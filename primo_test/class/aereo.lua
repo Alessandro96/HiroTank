@@ -7,8 +7,8 @@ function M.creaAereo(aereiTable, camera, corpoCarrarmato)
 	table.insert( aereiTable, newAereo )
   physics.addBody(newAereo, "dynamic", physicsData:get("aereo") )
 	newAereo.myName = "aereo"
-	newAereo.x = corpoCarrarmato.x+100
-	newAereo.y = corpoCarrarmato.y-300
+	newAereo.x = corpoCarrarmato.x+1200
+	newAereo.y = corpoCarrarmato.y-360
 	newAereo.gravityScale=0
 	newAereo:setLinearVelocity(-300,0 )
 	camera:add(newAereo,1,false)
