@@ -1,6 +1,6 @@
 application = {
 	content = {
-		-- width = 800,
+		 --width = 800,
 		-- height = 1280, 
 		-- scale = "LetterBox",
 		fps = 60,

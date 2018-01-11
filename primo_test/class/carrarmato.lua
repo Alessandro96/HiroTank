@@ -214,6 +214,7 @@ function l.newTank(cingolo, camera)
   tank.corpo.x = cingolo.quadro[14].x-30
   tank.corpo.y = cingolo.quadro[14].y-80
   tank.corpo:scale(1.2, 1)
+  tank.corpo.myName="tank"
   camera:add(tank.corpo, 1, false)
 
   tank.dietroCingolo = display.newRect(tank.corpo.x+30, tank.corpo.y+60, 270, 45)
@@ -225,9 +226,19 @@ function l.newTank(cingolo, camera)
   physics.addBody(tank.davantiCingolo, "dynamic", {isSensor = true})
   tank.davantiCingolo:setFillColor(0.4,0.5,0)
   camera:add(tank.davantiCingolo, 2, false)
+  
+  local scaleFactor2 = 0.16
+  local physicsData = (require "images.pg").physicsData(scaleFactor2)
+  tank.hiro = display.newImageRect("images/pg_burned.png", 81.1, 62)
+  physics.addBody( tank.hiro, "dynamic", physicsData:get("pg_burned"), {isSensor=true} )
+  tank.hiro.x = tank.corpo.x+70
+  tank.hiro.y = tank.corpo.y-20
+  --tank.hiro:scale(1.2, 1)
+  camera:add(tank.hiro, 4, false)
 
   local weldJoint1 = physics.newJoint("weld", tank.corpo, tank.dietroCingolo, tank.corpo.x, tank.corpo.y)
   local weldJoint2 = physics.newJoint("weld", tank.corpo, tank.davantiCingolo, tank.corpo.x, tank.corpo.y)
+  local weldJoint3 = physics.newJoint("weld", tank.corpo, tank.hiro, tank.corpo.x, tank.corpo.y)
   return tank
 end
 return l

@@ -35,6 +35,9 @@ local life=100
 local score=0
 local cingolo
 local corpoCarrarmato
+local rotazioneCarrarmato=0
+local rotazioneCannone=0
+local rotazioneTot=rotazioneCarrarmato+rotazioneCannone
 
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
@@ -48,7 +51,7 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
- -- physics.setDrawMode("hybrid")
+  --physics.setDrawMode("debug")
 
   scoreText = display.newText("score: "..score, 200, 100, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
@@ -77,7 +80,7 @@ function scene:create( event )
 
 	sparo = pulsanti.pulsanteSparo()
 
-  sx = pulsanti.pulsanteCannoneSx()
+	sx = pulsanti.pulsanteCannoneSx()
 
 	dx = pulsanti.pulsanteCannoneDx()
 
@@ -134,12 +137,12 @@ function scene:create( event )
 									ball:shoot(cannon.rotation, camera)
 								end)
 
-	m.rotate.left:addEventListener("touch", function(event)
-												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-											end)
+  m.rotate.left:addEventListener("touch", function(event)
+											pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+										  end)
 
   m.rotate.right:addEventListener("touch",  function(event)
-		 										pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
 											end)
 end
 
@@ -156,28 +159,36 @@ function scene:show( event )
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
     physics.start()
-		Runtime:addEventListener("collision",   function(event)
-													local ret = collisioni.onCollision(event, aereiTable,  corpoCarrarmato.corpo)
-													if(ret==10)then
-														score=score+10
-														scoreText.text="score: "..score
-													elseif(ret==20)then
-														life=life-20
-														lifeText.text="life: "..life
-													end
-												end)
+	Runtime:addEventListener("collision",   function(event)
+												local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato.corpo)
+												if(ret==10)then
+													score=score+10
+													scoreText.text="score: "..score
+												elseif(ret==20)then
+													life=life-20
+													lifeText.text="life: "..life
+												end
+											end)
+											
     Runtime:addEventListener("enterFrame",  function(event)
 												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 												cielo.y=corpoCarrarmato.corpo.y
 												cielo.x=corpoCarrarmato.corpo.x
-												--cannon.rotation=corpoCarrarmato.corpo.rotation
+												--cannon.rotation=corpoCarrarmato.corpo.rotation+cannon.rotation
+												--rotazioneCannone=cannon.rotation
+												--rotazioneCarrarmato=corpoCarrarmato.corpo.rotation
+												--rotazioneTot=rotazioneCannone+rotazioneCarrarmato
+												--lifeText.text="life: "..rotazioneTot
+												--cannon:setRotazione(rotazioneTot)
 											end)
-		gameLoopTimer = timer.performWithDelay(10000, function()
-														gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
-													 end, 0)
-	  bombLoopTimer = timer.performWithDelay(1000, function()
-													 aereo.fire(aereiTable, bombeTable, camera, bombeText)
+											
+    gameLoopTimer = timer.performWithDelay(10000, function()
+													gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
 												  end, 0)
+												  
+    bombLoopTimer = timer.performWithDelay(1000, function()
+													aereo.fire(aereiTable, bombeTable, camera, bombeText)
+												 end, 0)
 	end
 end
 
@@ -198,7 +209,7 @@ function scene:hide( event )
     camera:destroy()
     Runtime:removeEventListener( "enterFrame", enterFrame )
 		Runtime:removeEventListener("collision", function(event)
-													collisioni.onCollision(event, aereiTable,  corpoCarrarmato)
+													collisioni.onCollision(event, aereiTable, bombTable,  corpoCarrarmato)
 												 end)
     physics.pause()
     composer.removeScene( "game" )

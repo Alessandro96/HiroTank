@@ -1,6 +1,6 @@
 local M = {}
 
-function M.onCollision(event, aereiTable,  tank)
+function M.onCollision(event, aereiTable, bombeTable, tank)
 
 	if ( event.phase == "began" ) then
 
@@ -11,7 +11,6 @@ function M.onCollision(event, aereiTable,  tank)
 		if ( ( obj1.myName == "colpoCarro" and obj2.myName == "aereo" ) or
 			 ( obj1.myName == "aereo" and obj2.myName == "colpoCarro" ) )
 		then
-			-- Remove both the laser and asteroid
 			display.remove( obj1 )
 			display.remove( obj2 )
 
@@ -21,15 +20,33 @@ function M.onCollision(event, aereiTable,  tank)
 					break
 				end
 			end
-
 			return 10
+		
+		elseif ( obj1.myName == "tank" and obj2.myName == "bomba" ) then
 
-		elseif ( ( obj1.myName == "tank" and obj2.myName == "bomba" ) or
-				 ( obj1.myName == "bomba" and obj2.myName == "tank" ) )
-		then
+			display.remove(obj2)
+			for i = #bombeTable, 1, -1 do
+				if(bombeTable[i] == obj2) then
+					table.remove(bombeTable, i)
+					break
+				end
+			end
+			
+			tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			return 20
+			
+		elseif ( obj2.myName == "tank" and obj1.myName == "bomba" ) then
 
-		tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
-		return 20
+			display.remove(obj1)
+			for i = #bombeTable, 1, -1 do
+				if(bombeTable[i] == obj1) then
+					table.remove(bombeTable, i)
+					break
+				end
+			end
+			
+			tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			return 20
 		end
 	end
 end

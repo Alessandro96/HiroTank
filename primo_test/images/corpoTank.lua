@@ -28,43 +28,85 @@ function M.physicsData(scale)
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   19, 37  ,  7, 27.5  ,  70, 26.5  ,  87.5, 29  ,  95.5, 37  }
+                    shape = {   -14, 34  ,  -10, 38  ,  -18, 38  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   89.5, 20  ,  86.5, 25  ,  70, 26.5  ,  7, 27.5  ,  26, 9.5  ,  66, 9.5  ,  87, 10.5  }
+                    shape = {   30, 38  ,  25, 38  ,  27, 10  ,  28, 5  ,  31, 5  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   29.5, 8  ,  26, 9.5  ,  28, 3.5  ,  29.5, 4  }
+                    shape = {   84, 38  ,  82, 29  ,  89, 30  ,  97, 38  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   7, 27.5  ,  19, 37  ,  -19.5, 37  ,  -10, 28.5  }
+                    shape = {   -12, 31  ,  -9, 29  ,  3, 29  ,  -1, 38  ,  -10, 38  ,  -14, 34  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   5, 14.5  ,  9, 10.5  ,  26, 9.5  ,  7, 27.5  ,  3.5, 19  }
+                    shape = {   84, 38  ,  68, 38  ,  71, 27  ,  82, 29  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   66, 9.5  ,  26, 9.5  ,  33, 6.5  ,  47, 5  ,  60, 5.5  }
+                    shape = {   89, 14  ,  90, 21  ,  87, 25  ,  71, 27  ,  75, 11  ,  88, 11  }
                     }
                      ,
                     {
                     pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   33, 6.5  ,  29.5, 8  ,  32, 6.5  }
+                    shape = {   71, 27  ,  67, 10  ,  75, 11  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   3, 29  ,  8, 28  ,  21, 38  ,  -1, 38  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   17, 10  ,  22, 10  ,  21, 38  ,  8, 28  ,  6, 25  ,  5, 20  ,  6, 15  ,  10, 11  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   71, 27  ,  34, 38  ,  30, 38  ,  41, 7  ,  61, 7  ,  67, 10  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   41, 7  ,  30, 38  ,  31, 9  ,  33, 7  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   27, 10  ,  25, 38  ,  21, 38  ,  22, 10  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   43, 38  ,  71, 27  ,  68, 38  }
+                    }
+                     ,
+                    {
+                    pe_fixture_id = "corpoTank", density = 0.8, friction = 0, bounce = 0, 
+                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
+                    shape = {   34, 38  ,  71, 27  ,  43, 38  }
                     }
                     
                     
