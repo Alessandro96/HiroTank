@@ -87,7 +87,7 @@ function l.newCingolo(camera)
   m.quadro[14] = display.newRect(((m.ruote[3].x+m.ruote[2].x)/2), m.ruote[2].y, (m.ruote[4].x-m.ruote[1].x), 10)
   physics.addBody(m.quadro[14], "dynamic", {isSensor=true})
   m.quadro[14]:setFillColor(0,0,0)
-  camera:add(m.quadro[14], 6, true)
+  camera:add(m.quadro[14], 7, true)
   for i=1, 4, 1 do
     m.revoluteJoints[47+i]=physics.newJoint("pivot", m.ruote[i], m.quadro[14], m.ruote[i].x, m.ruote[i].y)
   end
@@ -210,31 +210,31 @@ function l.newTank(cingolo, camera)
   local scaleFactor = 1.0
   local physicsData = (require "images.corpoTank").physicsData(scaleFactor)
   tank.corpo = display.newImage("images/corpoTank.png")
-  physics.addBody( tank.corpo, "dynamic", physicsData:get("corpoTank") )
+  physics.addBody( tank.corpo, "dynamic", physicsData:get("corpoTank"))
   tank.corpo.x = cingolo.quadro[14].x-30
-  tank.corpo.y = cingolo.quadro[14].y-80
-  tank.corpo:scale(1.2, 1)
+  tank.corpo.y = cingolo.quadro[14].y-70
+  --tank.corpo:scale(1.2, 1)
   tank.corpo.myName="tank"
   camera:add(tank.corpo, 1, false)
 
-  tank.dietroCingolo = display.newRect(tank.corpo.x+30, tank.corpo.y+60, 270, 45)
+  tank.dietroCingolo = display.newRect(tank.corpo.x+30, tank.corpo.y+47, 270, 45)
   physics.addBody(tank.dietroCingolo, "dynamic", {isSensor = true})
   tank.dietroCingolo:setFillColor(0,0.2,0)
+  tank.dietroCingolo.myName="dietroCingolo"
   camera:add(tank.dietroCingolo, 4, false)
 
   tank.davantiCingolo = display.newRect(tank.dietroCingolo.x, tank.dietroCingolo.y-10, 270, 25)
   physics.addBody(tank.davantiCingolo, "dynamic", {isSensor = true})
   tank.davantiCingolo:setFillColor(0.4,0.5,0)
+  tank.davantiCingolo.myName="davantiCingolo"
   camera:add(tank.davantiCingolo, 2, false)
-  
+
   local scaleFactor2 = 0.16
-  local physicsData = (require "images.pg").physicsData(scaleFactor2)
-  tank.hiro = display.newImageRect("images/pg_burned.png", 81.1, 62)
-  tank.hiro.myName = "hiro"
-  physics.addBody( tank.hiro, "dynamic", physicsData:get("pg_burned"), {isSensor=true} )
-  tank.hiro.x = tank.corpo.x+70
-  tank.hiro.y = tank.corpo.y-20
-  --tank.hiro:scale(1.2, 1)
+  local physicsData = (require "images.hiro").physicsData(scaleFactor2)
+  tank.hiro = display.newImageRect("images/hiro.png", 81.1, 62)
+  physics.addBody( tank.hiro, "dynamic", physicsData:get("hiro"))
+  tank.hiro.x = tank.corpo.x-9
+  tank.hiro.y = tank.corpo.y-48
   camera:add(tank.hiro, 4, false)
 
   local weldJoint1 = physics.newJoint("weld", tank.corpo, tank.dietroCingolo, tank.corpo.x, tank.corpo.y)

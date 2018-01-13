@@ -50,6 +50,7 @@ function l.pulsantiMovimentoCingolo()
 
   function m.rotate.dx()
     local pulsanteDx = display.newImage("images/dx.png")
+    pulsanteDx:scale(2,2)
     pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 1700
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
@@ -65,6 +66,7 @@ function l.pulsantiMovimentoCingolo()
 
   function m.rotate.sx()
     local pulsanteSx = display.newImage("images/sx.png")
+    pulsanteSx:scale(2,2)
     pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1450
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 8
     pulsanteSx.result = "rotate:left"
@@ -83,14 +85,14 @@ function l.pulsantiMovimentoCingolo()
 end
 
 function l.pulsanteCannoneDx()
-  local pulsanteDx = display.newImageRect("images/bottone.png", 75, 75)
+  local pulsanteDx = display.newImageRect("images/bottone.png", 150, 150)
   pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 253
   pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 150
   return pulsanteDx
 end
 
 function l.pulsanteCannoneSx()
-  local pulsanteSx = display.newImageRect("images/bottone.png", 75, 75)
+  local pulsanteSx = display.newImageRect("images/bottone.png", 150, 150)
   pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth+15
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 150
   return pulsanteSx
@@ -98,6 +100,7 @@ end
 
 function l.pulsanteSparo()
   local pulsanteSparo = display.newImage("images/missile2.png")
+  pulsanteSparo:scale(2,2)
   pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+130
   pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight - 10
   return pulsanteSparo
@@ -106,7 +109,7 @@ end
 function l.clear()
 	pulsanteSx:removeSelf()
 	pulsanteSx = nil
-	
+
 end
 
 

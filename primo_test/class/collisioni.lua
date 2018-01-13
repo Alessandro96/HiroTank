@@ -21,7 +21,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 				end
 			end
 			return 10
-		
+
 		elseif ( (obj1.myName == "hiro" and obj2.myName == "terreno" )or (obj2.myName == "hiro" and obj1.myName == "terreno" ) ) then
 
 			if (obj1.myName == "hiro") then
@@ -29,33 +29,74 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 			else
 			display.remove(obj2)
 			end
-			--tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			--tank.hiro:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return -1
-		
-		elseif ( obj1.myName == "tank" and obj2.myName == "bomba" ) then
 
-			display.remove(obj2)
-			for i = #bombeTable, 1, -1 do
-				if(bombeTable[i] == obj2) then
-					table.remove(bombeTable, i)
-					break
+		elseif (( obj1.myName == "tank" and obj2.myName == "bomba" ) or
+		 				( obj2.myName == "tank" and obj1.myName == "bomba" )) then
+			if(obj2.myName=="bomba") then
+				display.remove(obj2)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj2) then
+						table.remove(bombeTable, i)
+						break
+					end
+				end
+			elseif(obj2.myName=="bomba") then
+				display.remove(obj1)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj1) then
+						table.remove(bombeTable, i)
+						break
+					end
 				end
 			end
-			
-			--tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+
+			tank.corpo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return 20
-			
-		elseif ( obj2.myName == "tank" and obj1.myName == "bomba" ) then
-
-			display.remove(obj1)
-			for i = #bombeTable, 1, -1 do
-				if(bombeTable[i] == obj1) then
-					table.remove(bombeTable, i)
-					break
+		elseif (( obj1.myName == "dietroCingolo" and obj2.myName == "bomba" ) or
+						( obj2.myName == "dietroCingolo" and obj1.myName == "bomba" )) then
+			if(obj2.myName=="bomba") then
+				display.remove(obj2)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj2) then
+						table.remove(bombeTable, i)
+						break
+					end
+				end
+			elseif(obj2.myName=="bomba") then
+				display.remove(obj1)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj1) then
+						table.remove(bombeTable, i)
+						break
+					end
 				end
 			end
-			
-			--tank:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+
+			tank.dietroCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			return 20
+		elseif (( obj1.myName == "davantiCingolo" and obj2.myName == "bomba" ) or
+						( obj2.myName == "davantiCingolo" and obj1.myName == "bomba" )) then
+			if(obj2.myName=="bomba") then
+				display.remove(obj2)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj2) then
+						table.remove(bombeTable, i)
+						break
+					end
+				end
+			elseif(obj2.myName=="bomba") then
+				display.remove(obj1)
+				for i = #bombeTable, 1, -1 do
+					if(bombeTable[i] == obj1) then
+						table.remove(bombeTable, i)
+						break
+					end
+				end
+			end
+
+			tank.davantiCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return 20
 		end
 	end

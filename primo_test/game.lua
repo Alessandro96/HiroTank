@@ -42,7 +42,6 @@ lifeText = ""  --serve globale, thanks
 go = nil
 local function endGame()
 	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
-	
 end
 
 -- -----------------------------------------------------------------------------------
@@ -127,7 +126,7 @@ function scene:create( event )
 --CAMERA
 --------------------------------------------------------------------------------
   camera:add(shape, 5, false)
-  camera:add(cielo, 7, false)
+  camera:add(cielo, 6, false)
   camera:add(cannon, 1, false)
 
   camera:track()
@@ -164,11 +163,11 @@ function scene:show( event )
 		-- Code here runs when the scene is still off screen (but is about to come on screen)
 
 	elseif ( phase == "did" ) then
-	
+
 		-- Code here runs when the scene is entirely on screen
     physics.start()
 	Runtime:addEventListener("collision",   function(event)
-												local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato.corpo)
+												local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato)
 												if(ret==10)then
 													score=score+10
 													scoreText.text="score: "..score
@@ -186,10 +185,9 @@ function scene:show( event )
 													go.x=display.contentCenterX
 													timer.performWithDelay( 1500, endGame )
 													end
-													
 												end
 											end)
-											
+
     Runtime:addEventListener("enterFrame",  function(event)
 												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 												cielo.y=corpoCarrarmato.corpo.y
@@ -201,11 +199,11 @@ function scene:show( event )
 												--lifeText.text="life: "..rotazioneTot
 												--cannon:setRotazione(rotazioneTot)
 											end)
-											
+
     gameLoopTimer = timer.performWithDelay(10000, function()
 													gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
 												  end, 0)
-												  
+
     bombLoopTimer = timer.performWithDelay(1000, function()
 													aereo.fire(aereiTable, bombeTable, camera, bombeText)
 												 end, 0)
@@ -223,7 +221,7 @@ function scene:hide( event )
 		-- Code here runs when the scene is on screen (but is about to go off screen)
 		--timer.cancell(gameLoopTimer)
 		--timer.cancell(bombLoopTimer)
-		
+
 	 -- CANCELLA TUTTI I TIMER
 	 for id, value in pairs(timer._runlist) do
      timer.cancel(value)
@@ -232,25 +230,25 @@ end
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
     camera:destroy()
-	scoreText:removeSelf()
-	scoreText = nil
-	lifeText:removeSelf()
-	lifeText = nil
-	sx:removeSelf()
-	sx = nil
-	dx:removeSelf()
-	dx = nil
-	sparo:removeSelf()
-	sparo = nil
-	go:removeSelf()
-	go = nil
-	display.remove(go)
-	m.rotate.left:removeSelf()
-	m.rotate.left = nil
-	m.rotate.right:removeSelf()
-	m.rotate.right = nil
-    Runtime:removeEventListener( "enterFrame", enterFrame )
-	Runtime:removeEventListener("collision", function(event)
+		scoreText:removeSelf()
+		scoreText = nil
+		lifeText:removeSelf()
+		lifeText = nil
+		sx:removeSelf()
+		sx = nil
+		dx:removeSelf()
+		dx = nil
+		sparo:removeSelf()
+		sparo = nil
+		go:removeSelf()
+		go = nil
+		display.remove(go)
+		m.rotate.left:removeSelf()
+		m.rotate.left = nil
+		m.rotate.right:removeSelf()
+		m.rotate.right = nil
+	  Runtime:removeEventListener( "enterFrame", enterFrame )
+		Runtime:removeEventListener("collision", function(event)
 													collisioni.onCollision(event, aereiTable, bombTable,  corpoCarrarmato)
 												 end)
     physics.pause()
