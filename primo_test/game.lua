@@ -57,7 +57,7 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
-  --physics.setDrawMode("debug")
+  --physics.setDrawMode("hybrid")
 
   scoreText = display.newText("score: "..score, 200, 100, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
