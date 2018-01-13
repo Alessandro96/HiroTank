@@ -11,7 +11,16 @@ function M.newCannon(params)
   cannon.anchorY=0.5
   cannon.rotation=0
   params.camera:add(cannon, 1, false)
+  
+  function cannon:setRotazione(x)
+	cannon.rotation = x
+	print(x)
+  end
+	
   return cannon
+  
 end
+
+
 
 return M

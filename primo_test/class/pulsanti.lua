@@ -40,17 +40,17 @@ function l.pulsantiMovimentoCingolo()
 			--params.tank:applyTorque(-0.5)
 
   	elseif params.m.result == "none" then
-  		 params.ruota1:applyTorque(0)
-         params.ruota2:applyTorque(0)
-		 params.ruota3:applyTorque(0)
-         params.ruota4:applyTorque(0)
+  		-- params.ruota1:applyTorque(0)
+        -- params.ruota2:applyTorque(0)
+		-- params.ruota3:applyTorque(0)
+        -- params.ruota4:applyTorque(0)
 
   	end
   end
 
   function m.rotate.dx()
     local pulsanteDx = display.newImage("images/dx.png")
-    pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 250
+    pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 1700
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
 
@@ -65,8 +65,8 @@ function l.pulsantiMovimentoCingolo()
 
   function m.rotate.sx()
     local pulsanteSx = display.newImage("images/sx.png")
-    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 10
-    pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 10
+    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1450
+    pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 8
     pulsanteSx.result = "rotate:left"
 
     function pulsanteSx:rotate(ruota1, ruota2, ruota3, ruota4)
@@ -99,8 +99,16 @@ end
 function l.pulsanteSparo()
   local pulsanteSparo = display.newImage("images/missile2.png")
   pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+130
-  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight - 90
+  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight - 10
   return pulsanteSparo
 end
+
+function l.clear()
+	pulsanteSx:removeSelf()
+	pulsanteSx = nil
+	
+end
+
+
 
 return l
