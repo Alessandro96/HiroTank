@@ -51,7 +51,7 @@ function l.pulsantiMovimentoCingolo()
   function m.rotate.dx()
     local pulsanteDx = display.newImage("images/dx.png")
     pulsanteDx:scale(2,2)
-    pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 1700
+    pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 1550
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
 
@@ -67,7 +67,7 @@ function l.pulsantiMovimentoCingolo()
   function m.rotate.sx()
     local pulsanteSx = display.newImage("images/sx.png")
     pulsanteSx:scale(2,2)
-    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1450
+    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1350
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 8
     pulsanteSx.result = "rotate:left"
 

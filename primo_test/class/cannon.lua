@@ -12,7 +12,6 @@ function M.newCannon(params)
   cannon:scale(1.2,1.5)
   cannon.anchorX=0.953
   cannon.anchorY=0.5
-  cannon.rotation=180
   params.camera:add(cannon, 1, false)
 
   function cannon:setRotazione(cc,x)

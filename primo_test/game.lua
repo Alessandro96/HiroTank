@@ -61,6 +61,7 @@ end
 function scene:create( event )
 
 	local sceneGroup = self.view
+	system.activate( "multitouch" )
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
   physics.pause()
@@ -91,7 +92,6 @@ function scene:create( event )
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
 	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
-	cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione	
 
 	sparo = pulsanti.pulsanteSparo()
 
@@ -128,8 +128,8 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --JOINT
 --------------------------------------------------------------------------------
-  pivotJointCannon = physics.newJoint("pivot", cannon, corpoCarrarmato.corpo, cannon.x, cannon.y)
 
+  pivotJointCannon = physics.newJoint("pivot", cannon, corpoCarrarmato.corpo, cannon.x, cannon.y)
   weldJoint = physics.newJoint("weld", cingolo.quadro[14], corpoCarrarmato.corpo, cingolo.quadro[14].x, cingolo.quadro[14].y-60)
 
 --------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ function scene:create( event )
 --------------------------------------------------------------------------------
   camera:add(shape, 5, false)
   camera:add(cielo, 6, false)
-  camera:add(cannon, 1, false)
+	camera:setBounds(-20000,20000,-2000,680)
 
   camera:track()
 
@@ -149,18 +149,16 @@ function scene:create( event )
   dx:addEventListener("tap", function() tempRotazione = tempRotazione+10 end)
 
   sparo:addEventListener("tap", function()
-									local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
-									ball:shoot(cannon.rotation, camera)
+									local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
+									ball:shoot(camera)
 								end)
 
   m.rotate.left:addEventListener("touch", function(event)
 											pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-											cannon.rotation=corpoCarrarmato.corpo.rotation+180
 										  end)
 
   m.rotate.right:addEventListener("touch",  function(event)
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-												cannon.rotation=corpoCarrarmato.corpo.rotation+180
 											end)
 end
 
@@ -200,14 +198,12 @@ function scene:show( event )
 
     Runtime:addEventListener("enterFrame",  function(event)
 												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
-												cielo.y=corpoCarrarmato.corpo.y
+												--cielo.y=corpoCarrarmato.corpo.y
 												cielo.x=corpoCarrarmato.corpo.x
 												----
 												if (inVita == true) then
 													cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
 												end
-												--cannon:setRotazione(corpoCarrarmato.corpo.rotation)
-												
 											end)
 
     gameLoopTimer = timer.performWithDelay(10000, function()
