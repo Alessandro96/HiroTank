@@ -37,11 +37,20 @@ local corpoCarrarmato
 local rotazioneCarrarmato=0
 local rotazioneCannone=0
 local rotazioneTot=rotazioneCarrarmato+rotazioneCannone
+local go
+local tempRotazione = 180
 scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
-go = nil
+local inVita = true
+
 local function endGame()
 	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
+end
+
+local function screenOff()
+	go = display.newImage("images/go.jpg")
+	go.y=display.contentCenterY
+	go.x=display.contentCenterX
 end
 
 -- -----------------------------------------------------------------------------------
@@ -82,6 +91,7 @@ function scene:create( event )
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
 	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
+	cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione	
 
 	sparo = pulsanti.pulsanteSparo()
 
@@ -135,8 +145,8 @@ function scene:create( event )
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
 
-  sx:addEventListener("tap", function() cannon.rotation = cannon.rotation-5 end)
-  dx:addEventListener("tap", function() cannon.rotation = cannon.rotation+5 end)
+  sx:addEventListener("tap", function() tempRotazione = tempRotazione-10 end)
+  dx:addEventListener("tap", function() tempRotazione = tempRotazione+10 end)
 
   sparo:addEventListener("tap", function()
 									local ball = proiettile.newBall({x=cannon.x, y=cannon.y})
@@ -145,10 +155,12 @@ function scene:create( event )
 
   m.rotate.left:addEventListener("touch", function(event)
 											pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+											cannon.rotation=corpoCarrarmato.corpo.rotation+180
 										  end)
 
   m.rotate.right:addEventListener("touch",  function(event)
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+												cannon.rotation=corpoCarrarmato.corpo.rotation+180
 											end)
 end
 
@@ -172,17 +184,15 @@ function scene:show( event )
 													score=score+10
 													scoreText.text="score: "..score
 												elseif(ret==-1) then
-													go = display.newImage("images/go.jpg")
-													go.y=display.contentCenterY
-													go.x=display.contentCenterX
+													screenOff()
+													inVita = false
 													timer.performWithDelay( 1500, endGame )
 												elseif(ret==20)then
 													life=life-20
 													lifeText.text="life: "..life
 													if ( life == 0 ) then
-													go = display.newImage("images/go.jpg")
-													go.y=display.contentCenterY
-													go.x=display.contentCenterX
+													screenOff()
+													inVita = false
 													timer.performWithDelay( 1500, endGame )
 													end
 												end
@@ -192,12 +202,12 @@ function scene:show( event )
 												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 												cielo.y=corpoCarrarmato.corpo.y
 												cielo.x=corpoCarrarmato.corpo.x
-												--cannon.rotation=corpoCarrarmato.corpo.rotation+cannon.rotation
-												--rotazioneCannone=cannon.rotation
-												--rotazioneCarrarmato=corpoCarrarmato.corpo.rotation
-												--rotazioneTot=rotazioneCannone+rotazioneCarrarmato
-												--lifeText.text="life: "..rotazioneTot
-												--cannon:setRotazione(rotazioneTot)
+												----
+												if (inVita == true) then
+													cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
+												end
+												--cannon:setRotazione(corpoCarrarmato.corpo.rotation)
+												
 											end)
 
     gameLoopTimer = timer.performWithDelay(10000, function()
@@ -240,14 +250,12 @@ end
 		dx = nil
 		sparo:removeSelf()
 		sparo = nil
-		go:removeSelf()
-		go = nil
-		display.remove(go)
 		m.rotate.left:removeSelf()
 		m.rotate.left = nil
 		m.rotate.right:removeSelf()
 		m.rotate.right = nil
-	  Runtime:removeEventListener( "enterFrame", enterFrame )
+		display.remove(go)
+		Runtime:removeEventListener( "enterFrame", enterFrame )
 		Runtime:removeEventListener("collision", function(event)
 													collisioni.onCollision(event, aereiTable, bombTable,  corpoCarrarmato)
 												 end)

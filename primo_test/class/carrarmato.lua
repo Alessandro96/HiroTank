@@ -232,6 +232,7 @@ function l.newTank(cingolo, camera)
   local scaleFactor2 = 0.16
   local physicsData = (require "images.hiro").physicsData(scaleFactor2)
   tank.hiro = display.newImageRect("images/hiro.png", 81.1, 62)
+  tank.hiro.myName = "hiro"
   physics.addBody( tank.hiro, "dynamic", physicsData:get("hiro"))
   tank.hiro.x = tank.corpo.x-9
   tank.hiro.y = tank.corpo.y-48

@@ -52,7 +52,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 				end
 			end
 
-			tank.corpo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			--tank.corpo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return 20
 		elseif (( obj1.myName == "dietroCingolo" and obj2.myName == "bomba" ) or
 						( obj2.myName == "dietroCingolo" and obj1.myName == "bomba" )) then
@@ -74,7 +74,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 				end
 			end
 
-			tank.dietroCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			--tank.dietroCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return 20
 		elseif (( obj1.myName == "davantiCingolo" and obj2.myName == "bomba" ) or
 						( obj2.myName == "davantiCingolo" and obj1.myName == "bomba" )) then
@@ -96,7 +96,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 				end
 			end
 
-			tank.davantiCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
+			--tank.davantiCingolo:setFillColor(math.random(0,1), math.random(0,1), math.random(0,1))
 			return 20
 		end
 	end

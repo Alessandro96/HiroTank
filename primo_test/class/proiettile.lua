@@ -9,7 +9,7 @@ function M.newBall(params)
     ball.myName = "colpoCarro"
 
     function ball:shoot(cannonRotation , camera)
-      local speed = 650
+      local speed = 800
       local angle = math.rad(cannonRotation+180)
       ball:setLinearVelocity(math.cos(angle) * speed, math.sin(angle) * speed)
       camera:add(ball, 2, false)
