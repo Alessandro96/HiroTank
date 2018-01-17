@@ -31,9 +31,17 @@ function scene:create( event )
 	myLevel:loadLevel("Level02") -- set your scene/level name here
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
 
-	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",522, 186)
+	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",300, 300)
 	bottoneGioca.x = 1500
-	bottoneGioca.y = 500
+	bottoneGioca.y = 250
+	
+	bottoneScore = display.newImageRect(sceneGroup, "images/score.png",300, 300)
+	bottoneScore.x = 1500
+	bottoneScore.y = 550
+	
+	bottoneExit = display.newImageRect(sceneGroup, "images/settings.png",300, 300)
+	bottoneExit.x = 1500
+	bottoneExit.y = 850
 
 	bottoneGioca:addEventListener("tap", gotoGame)
 
