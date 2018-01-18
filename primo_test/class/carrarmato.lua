@@ -57,18 +57,24 @@ function l.newCingolo(camera)
   --------------------------------------------------------------------------------
   for i=2, 3, 1 do
   cont=i*10
-  m.ruote[i]=display.newCircle(m.chain[cont].x-4, m.chain2[15].y-15, 20)
-  physics.addBody(m.ruote[i], "dynamic", {friction=10, density=1})
-  m.ruote[i]:setFillColor(0,0,0)
+  m.ruote[i]=display.newImageRect("images/wheel.png",80,80)
+  physics.addBody(m.ruote[i], "dynamic", {friction=10, density=1,radius=25})
+  m.ruote[i].x = m.chain[cont].x-4
+  m.ruote[i].y = m.chain2[15].y-15
+  m.ruote[i]:setFillColor(0.3,0.3,0.3)
   end
 
-  m.ruote[1]=display.newCircle(m.chain[15].x, m.chain2[15].y-15, 20)
-  physics.addBody(m.ruote[1], "dynamic", {friction=10, density=1})
-  m.ruote[1]:setFillColor(0,0,0)
+  m.ruote[1]=display.newImageRect("images/wheel.png",80,80)
+  physics.addBody(m.ruote[1], "dynamic", {friction=10, density=1,radius=25})
+  m.ruote[1].x = m.chain[15].x
+  m.ruote[1].y = m.chain2[15].y-15
+  m.ruote[1]:setFillColor(0.3,0.3,0.3)
 
-  m.ruote[4]=display.newCircle(m.chain[35].x-5, m.chain2[15].y-15, 20)
-  physics.addBody(m.ruote[4], "dynamic", {friction=10, density=1})
-  m.ruote[4]:setFillColor(0,0,0)
+  m.ruote[4]=display.newImageRect("images/wheel.png",80,80)
+  physics.addBody(m.ruote[4], "dynamic", {friction=10, density=1,radius=25})
+  m.ruote[4].x = m.chain[35].x-5
+  m.ruote[4].y = m.chain2[15].y-15
+  m.ruote[4]:setFillColor(0.3,0.3,0.3)
 
   --[[m.ruote[5]=display.newCircle(m.chain[20].x+45, m.chain2[15].y-15, 18)
   physics.addBody(m.ruote[5], "dynamic", {friction=10, density=1})
@@ -217,15 +223,24 @@ function l.newTank(cingolo, camera)
   tank.corpo.myName="tank"
   camera:add(tank.corpo, 1, false)
 
-  tank.dietroCingolo = display.newRect(tank.corpo.x+30, tank.corpo.y+47, 270, 45)
-  physics.addBody(tank.dietroCingolo, "dynamic", {isSensor = true})
-  tank.dietroCingolo:setFillColor(0,0.2,0)
+  local scaleFactor2 = 0.5
+  local physicsData = (require "images.telaiob").physicsData(scaleFactor2)
+  tank.dietroCingolo = display.newImage("images/telaiob.png")
+  physics.addBody( tank.dietroCingolo, "dynamic", physicsData:get("telaiob"), {isSensor=true})
+  tank.dietroCingolo.x = tank.corpo.x+30
+  tank.dietroCingolo.y = tank.corpo.y+47
+  tank.dietroCingolo:scale(0.5, 1)
   tank.dietroCingolo.myName="dietroCingolo"
   camera:add(tank.dietroCingolo, 4, false)
 
-  tank.davantiCingolo = display.newRect(tank.dietroCingolo.x, tank.dietroCingolo.y-10, 270, 25)
-  physics.addBody(tank.davantiCingolo, "dynamic", {isSensor = true})
-  tank.davantiCingolo:setFillColor(0.4,0.5,0)
+  
+  local scaleFactor3 = 0.5
+  local physicsData = (require "images.ccb").physicsData(scaleFactor3)
+  tank.davantiCingolo = display.newImage("images/ccb.png")
+  physics.addBody( tank.davantiCingolo, "dynamic", physicsData:get("ccb"), {isSensor=true})
+  tank.davantiCingolo.x = tank.dietroCingolo.x
+  tank.davantiCingolo.y = tank.dietroCingolo.y-10
+  tank.davantiCingolo:scale(0.5, 1)
   tank.davantiCingolo.myName="davantiCingolo"
   camera:add(tank.davantiCingolo, 2, false)
 
