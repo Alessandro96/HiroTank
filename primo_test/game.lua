@@ -47,10 +47,17 @@ local function endGame()
 	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
 end
 
+local function removeGo()
+	display.remove(go)
+end
+
 local function screenOff()
+	inVita = false
 	go = display.newImage("images/go.jpg")
 	go.y=display.contentCenterY
 	go.x=display.contentCenterX
+	Runtime:removeEventListener( "enterFrame", enterFrame )
+	--pulsanti.pulsantiMovimentoCingolo().stop()
 end
 
 -- -----------------------------------------------------------------------------------
@@ -181,18 +188,12 @@ function scene:show( event )
 												if(ret==10)then
 													score=score+10
 													scoreText.text="score: "..score
-												elseif(ret==-1) then
+												elseif(ret==-1 or life ==0) then
 													screenOff()
-													inVita = false
 													timer.performWithDelay( 1500, endGame )
 												elseif(ret==20)then
 													life=life-20
 													lifeText.text="life: "..life
-													if ( life == 0 ) then
-													screenOff()
-													inVita = false
-													timer.performWithDelay( 1500, endGame )
-													end
 												end
 											end)
 
@@ -203,6 +204,7 @@ function scene:show( event )
 												----
 												if (inVita == true) then
 													cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
+												else timer.performWithDelay( 1400, removeGo )
 												end
 											end)
 

@@ -76,9 +76,9 @@ function l.newCingolo(camera)
   m.ruote[4].y = m.chain2[15].y-15
   m.ruote[4]:setFillColor(0.3,0.3,0.3)
 
-  --[[m.ruote[5]=display.newCircle(m.chain[20].x+45, m.chain2[15].y-15, 18)
-  physics.addBody(m.ruote[5], "dynamic", {friction=10, density=1})
-  m.ruote[5]:setFillColor(0,1,0)]]
+ -- m.ruote[5]=display.newCircle(m.chain[20].x+45, m.chain2[15].y-15, 18)
+ --physics.addBody(m.ruote[5], "dynamic", {friction=10, density=1})
+ --m.ruote[5]:setFillColor(0,1,0)
 
   for i=1, 4, 1 do
     camera:add(m.ruote[i], 2, true)

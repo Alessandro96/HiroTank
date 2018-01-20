@@ -39,11 +39,11 @@ function l.pulsantiMovimentoCingolo()
   			params.m.rotate.right:rotate(params.ruota1, params.ruota2, params.ruota3, params.ruota4)
 			--params.tank:applyTorque(-0.5)
 
-  	elseif params.m.result == "none" then
-  		-- params.ruota1:applyTorque(0)
-        -- params.ruota2:applyTorque(0)
-		-- params.ruota3:applyTorque(0)
-        -- params.ruota4:applyTorque(0)
+  	else
+  		 params.ruota1:applyTorque(0)
+         params.ruota2:applyTorque(0)
+		 params.ruota3:applyTorque(0)
+         params.ruota4:applyTorque(0)
 
   	end
   end
@@ -63,6 +63,13 @@ function l.pulsantiMovimentoCingolo()
     end
     return pulsanteDx
   end
+  
+  function m.stop(ruota1, ruota2, ruota3, ruota4)
+      ruota1:applyTorque(0)
+      ruota2:applyTorque(0)
+	  ruota3:applyTorque(0)
+      ruota4:applyTorque(0)
+    end
 
   function m.rotate.sx()
     local pulsanteSx = display.newImage("images/sx.png")
