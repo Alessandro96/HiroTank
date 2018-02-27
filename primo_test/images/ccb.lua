@@ -26,123 +26,105 @@ function M.physicsData(scale)
                     
                     
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   254.5, 12.5  ,  248.5, 7.5  ,  259.5, 3.5  ,  261.5, 7.5  ,  260.5, 12.5  }
+                    shape = {   244.5, 3.5  ,  253.5, -1.5  ,  258.5, 7.5  ,  256.5, 9.5  ,  249.5, 8.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -191.5, -1.5  ,  -143.5, 13.5  ,  -190.5, 15.5  }
+                    shape = {   253.5, -1.5  ,  244.5, 3.5  ,  231.5, -3.5  ,  212.5, -15.5  ,  237.5, -14.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   164.5, 12.5  ,  194.5, -1.5  ,  193.5, 15.5  }
+                    shape = {   -192.5, -0.5  ,  -163.5, 13.5  ,  -190.5, 14.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   232.5, -3.5  ,  256.5, 1.5  ,  259.5, 3.5  ,  248.5, 7.5  }
+                    shape = {   199.5, -3.5  ,  182.5, -15.5  ,  212.5, -15.5  ,  231.5, -3.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -255.5, 8.5  ,  -250.5, -2.5  ,  -251.5, 6.5  ,  -254.5, 9.5  }
+                    shape = {   193.5, -1.5  ,  165.5, -16.5  ,  182.5, -15.5  ,  199.5, -3.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -250.5, -2.5  ,  -244.5, -8.5  ,  -236.5, -12.5  ,  -242.5, 1.5  ,  -244.5, 4.5  ,  -251.5, 6.5  }
+                    shape = {   193.5, 14.5  ,  187.5, 16.5  ,  163.5, 13.5  ,  104.5, -16.5  ,  165.5, -16.5  ,  193.5, -1.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   256.5, -0.5  ,  232.5, -3.5  ,  155.5, -16.5  ,  231.5, -15.5  ,  242.5, -14.5  }
+                    shape = {   -192.5, -0.5  ,  -196.5, -3.5  ,  -160.5, -16.5  ,  -98.5, -16.5  ,  -108.5, 13.5  ,  -139.5, 14.5  ,  -163.5, 13.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   132.5, 13.5  ,  109.5, 12.5  ,  194.5, -1.5  ,  164.5, 12.5  }
+                    shape = {   -256.5, 9.5  ,  -250.5, -4.5  ,  -246.5, -8.5  ,  -235.5, -13.5  ,  -234.5, -1.5  ,  -249.5, 7.5  ,  -256.5, 10.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -242.5, 1.5  ,  -236.5, -12.5  ,  -228.5, -2.5  ,  -240.5, 2.5  }
+                    shape = {   -235.5, -13.5  ,  -209.5, -14.5  ,  -226.5, -3.5  ,  -234.5, -1.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -191.5, -1.5  ,  -121.5, 12.5  ,  -143.5, 13.5  }
+                    shape = {   -209.5, -14.5  ,  -184.5, -15.5  ,  -196.5, -3.5  ,  -226.5, -3.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   232.5, -3.5  ,  256.5, -0.5  ,  256.5, 1.5  }
+                    shape = {   -160.5, -16.5  ,  -196.5, -3.5  ,  -184.5, -15.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   78.5, 12.5  ,  133.5, -15.5  ,  155.5, -16.5  ,  194.5, -1.5  ,  109.5, 12.5  }
+                    shape = {   187.5, 16.5  ,  193.5, 14.5  ,  192.5, 15.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -191.5, -1.5  ,  -162.5, -16.5  ,  -91.5, -16.5  ,  -71.5, -15.5  ,  -76.5, 12.5  ,  -121.5, 12.5  }
+                    shape = {   129.5, 14.5  ,  104.5, 12.5  ,  104.5, -16.5  ,  163.5, 13.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -118.5, -16.5  ,  -162.5, -16.5  ,  -136.5, -17.5  }
+                    shape = {   81.5, 13.5  ,  54.5, 13.5  ,  31.5, -16.5  ,  104.5, -16.5  ,  104.5, 12.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -162.5, -16.5  ,  -191.5, -1.5  ,  -228.5, -2.5  ,  -236.5, -12.5  }
+                    shape = {   29.5, 14.5  ,  3.5, 13.5  ,  -27.5, -16.5  ,  31.5, -16.5  ,  54.5, 13.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   -71.5, -15.5  ,  3.5, -16.5  ,  13.5, 13.5  ,  -50.5, 13.5  ,  -76.5, 12.5  }
+                    shape = {   -21.5, 14.5  ,  -49.5, 13.5  ,  -48.5, -16.5  ,  -27.5, -16.5  ,  3.5, 13.5  }
                     }
                      ,
                     {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
+                    pe_fixture_id = "", density = 0, friction = 0, bounce = 0, isSensor=true, 
                     filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   27.5, -15.5  ,  48.5, 12.5  ,  13.5, 13.5  ,  3.5, -16.5  }
-                    }
-                     ,
-                    {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
-                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   133.5, -15.5  ,  78.5, 12.5  ,  48.5, 12.5  ,  27.5, -15.5  }
-                    }
-                     ,
-                    {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
-                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   155.5, -16.5  ,  201.5, -2.5  ,  194.5, -1.5  }
-                    }
-                     ,
-                    {
-                    pe_fixture_id = "ccb", density = 0.3, friction = 0, bounce = 0, isSensor=true, 
-                    filter = { categoryBits = 1, maskBits = 65535, groupIndex = 0 },
-                    shape = {   155.5, -16.5  ,  232.5, -3.5  ,  201.5, -2.5  }
+                    shape = {   -108.5, 13.5  ,  -98.5, -16.5  ,  -48.5, -16.5  ,  -49.5, 13.5  }
                     }
                     
                     

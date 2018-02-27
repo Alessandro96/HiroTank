@@ -226,18 +226,18 @@ function l.newTank(cingolo, camera)
   local scaleFactor2 = 0.5
   local physicsData = (require "images.telaiob").physicsData(scaleFactor2)
   tank.dietroCingolo = display.newImage("images/telaiob.png")
-  physics.addBody( tank.dietroCingolo, "dynamic", physicsData:get("telaiob"), {isSensor=true})
+  physics.addBody( tank.dietroCingolo, "dynamic", physicsData:get("telaiob"))
   tank.dietroCingolo.x = tank.corpo.x+30
   tank.dietroCingolo.y = tank.corpo.y+47
   tank.dietroCingolo:scale(0.5, 1)
   tank.dietroCingolo.myName="dietroCingolo"
   camera:add(tank.dietroCingolo, 4, false)
 
-  
+
   local scaleFactor3 = 0.5
   local physicsData = (require "images.ccb").physicsData(scaleFactor3)
   tank.davantiCingolo = display.newImage("images/ccb.png")
-  physics.addBody( tank.davantiCingolo, "dynamic", physicsData:get("ccb"), {isSensor=true})
+  physics.addBody( tank.davantiCingolo, "dynamic", physicsData:get("ccb"))
   tank.davantiCingolo.x = tank.dietroCingolo.x
   tank.davantiCingolo.y = tank.dietroCingolo.y-10
   tank.davantiCingolo:scale(0.5, 1)
