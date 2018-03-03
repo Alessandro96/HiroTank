@@ -37,53 +37,62 @@ local corpoCarrarmato
 local rotazioneCarrarmato=0
 local rotazioneCannone=0
 local rotazioneTot=rotazioneCarrarmato+rotazioneCannone
-local go
+local go = nil
 local tempRotazione = 180
 scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
 local inVita = true
 
-
-local function enterFrame(event)
-	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
-	--cielo.y=corpoCarrarmato.corpo.y
-	cielo.x=corpoCarrarmato.corpo.x
-	print("1")
-	if (inVita == true) then
-		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
-	else
-	  timer.performWithDelay( 1400, removeGo )
-	end
-end
-
 local function screenOff()
-	inVita = false
 	go = display.newImage("images/go.jpg")
 	go.y=display.contentCenterY
 	go.x=display.contentCenterX
-	Runtime:removeEventListener( "enterFrame", enterFrame )
-	--pulsanti.pulsantiMovimentoCingolo().stop()
 end
 
-local function endGame()
-	composer.gotoScene( "menu", { time=800, effect="crossFade" } )
+local function enterFrame(event)
+	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
+	cielo.x=corpoCarrarmato.corpo.x
+	if (inVita == true) then
+		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
+	else
+	end
 end
 
-local function removeGo()
-	display.remove(go)
-end
+--[[local function endGame()
+	--display.remove( go )
+	timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+end]]
+
 
 local function onCollision(event)
 	local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato)
+	--print(inVita)
 	if(ret==10)then
 		score=score+10
 		scoreText.text="score: "..score
-	elseif(ret==-1 or life ==0) then
-		screenOff()
-		timer.performWithDelay( 1500, endGame )
+	elseif(ret==-1) then
+		if(inVita==true)then
+			inVita = false
+			screenOff()
+			timer.performWithDelay( 1200, function()
+																			timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+																		end)
+		end
 	elseif(ret==20)then
-		life=life-20
-		lifeText.text="life: "..life
+		if(life>0)then
+			life=life-20
+			lifeText.text="life: "..life
+		elseif(life<=0)then
+			life=0
+		end
+		if(life==0 and inVita==true)then
+			inVita = false
+			screenOff()
+			timer.performWithDelay( 1200, function()
+																			timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+																		end)
+		else
+		end
 	end
 end
 
@@ -100,7 +109,7 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
-  physics.setDrawMode("hybrid")
+  --physics.setDrawMode("hybrid")
 
   scoreText = display.newText("score: "..score, 200, 100, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
@@ -171,7 +180,7 @@ function scene:create( event )
 --------------------------------------------------------------------------------
   camera:add(shape, 5, false)
   camera:add(cielo, 6, false)
-	camera:setBounds(-20000,20000,-2000,680)
+  camera:setBounds(-20000,20000,-2000,680)
 
   camera:track()
 
@@ -210,39 +219,17 @@ function scene:show( event )
 
 		-- Code here runs when the scene is entirely on screen
   physics.start()
-	Runtime:addEventListener("collision", onCollision--[[function(event)
-												local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato)
-												if(ret==10)then
-													score=score+10
-													scoreText.text="score: "..score
-												elseif(ret==-1 or life ==0) then
-													screenOff()
-													timer.performWithDelay( 1500, endGame )
-												elseif(ret==20)then
-													life=life-20
-													lifeText.text="life: "..life
-												end
-											end]])
+	Runtime:addEventListener("collision", onCollision)
 
-    Runtime:addEventListener("enterFrame", enterFrame --[[function(event)
-												pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
-												--cielo.y=corpoCarrarmato.corpo.y
-												cielo.x=corpoCarrarmato.corpo.x
-												print("1")
-												----
-												if (inVita == true) then
-													cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
-												else timer.performWithDelay( 1400, removeGo )
-												end
-											end]])
+  Runtime:addEventListener("enterFrame", enterFrame)
 
-    gameLoopTimer = timer.performWithDelay(10000, function()
-													gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
-												  end, 0)
+  gameLoopTimer = timer.performWithDelay(10000, function()
+																					gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
+												  							end, 0)
 
-    bombLoopTimer = timer.performWithDelay(1000, function()
-													aereo.fire(aereiTable, bombeTable, camera, bombeText)
-												 end, 0)
+  bombLoopTimer = timer.performWithDelay(1000, function()
+																					aereo.fire(aereiTable, bombeTable, camera, bombeText)
+												 								end, 0)
 	end
 end
 
@@ -255,9 +242,6 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		--timer.cancell(gameLoopTimer)
-		--timer.cancell(bombLoopTimer)
-
 	 -- CANCELLA TUTTI I TIMER
 	 for id, value in pairs(timer._runlist) do
      timer.cancel(value)
@@ -280,11 +264,12 @@ end
 		m.rotate.left = nil
 		m.rotate.right:removeSelf()
 		m.rotate.right = nil
+		inVita = true
 		display.remove(go)
 		Runtime:removeEventListener( "enterFrame", enterFrame )
-		Runtime:removeEventListener("collision", function(event)
+		Runtime:removeEventListener("collision", onCollision--[[function(event)
 													collisioni.onCollision(event, aereiTable, bombTable,  corpoCarrarmato)
-												end)
+												end]])
     physics.pause()
     composer.removeScene( "game" )
 	end
