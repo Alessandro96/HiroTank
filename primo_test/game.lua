@@ -25,7 +25,8 @@ local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
 local cielo
-local cannon, sx, dx, sparo
+local sx, dx, sparo
+cannon = 0
 local weldJoint, pivotJointCannon
 local tankCollider = {categoryBits = 1, maskBits = 1}
 local chassisCollider = {categoryBits = 2, maskBits = 2}
@@ -42,6 +43,8 @@ local tempRotazione = 180
 scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
 local inVita = true
+local terrainTable = {}
+position = 1300
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -50,18 +53,59 @@ local function screenOff()
 end
 
 local function enterFrame(event)
+	--scoreText2 = display.newText("pos: "..cannon.x, 400, 400, native.systemFont, 60)
+    --scoreText2:setFillColor(0,0,0)
 	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 	cielo.x=corpoCarrarmato.corpo.x
+	posizioneText.text="posizione: "..math.round(((cannon.x-256)/100)*10)*0.1
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
+		if (cannon.x >= position/2 and cannon.x <= position/2 +8 ) then 
+			print("OKKKKKKKKKKKKKKKKKKKKKKK")
+			createTerrain()
+		end
 	else
 	end
 end
 
---[[local function endGame()
-	--display.remove( go )
-	timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
-end]]
+function createTerrain()
+
+	position = position+3000
+	local whereFrom = math.random( 2 )
+
+	if ( whereFrom == 1 ) then
+	
+		local scaleFactor = 1.0
+		local physicsData = (require "images.1").physicsData(scaleFactor)
+		local shape1 = display.newImage("images/1.png")
+		table.insert( terrainTable, shape1 )
+		shape1.myName = "terreno"
+		physics.addBody( shape1, "static", physicsData:get("1") )
+		shape1.y=display.contentHeight
+		shape1.x=position
+		camera:add(shape1, 5, false)
+			
+	elseif ( whereFrom == 2 ) then
+		local physicsData = (require "images.2").physicsData(scaleFactor)
+		local shape2 = display.newImage("images/2.png")
+		table.insert( terrainTable, shape2 )
+		shape2.myName = "terreno"
+		physics.addBody( shape2, "static", physicsData:get("2") )
+		shape2.y=display.contentHeight
+		shape2.x=position
+		camera:add(shape2, 5, false)
+		
+	elseif ( whereFrom == 3 ) then
+		local physicsData = (require "images.t3").physicsData(scaleFactor)
+		local shape3 = display.newImage("images/t3-min.png")
+		table.insert( terrainTable, shape3 )
+		shape3.myName = "terreno"
+		physics.addBody( shape3, "static", physicsData:get("t3") )
+		shape3.y=display.contentHeight
+		shape3.x=position
+		camera:add(shape3, 5, false)
+	end
+end
 
 
 local function onCollision(event)
@@ -115,6 +159,9 @@ function scene:create( event )
   scoreText:setFillColor(0,0,0)
   lifeText = display.newText("life: "..life, 200, 170, native.systemFont, 60)
   lifeText:setFillColor(0,0,0)
+  posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
+  posizioneText:setFillColor(0,0,0)
+  
 
 --------------------------------------------------------------------------------
 --CINGOLO
@@ -135,6 +182,7 @@ function scene:create( event )
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
 	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
+	--scoreText2 = display.newText("pos: "..cannon.x, 400, 400, native.systemFont, 60)
 
 	sparo = pulsanti.pulsanteSparo()
 
@@ -154,13 +202,15 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 
   local scaleFactor = 1.0
-  local physicsData = (require "images.terreno1").physicsData(scaleFactor)
-  local shape = display.newImage("images/terreno1.png")
+  local physicsData = (require "images.1").physicsData(scaleFactor)
+  local shape = display.newImage("images/1.png")
   shape.myName = "terreno"
-  physics.addBody( shape, "static", physicsData:get("terreno1") )
+  physics.addBody( shape, "static", physicsData:get("1") )
   shape.y=display.contentHeight
-  shape.x=3000
-
+  shape.x=position
+  
+ 
+  
 --------------------------------------------------------------------------------
 --PULSANTI MOVIMENTO TANK
 --------------------------------------------------------------------------------
@@ -180,7 +230,7 @@ function scene:create( event )
 --------------------------------------------------------------------------------
   camera:add(shape, 5, false)
   camera:add(cielo, 6, false)
-  camera:setBounds(-20000,20000,-2000,680)
+  camera:setBounds(-1920000,1920000,-2000,780)
 
   camera:track()
 
@@ -224,7 +274,7 @@ function scene:show( event )
   Runtime:addEventListener("enterFrame", enterFrame)
 
   gameLoopTimer = timer.performWithDelay(10000, function()
-																					gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo)
+																					gameLoop.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrarmato.corpo, position)
 												  							end, 0)
 
   bombLoopTimer = timer.performWithDelay(1000, function()

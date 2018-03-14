@@ -1,6 +1,6 @@
 local M = {}
 
-function M.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato)
+function M.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrarmato, position)
 
 	aereo.creaAereo(aereiTable, camera, corpoCarrarmato)
 
@@ -27,6 +27,15 @@ function M.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato)
 		then
 			display.remove(thisBomba)
 			table.remove(bombeTable, i)
+		end
+	end
+	
+	for i = #terrainTable, 1, -1 do
+		local thisTerrain = terrainTable[i]
+		
+		if (thisTerrain.x<corpoCarrarmato.x-1000) then
+			display.remove(thisTerrain)
+			table.remove(terrainTable, i)
 		end
 	end
 end
