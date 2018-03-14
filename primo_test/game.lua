@@ -60,8 +60,8 @@ local function enterFrame(event)
 	posizioneText.text="posizione: "..math.round(((cannon.x-256)/100)*10)*0.1
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
-		if (cannon.x >= position/2 and cannon.x <= position/2 +8 ) then 
-			print("OKKKKKKKKKKKKKKKKKKKKKKK")
+		if (cannon.x >= position/2 and cannon.x <= position/2 +18 ) then
+			--print("OKKKKKKKKKKKKKKKKKKKKKKK")
 			createTerrain()
 		end
 	else
@@ -70,40 +70,59 @@ end
 
 function createTerrain()
 
-	position = position+3000
-	local whereFrom = math.random( 2 )
-
+	position = position+4000
+	local whereFrom = math.random(4)
+  print("OKKKKKKKKKKKKKKKKKKKKKKK--------------->"..whereFrom)
 	if ( whereFrom == 1 ) then
-	
-		local scaleFactor = 1.0
-		local physicsData = (require "images.1").physicsData(scaleFactor)
-		local shape1 = display.newImage("images/1.png")
+
+		local physicsData = (require "images.T1").physicsData(scaleFactor)
+		local shape1 = display.newImage("images/T1.png")
 		table.insert( terrainTable, shape1 )
 		shape1.myName = "terreno"
-		physics.addBody( shape1, "static", physicsData:get("1") )
+		physics.addBody( shape1, "static", physicsData:get("T1") )
 		shape1.y=display.contentHeight
 		shape1.x=position
 		camera:add(shape1, 5, false)
-			
+
 	elseif ( whereFrom == 2 ) then
-		local physicsData = (require "images.2").physicsData(scaleFactor)
-		local shape2 = display.newImage("images/2.png")
+		local physicsData = (require "images.T2").physicsData(scaleFactor)
+		local shape2 = display.newImage("images/T2.png")
 		table.insert( terrainTable, shape2 )
 		shape2.myName = "terreno"
-		physics.addBody( shape2, "static", physicsData:get("2") )
+		physics.addBody( shape2, "static", physicsData:get("T2") )
 		shape2.y=display.contentHeight
 		shape2.x=position
 		camera:add(shape2, 5, false)
-		
+
 	elseif ( whereFrom == 3 ) then
-		local physicsData = (require "images.t3").physicsData(scaleFactor)
-		local shape3 = display.newImage("images/t3-min.png")
+		local physicsData = (require "images.T3").physicsData(scaleFactor)
+		local shape3 = display.newImage("images/T3.png")
 		table.insert( terrainTable, shape3 )
 		shape3.myName = "terreno"
-		physics.addBody( shape3, "static", physicsData:get("t3") )
+		physics.addBody( shape3, "static", physicsData:get("T3") )
 		shape3.y=display.contentHeight
 		shape3.x=position
 		camera:add(shape3, 5, false)
+
+elseif ( whereFrom == 4 ) then
+	local physicsData = (require "images.T4").physicsData(scaleFactor)
+	local shape4 = display.newImage("images/T4.png")
+	table.insert( terrainTable, shape4 )
+	shape4.myName = "terreno"
+	physics.addBody( shape4, "static", physicsData:get("T4") )
+	shape4.y=display.contentHeight
+	shape4.x=position
+	camera:add(shape4, 5, false)
+
+elseif ( whereFrom == 5 ) then
+	local physicsData = (require "images.T5").physicsData(scaleFactor)
+	local shape5 = display.newImage("images/T5.png")
+	table.insert( terrainTable, shape5 )
+	shape5.myName = "terreno"
+	physics.addBody( shape5, "static", physicsData:get("T5") )
+	shape5.y=display.contentHeight
+	shape5.x=position
+	camera:add(shape5, 5, false)
 	end
 end
 
@@ -161,7 +180,7 @@ function scene:create( event )
   lifeText:setFillColor(0,0,0)
   posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
   posizioneText:setFillColor(0,0,0)
-  
+
 
 --------------------------------------------------------------------------------
 --CINGOLO
@@ -202,15 +221,16 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 
   local scaleFactor = 1.0
-  local physicsData = (require "images.1").physicsData(scaleFactor)
-  local shape = display.newImage("images/1.png")
+  local physicsData = (require "images.T4").physicsData(scaleFactor)
+  local shape = display.newImage("images/T4.png")
+	table.insert( terrainTable, shape4 )
   shape.myName = "terreno"
-  physics.addBody( shape, "static", physicsData:get("1") )
+  physics.addBody( shape, "static", physicsData:get("T4") )
   shape.y=display.contentHeight
   shape.x=position
-  
- 
-  
+
+
+
 --------------------------------------------------------------------------------
 --PULSANTI MOVIMENTO TANK
 --------------------------------------------------------------------------------
