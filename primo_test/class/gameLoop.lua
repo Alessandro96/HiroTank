@@ -34,8 +34,9 @@ function M.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrar
 		local thisTerrain = terrainTable[i]
 		
 		if (thisTerrain.x<corpoCarrarmato.x-1000) then
-			display.remove(thisTerrain)
-			table.remove(terrainTable, i)
+			--display.remove(thisTerrain)
+			--table.remove(terrainTable, i)
+			print("hihi")
 		end
 	end
 end

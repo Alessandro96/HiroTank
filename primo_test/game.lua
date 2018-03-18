@@ -24,6 +24,7 @@ local bombeTable = {}
 local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
+metri = nil
 local cielo
 local sx, dx, sparo
 cannon = 0
@@ -44,7 +45,11 @@ scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
 local inVita = true
 local terrainTable = {}
-position = 1300
+position = 300
+metamappa = 20
+whereFrom = 0
+local verifica = true
+local mappaAttuale = -1
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -57,11 +62,13 @@ local function enterFrame(event)
     --scoreText2:setFillColor(0,0,0)
 	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 	cielo.x=corpoCarrarmato.corpo.x
-	posizioneText.text="posizione: "..math.round(((cannon.x-256)/100)*10)*0.1
+	metri = (math.round(((cannon.x-256)/100)*10)*0.1)+9
+	metamappa = (math.round(((position)/100)*10)*0.1)+6.5
+	posizioneText.text="m : "..metri
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
-		if (cannon.x >= position/2 and cannon.x <= position/2 +18 ) then
-			--print("OKKKKKKKKKKKKKKKKKKKKKKK")
+		if ((metri> metamappa )and (metri < metamappa+5)) then
+			print("OKKKKKKKKKKKKKKKKKKKKKKK")
 			createTerrain()
 		end
 	else
@@ -69,60 +76,59 @@ local function enterFrame(event)
 end
 
 function createTerrain()
+	
+	
+	position = position+2000
+	whereFrom = math.random(4)
+	
+	if (whereFrom == mappaAttuale) then 
+		if (whereFrom == 4) then 
+			whereFrom = whereFrom -1
+		else 
+			whereFrom = whereFrom +1
+		end
+	end
+	
+	print("W : "..whereFrom.."      MA :"..mappaAttuale)
+	
+	mappaAttuale = whereFrom
+		
+	
+  
+ 
+  
+	if ( whereFrom == 1 and verifica == true) then
 
-	position = position+4000
-	local whereFrom = math.random(4)
-  print("OKKKKKKKKKKKKKKKKKKKKKKK--------------->"..whereFrom)
-	if ( whereFrom == 1 ) then
-
-		local physicsData = (require "images.T1").physicsData(scaleFactor)
-		local shape1 = display.newImage("images/T1.png")
-		table.insert( terrainTable, shape1 )
-		shape1.myName = "terreno"
-		physics.addBody( shape1, "static", physicsData:get("T1") )
 		shape1.y=display.contentHeight
 		shape1.x=position
-		camera:add(shape1, 5, false)
 
-	elseif ( whereFrom == 2 ) then
-		local physicsData = (require "images.T2").physicsData(scaleFactor)
-		local shape2 = display.newImage("images/T2.png")
-		table.insert( terrainTable, shape2 )
-		shape2.myName = "terreno"
-		physics.addBody( shape2, "static", physicsData:get("T2") )
+	elseif ( whereFrom == 2 and verifica == true ) then
+		
 		shape2.y=display.contentHeight
 		shape2.x=position
-		camera:add(shape2, 5, false)
+		
 
-	elseif ( whereFrom == 3 ) then
-		local physicsData = (require "images.T3").physicsData(scaleFactor)
-		local shape3 = display.newImage("images/T3.png")
-		table.insert( terrainTable, shape3 )
-		shape3.myName = "terreno"
-		physics.addBody( shape3, "static", physicsData:get("T3") )
+	elseif ( whereFrom == 3 and verifica == true ) then
+		
 		shape3.y=display.contentHeight
 		shape3.x=position
-		camera:add(shape3, 5, false)
 
-elseif ( whereFrom == 4 ) then
-	local physicsData = (require "images.T4").physicsData(scaleFactor)
-	local shape4 = display.newImage("images/T4.png")
-	table.insert( terrainTable, shape4 )
-	shape4.myName = "terreno"
-	physics.addBody( shape4, "static", physicsData:get("T4") )
-	shape4.y=display.contentHeight
-	shape4.x=position
-	camera:add(shape4, 5, false)
 
-elseif ( whereFrom == 5 ) then
-	local physicsData = (require "images.T5").physicsData(scaleFactor)
-	local shape5 = display.newImage("images/T5.png")
-	table.insert( terrainTable, shape5 )
-	shape5.myName = "terreno"
-	physics.addBody( shape5, "static", physicsData:get("T5") )
-	shape5.y=display.contentHeight
-	shape5.x=position
-	camera:add(shape5, 5, false)
+	elseif ( whereFrom == 4 and verifica == true ) then
+	
+		shape4.y=display.contentHeight
+		shape4.x=position
+
+	elseif ( whereFrom == 5 and verifica == true) then
+	
+		shape5.y=display.contentHeight
+		shape5.x=position
+		
+	elseif (verifica == false) then
+	
+		shape.y=display.contentHeight
+		shape.x=position
+		verifica = true
 	end
 end
 
@@ -182,6 +188,7 @@ function scene:create( event )
   posizioneText:setFillColor(0,0,0)
 
 
+
 --------------------------------------------------------------------------------
 --CINGOLO
 --------------------------------------------------------------------------------
@@ -221,13 +228,53 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 
   local scaleFactor = 1.0
-  local physicsData = (require "images.T4").physicsData(scaleFactor)
-  local shape = display.newImage("images/T4.png")
-	table.insert( terrainTable, shape4 )
+  local physicsData = (require "images.t1").physicsData(scaleFactor)
+  shape = display.newImage("images/t1.png")
   shape.myName = "terreno"
-  physics.addBody( shape, "static", physicsData:get("T4") )
+  physics.addBody( shape, "static", physicsData:get("t1") )
   shape.y=display.contentHeight
   shape.x=position
+  
+  local physicsData = (require "images.t1").physicsData(scaleFactor)
+  shape1 = display.newImage("images/t1.png")
+  shape1.myName = "terreno"
+  physics.addBody( shape1, "static", physicsData:get("t1") )
+  shape1.y=-7000
+  shape1.x=-3000
+  camera:add(shape1, 5, false)
+  
+  local physicsData = (require "images.t2").physicsData(scaleFactor)
+  shape2 = display.newImage("images/t2.png")
+  shape2.myName = "terreno"
+  physics.addBody( shape2, "static", physicsData:get("t2") )
+  shape2.y=-3000
+  shape2.x=-7000
+  camera:add(shape2, 5, false)
+		
+  local physicsData = (require "images.t3").physicsData(scaleFactor)
+  shape3 = display.newImage("images/t3.png")
+  shape3.myName = "terreno"
+  physics.addBody( shape3, "static", physicsData:get("t3") )
+  shape3.y=-9000
+  shape3.x=-3000
+  camera:add(shape3, 5, false)
+
+  local physicsData = (require "images.t4").physicsData(scaleFactor)
+  shape4 = display.newImage("images/t4.png")
+  shape4.myName = "terreno"
+  physics.addBody( shape4, "static", physicsData:get("t4") )
+  shape4.y=-9000
+  shape4.x=-3000
+  camera:add(shape4, 5, false)
+
+ -- local physicsData = (require "images.t5").physicsData(scaleFactor)
+  --shape5 = display.newImage("images/t5.png")
+  --shape5.myName = "terreno"
+  --physics.addBody( shape5, "static", physicsData:get("t5") )
+  --shape5.y=-13000
+ -- shape5.x=-3000
+  --camera:add(shape5, 5, false)
+
 
 
 
@@ -324,6 +371,8 @@ end
 		scoreText = nil
 		lifeText:removeSelf()
 		lifeText = nil
+		posizioneText:removeSelf()
+		posizioneText = nil
 		sx:removeSelf()
 		sx = nil
 		dx:removeSelf()
