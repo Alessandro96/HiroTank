@@ -17,13 +17,16 @@ local proiettile = require("class.proiettile")
 local cannone = require("class.cannon")
 local pulsanti = require("class.pulsanti")
 local aereo = require("class.aereo")
+local aereo2 = require("class.aereo")
 local collisioni = require("class.collisioni")
 local carrarmato = require("class.carrarmato")
 local aereiTable = {}
+local cuoreTable = {}
 local bombeTable = {}
 local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
+metri = nil
 local cielo
 local sx, dx, sparo
 cannon = 0
@@ -44,7 +47,12 @@ scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
 local inVita = true
 local terrainTable = {}
-position = 1300
+position = 300
+metamappa = 20
+whereFrom = 0
+local verifica = true
+local mappaAttuale = -1
+metri = 0
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -53,15 +61,15 @@ local function screenOff()
 end
 
 local function enterFrame(event)
-	--scoreText2 = display.newText("pos: "..cannon.x, 400, 400, native.systemFont, 60)
-    --scoreText2:setFillColor(0,0,0)
 	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
 	cielo.x=corpoCarrarmato.corpo.x
-	posizioneText.text="posizione: "..math.round(((cannon.x-256)/100)*10)*0.1
+	metri = (math.round(((cannon.x-256)/100)*10)*0.1)+9
+	metamappa = (math.round(((position)/100)*10)*0.1)+6.5
+	posizioneText.text="m : "..metri
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
-		if (cannon.x >= position/2 and cannon.x <= position/2 +18 ) then
-			--print("OKKKKKKKKKKKKKKKKKKKKKKK")
+		print(tempRotazione)
+		if ((metri> metamappa )and (metri < metamappa+5)) then
 			createTerrain()
 		end
 	else
@@ -70,59 +78,60 @@ end
 
 function createTerrain()
 
-	position = position+4000
-	local whereFrom = math.random(4)
-  print("OKKKKKKKKKKKKKKKKKKKKKKK--------------->"..whereFrom)
-	if ( whereFrom == 1 ) then
 
-		local physicsData = (require "images.T1").physicsData(scaleFactor)
-		local shape1 = display.newImage("images/T1.png")
-		table.insert( terrainTable, shape1 )
-		shape1.myName = "terreno"
-		physics.addBody( shape1, "static", physicsData:get("T1") )
+	position = position+2000
+	whereFrom = math.random(6)
+
+	if (whereFrom == mappaAttuale) then
+		if (whereFrom == 6) then
+			whereFrom = whereFrom -1
+		else
+			whereFrom = whereFrom +1
+		end
+	end
+	mappaAttuale = whereFrom
+
+
+
+
+
+	if ( whereFrom == 1 and verifica == true) then
+
 		shape1.y=display.contentHeight
 		shape1.x=position
-		camera:add(shape1, 5, false)
 
-	elseif ( whereFrom == 2 ) then
-		local physicsData = (require "images.T2").physicsData(scaleFactor)
-		local shape2 = display.newImage("images/T2.png")
-		table.insert( terrainTable, shape2 )
-		shape2.myName = "terreno"
-		physics.addBody( shape2, "static", physicsData:get("T2") )
+	elseif ( whereFrom == 2 and verifica == true ) then
+
 		shape2.y=display.contentHeight
 		shape2.x=position
-		camera:add(shape2, 5, false)
 
-	elseif ( whereFrom == 3 ) then
-		local physicsData = (require "images.T3").physicsData(scaleFactor)
-		local shape3 = display.newImage("images/T3.png")
-		table.insert( terrainTable, shape3 )
-		shape3.myName = "terreno"
-		physics.addBody( shape3, "static", physicsData:get("T3") )
+
+	elseif ( whereFrom == 3 and verifica == true ) then
+
 		shape3.y=display.contentHeight
 		shape3.x=position
-		camera:add(shape3, 5, false)
 
-elseif ( whereFrom == 4 ) then
-	local physicsData = (require "images.T4").physicsData(scaleFactor)
-	local shape4 = display.newImage("images/T4.png")
-	table.insert( terrainTable, shape4 )
-	shape4.myName = "terreno"
-	physics.addBody( shape4, "static", physicsData:get("T4") )
-	shape4.y=display.contentHeight
-	shape4.x=position
-	camera:add(shape4, 5, false)
 
-elseif ( whereFrom == 5 ) then
-	local physicsData = (require "images.T5").physicsData(scaleFactor)
-	local shape5 = display.newImage("images/T5.png")
-	table.insert( terrainTable, shape5 )
-	shape5.myName = "terreno"
-	physics.addBody( shape5, "static", physicsData:get("T5") )
-	shape5.y=display.contentHeight
-	shape5.x=position
-	camera:add(shape5, 5, false)
+	elseif ( whereFrom == 4 and verifica == true ) then
+
+		shape4.y=display.contentHeight
+		shape4.x=position
+
+	elseif ( whereFrom == 5 and verifica == true) then
+
+		shape5.y=display.contentHeight
+		shape5.x=position
+
+	elseif ( whereFrom == 6 and verifica == true) then
+
+		shape6.y=display.contentHeight
+		shape6.x=position
+
+	elseif (verifica == false) then
+
+		shape.y=display.contentHeight
+		shape.x=position
+		verifica = true
 	end
 end
 
@@ -143,8 +152,11 @@ local function onCollision(event)
 		end
 	elseif(ret==20)then
 		if(life>0)then
-			life=life-20
-			lifeText.text="life: "..life
+		cuoreDaRimuovere = #cuoreTable
+		cuoreTable[cuoreDaRimuovere]:removeSelf()
+		cuoreTable[cuoreDaRimuovere] = nil
+		table.remove( cuoreTable, cuoreDaRimuovere )
+		life=life-20
 		elseif(life<=0)then
 			life=0
 		end
@@ -174,12 +186,11 @@ function scene:create( event )
   camera = perspective.createView()
   --physics.setDrawMode("hybrid")
 
-  scoreText = display.newText("score: "..score, 200, 100, native.systemFont, 60)
+  scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
-  lifeText = display.newText("life: "..life, 200, 170, native.systemFont, 60)
-  lifeText:setFillColor(0,0,0)
   posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
   posizioneText:setFillColor(0,0,0)
+
 
 
 --------------------------------------------------------------------------------
@@ -221,14 +232,88 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 
   local scaleFactor = 1.0
-  local physicsData = (require "images.T4").physicsData(scaleFactor)
-  local shape = display.newImage("images/T4.png")
-	table.insert( terrainTable, shape4 )
+  local physicsData = (require "images.t1").physicsData(scaleFactor)
+  shape = display.newImage("images/t1.png")
   shape.myName = "terreno"
-  physics.addBody( shape, "static", physicsData:get("T4") )
+  physics.addBody( shape, "static", physicsData:get("t1") )
   shape.y=display.contentHeight
   shape.x=position
 
+  local physicsData = (require "images.t1").physicsData(scaleFactor)
+  shape1 = display.newImage("images/t1.png")
+  shape1.myName = "terreno"
+  physics.addBody( shape1, "static", physicsData:get("t1") )
+  shape1.y=-7000
+  shape1.x=-3000
+  camera:add(shape1, 5, false)
+
+  local physicsData = (require "images.t2").physicsData(scaleFactor)
+  shape2 = display.newImage("images/t2.png")
+  shape2.myName = "terreno"
+  physics.addBody( shape2, "static", physicsData:get("t2") )
+  shape2.y=-3000
+  shape2.x=-7000
+  camera:add(shape2, 5, false)
+
+  local physicsData = (require "images.t3").physicsData(scaleFactor)
+  shape3 = display.newImage("images/t3.png")
+  shape3.myName = "terreno"
+  physics.addBody( shape3, "static", physicsData:get("t3") )
+  shape3.y=-9000
+  shape3.x=-3000
+  camera:add(shape3, 5, false)
+
+  local physicsData = (require "images.t4").physicsData(scaleFactor)
+  shape4 = display.newImage("images/t4.png")
+  shape4.myName = "terreno"
+  physics.addBody( shape4, "static", physicsData:get("t4") )
+  shape4.y=-9000
+  shape4.x=-3000
+  camera:add(shape4, 5, false)
+
+  local physicsData = (require "images.t5").physicsData(scaleFactor)
+  shape5 = display.newImage("images/t5.png")
+  shape5.myName = "terreno"
+  physics.addBody( shape5, "static", physicsData:get("t5") )
+  shape5.y=-13000
+  shape5.x=-3000
+  camera:add(shape5, 5, false)
+
+	local physicsData = (require "images.t6").physicsData(scaleFactor)
+	shape6 = display.newImage("images/t6.png")
+	shape6.myName = "terreno"
+	physics.addBody( shape6, "static", physicsData:get("t6") )
+	shape6.y=-13000
+	shape6.x=-3000
+	camera:add(shape6, 5, false)
+
+-------------------------------------------------------------------------------
+--LIFE HEART
+-------------------------------------------------------------------------------
+cuore1 = display.newImage("images/heart.png")
+cuore1.y=70
+cuore1.x=70
+table.insert( cuoreTable, cuore1 )
+
+cuore2 = display.newImage("images/heart.png")
+cuore2.y=70
+cuore2.x=170
+table.insert( cuoreTable, cuore2 )
+
+cuore3 = display.newImage("images/heart.png")
+cuore3.y=70
+cuore3.x=270
+table.insert( cuoreTable, cuore3 )
+
+cuore4 = display.newImage("images/heart.png")
+cuore4.y=70
+cuore4.x=370
+table.insert( cuoreTable, cuore4 )
+
+cuore5 = display.newImage("images/heart.png")
+cuore5.y=70
+cuore5.x=470
+table.insert( cuoreTable, cuore5 )
 
 
 --------------------------------------------------------------------------------
@@ -258,8 +343,9 @@ function scene:create( event )
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
 
-  sx:addEventListener("tap", function() tempRotazione = tempRotazione-10 end)
-  dx:addEventListener("tap", function() tempRotazione = tempRotazione+10 end)
+  sx:addEventListener("tap", function() if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end end)
+  dx:addEventListener("tap", function() if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end end)
+
 
   sparo:addEventListener("tap", function()
 									local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
@@ -289,17 +375,23 @@ function scene:show( event )
 
 		-- Code here runs when the scene is entirely on screen
   physics.start()
+  print(metri)
 	Runtime:addEventListener("collision", onCollision)
 
   Runtime:addEventListener("enterFrame", enterFrame)
 
-  gameLoopTimer = timer.performWithDelay(10000, function()
-																					gameLoop.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrarmato.corpo, position)
+   gameLoopTimer = timer.performWithDelay(10000, function()
+																					gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo, position)
 												  							end, 0)
 
-  bombLoopTimer = timer.performWithDelay(1000, function()
+   gameLoopTimer2 = timer.performWithDelay(15000, function()
+																					gameLoop.loop2(aereo2, aereiTable,  camera, corpoCarrarmato.corpo, metri)
+												  							end, 0)
+
+   bombLoopTimer = timer.performWithDelay(1000, function()
 																					aereo.fire(aereiTable, bombeTable, camera, bombeText)
 												 								end, 0)
+
 	end
 end
 
@@ -319,11 +411,16 @@ end
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-    camera:destroy()
+		camera:destroy()
+		for i = #cuoreTable, 1, -1 do
+		table.remove( aereiTable, i )
+		cuoreTable[i]:removeSelf()
+		cuoreTable[i] = nil
+		end
 		scoreText:removeSelf()
 		scoreText = nil
-		lifeText:removeSelf()
-		lifeText = nil
+		posizioneText:removeSelf()
+		posizioneText = nil
 		sx:removeSelf()
 		sx = nil
 		dx:removeSelf()

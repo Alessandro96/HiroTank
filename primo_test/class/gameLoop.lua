@@ -1,8 +1,8 @@
 local M = {}
 
-function M.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrarmato, position)
+function M.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato, position)
 
-	aereo.creaAereo(aereiTable, camera, corpoCarrarmato)
+	aereo.creaAereo(aereiTable, camera, corpoCarrarmato)	
 
 	for i = #aereiTable, 1, -1 do
 		local thisAereo = aereiTable[i]
@@ -29,15 +29,32 @@ function M.loop(aereo, aereiTable, bombeTable, terrainTable, camera, corpoCarrar
 			table.remove(bombeTable, i)
 		end
 	end
+
 	
-	for i = #terrainTable, 1, -1 do
-		local thisTerrain = terrainTable[i]
+end
+
+function M.loop2(aereo2, aereiTable, camera, corpoCarrarmato, metri)
+	
+	if (metri > 300) then
+	aereo2.creaAereo2(aereiTable, camera, corpoCarrarmato)
+	
+	for i = #aereiTable, 1, -1 do
 		
-		if (thisTerrain.x<corpoCarrarmato.x-1000) then
-			display.remove(thisTerrain)
-			table.remove(terrainTable, i)
+		local thisAereo = aereiTable[i]
+
+		if ( thisAereo.x < -30000 or
+			 thisAereo.x > display.contentWidth + 30000 or
+			 thisAereo.y < -30000 or
+			 thisAereo.y > display.contentHeight + 30000 )
+		then
+			display.remove( thisAereo )
+			table.remove( aereiTable, i )
 		end
 	end
+	end
+	
 end
+
+
 
 return M
