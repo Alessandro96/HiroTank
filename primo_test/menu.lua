@@ -4,10 +4,12 @@
 --
 ---------------------------------------------------------------------------------
 local composer = require( "composer" )
+local sounds = require('lib.sounds')
 local scene = composer.newScene()
 require("lib.LD_LoaderX")
 physics = require ("physics")
 physics.start()
+
 
 ---------------------------------------------------------------------------------
 -- BEGINNING OF YOUR IMPLEMENTATION
@@ -17,47 +19,63 @@ local btn = nil
 local myLevel = {}
 local bottoneGioca
 
+local musicTrack
+
 local function gotoGame()
-		composer.gotoScene("game")
+		composer.gotoScene("menuLivelli")
+		sounds.play('tap', { channel=2})
+end
+
+local function gotoSet()
+		composer.gotoScene("menuSet")
+		sounds.play('tap', { channel=2})
+end
+
+local function gotoClassifica()
+		composer.gotoScene("classifica")
+		sounds.play('tap', { channel=2})
 end
 
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
+	
+	--local musicTrack = sounds.loadStream( "menu.wav")
 
 	local myLevel = {}
 	myLevel= LD_Loader:new(self.view)
 	myLevel:loadLevel("Level02") -- set your scene/level name here
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
+	
+	sounds.play('menu')
 
 	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",300, 300)
 	bottoneGioca.x = 1500
 	bottoneGioca.y = 250
-	
+
 	bottoneScore = display.newImageRect(sceneGroup, "images/score.png",300, 300)
 	bottoneScore.x = 1500
 	bottoneScore.y = 550
-	
-	bottoneExit = display.newImageRect(sceneGroup, "images/settings.png",300, 300)
-	bottoneExit.x = 1500
-	bottoneExit.y = 850
+
+	bottoneSet = display.newImageRect(sceneGroup, "images/settings.png",300, 300)
+	bottoneSet.x = 1500
+	bottoneSet.y = 850
 
 	bottoneGioca:addEventListener("tap", gotoGame)
+	bottoneSet:addEventListener("tap", gotoSet)
+	bottoneScore:addEventListener("tap", gotoClassifica)
+	
+	musicTrack = audio.loadStream( "sounds/menu.wav" )
 
 	-- Touch event listener for button
-	function onButtonClick( event )
-		print ("touch")
-		if event.phase == "began" then
-
-			composer.gotoScene( "scene2", "zoomOutInFade", 300  )
-
-			return true
-		end
+	function mappa1()
+	
+			local newGame = 1
+			print (newGame)
+			composer.gotoScene( "gotoGame", "zoomOutInFade", 300  )
+			
 	end
-
-	-- btn = myLevel:getLayerObject( "layer1","btnNext" )
-	-- btn.onPress = onButtonClick
 
 	print( "\n1: create event")
 end
@@ -74,6 +92,7 @@ function scene:show( event )
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.
         -- Example: start timers, begin animation, play audio, etc.
+		audio.play( musicTrack, { channel=1, loops=-1 } )
 		local prevScene = composer.getSceneName( "previous" )
 		-- remove previous scene's view
 		if (prevScene) then
@@ -93,14 +112,6 @@ function scene:hide( event )
 
 	print( "1: hide event" )
 
-end
-
-
--- Called prior to the removal of scene's "view" (display group)
-function scene:destroy( event )
-	myLevel:removeLevel()
-	myLevel = nil
-	print( "((destroying scene 1's view))" )
 end
 
 ---------------------------------------------------------------------------------

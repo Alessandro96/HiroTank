@@ -1,3 +1,4 @@
+local sounds = require('lib.sounds')
 local M = {}
 hit = 0
 function M.onCollision(event, aereiTable, bombeTable, tank)
@@ -12,6 +13,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 		if ( ( obj1.myName == "colpoCarro" and obj2.myName == "aereo" ) or
 			 ( obj1.myName == "aereo" and obj2.myName == "colpoCarro" ) )
 		then
+			sounds.play('explosion', { channel=3})
 			display.remove( obj1 )
 			display.remove( obj2 )
 
@@ -33,6 +35,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 					if (obj2.vita == 1) then
 						display.remove(obj2.v2)
 					elseif (obj2.vita == 0) then
+						sounds.play('explosion', { channel=3})
 						display.remove(obj2.v1)
 					end
 				elseif(obj2.myName == "colpoCarro") then 
@@ -41,6 +44,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 					if (obj1.vita == 1) then
 						display.remove(obj1.v2)
 					elseif (obj1.vita == 0) then
+						sounds.play('explosion', { channel=3})
 						display.remove(obj1.v1)
 					end
 				end
@@ -48,6 +52,7 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 			  if (obj1.vita == 0 or obj2.vita == 0)  then
 				display.remove( obj1 )
 				display.remove( obj2 )
+				sounds.play('explosion', { channel=3})
         
 					for i = #aereiTable, 1, -1 do
 						if ( aereiTable[i] == obj1 or aereiTable[i] == obj2 ) then

@@ -38,7 +38,7 @@ function M.creaAereo2(aereiTable, camera, corpoCarrarmato)
   newAereo2.v2.y = newAereo2.y - 70
   newAereo2.v2.gravityScale=0
   newAereo2.v2:setLinearVelocity(-300,0 )
-  print (newAereo2.vita)
+--  print (newAereo2.vita)
   camera:add(newAereo2,1,false)
   camera:add(newAereo2.v1,1,false)
   camera:add(newAereo2.v2,1,false)

@@ -35,17 +35,17 @@ end
 
 function M.loop2(aereo2, aereiTable, camera, corpoCarrarmato, metri)
 	
-	if (metri > 300) then
+	if (metri > 200) then
 	aereo2.creaAereo2(aereiTable, camera, corpoCarrarmato)
 	
 	for i = #aereiTable, 1, -1 do
 		
 		local thisAereo = aereiTable[i]
 
-		if ( thisAereo.x < -30000 or
-			 thisAereo.x > display.contentWidth + 30000 or
-			 thisAereo.y < -30000 or
-			 thisAereo.y > display.contentHeight + 30000 )
+		if ( thisAereo.x < -300000 or
+			 thisAereo.x > display.contentWidth + 300000 or
+			 thisAereo.y < -300000 or
+			 thisAereo.y > display.contentHeight + 300000 )
 		then
 			display.remove( thisAereo )
 			table.remove( aereiTable, i )

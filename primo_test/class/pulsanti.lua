@@ -1,7 +1,10 @@
 
 -------------------------------------INIZIO-------------------------------------
 
+
 local l = {}
+
+
 
 function l.pulsantiMovimentoCingolo()
   local m = {}
@@ -63,7 +66,7 @@ function l.pulsantiMovimentoCingolo()
     end
     return pulsanteDx
   end
-  
+
   function m.stop(ruota1, ruota2, ruota3, ruota4)
       ruota1:applyTorque(0)
       ruota2:applyTorque(0)
@@ -106,10 +109,10 @@ function l.pulsanteCannoneSx()
 end
 
 function l.pulsanteSparo()
-  local pulsanteSparo = display.newImage("images/missile2.png")
-  pulsanteSparo:scale(2,2)
-  pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+130
-  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight - 10
+  local pulsanteSparo = display.newImageRect("images/missile2.png",230, 230)
+  --pulsanteSparo:scale(2,2)
+  pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+60
+  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight + 110
   return pulsanteSparo
 end
 
