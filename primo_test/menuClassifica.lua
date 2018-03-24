@@ -1,47 +1,64 @@
 
 local composer = require( "composer" )
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------
 -- Code outside of the scene event functions below will only be executed ONCE unless
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
-local database = require("class.database").readDatabase()
 
-local function gotoMenu()
-	composer.gotoScene("menu")
-end
-
-local function gotoMenuLivelli()
-	composer.gotoScene("menuLivelli")
-end
+selezioneClassifica=0
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
 
+-- create()
 function scene:create( event )
+
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	sceneGroup:insert( database )
+
+
 	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
 	sceneGroup:insert( home )
-	home.x = 500
+	home.x = 100
 	home.y = 1000
-	local bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",150, 150)
-	sceneGroup:insert( bottoneGioca )
-	bottoneGioca.x = 1300
-	bottoneGioca.y = 1000
-	local distanzaText = display.newText("Distanza",  0, 0, native.systemFont, 80)
-	local punteggioText = display.newText("Punteggio", 0, 0, native.systemFont, 80)
-	sceneGroup:insert( distanzaText )
-	sceneGroup:insert( punteggioText )
-	distanzaText.x = display.contentCenterX-30
-	distanzaText.y = 70
-	punteggioText.x = distanzaText.x+750
-	punteggioText.y = 70
-	bottoneGioca:addEventListener("tap", gotoMenuLivelli)
-	home:addEventListener("tap", gotoMenu)
-	
+
+	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",1200, 600)
+	sceneGroup:insert( bottoneM1 )
+	bottoneM1.x = 500
+	bottoneM1.y = 250
+
+	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",1200, 600)
+	sceneGroup:insert( bottoneM2 )
+	bottoneM2.x = 1400
+	bottoneM2.y = 250
+
+	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",1200, 600)
+	sceneGroup:insert( bottoneM3 )
+	bottoneM3.x = 500
+	bottoneM3.y = 750
+
+	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",1200, 600)
+	sceneGroup:insert( bottoneM4 )
+	bottoneM4.x = 1400
+	bottoneM4.y = 750
+
+	bottoneM1:addEventListener("tap", function()
+																			selezioneClassifica=1
+																			composer.gotoScene("classifica")
+																		end)
+	bottoneM2:addEventListener("tap", function()
+																			selezioneClassifica=2
+																			composer.gotoScene("classifica")
+																		end)
+  bottoneM3:addEventListener("tap", function()
+																			selezioneClassifica=3
+																			composer.gotoScene("classifica")
+																		end)
+	home:addEventListener("tap", function() composer.gotoScene("menu") end)
+
 end
 
 
@@ -69,8 +86,6 @@ function scene:hide( event )
 
 	if ( phase == "will" ) then
 		-- Code here runs when the scene is on screen (but is about to go off screen)
-		--display.remove(home)
-		--display.remove(database)
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen

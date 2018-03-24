@@ -18,36 +18,23 @@ physics.start()
 local btn = nil
 local myLevel = {}
 local bottoneGioca
+maxT1={distanza=800, punteggio=74}
+maxT2={distanza=800, punteggio=74}
+maxT3={distanza=800, punteggio=74}
 
 local musicTrack
-
-local function gotoGame()
-		composer.gotoScene("menuLivelli")
-		sounds.play('tap', { channel=2})
-end
-
-local function gotoSet()
-		composer.gotoScene("menuSet")
-		sounds.play('tap', { channel=2})
-end
-
-local function gotoClassifica()
-		composer.gotoScene("classifica")
-		sounds.play('tap', { channel=2})
-end
-
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
-	
+
 	--local musicTrack = sounds.loadStream( "menu.wav")
 
 	local myLevel = {}
 	myLevel= LD_Loader:new(self.view)
 	myLevel:loadLevel("Level02") -- set your scene/level name here
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
-	
+
 	sounds.play('menu')
 
 	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",300, 300)
@@ -62,19 +49,28 @@ function scene:create( event )
 	bottoneSet.x = 1500
 	bottoneSet.y = 850
 
-	bottoneGioca:addEventListener("tap", gotoGame)
-	bottoneSet:addEventListener("tap", gotoSet)
-	bottoneScore:addEventListener("tap", gotoClassifica)
-	
+	bottoneGioca:addEventListener("tap", function()
+																				composer.gotoScene("menuLivelli")
+																				sounds.play('tap', { channel=2})
+																			 end)
+	bottoneSet:addEventListener("tap", function()
+																			composer.gotoScene("menuSet")
+																			sounds.play('tap', { channel=2})
+																		 end)
+	bottoneScore:addEventListener("tap", function()
+																				composer.gotoScene("menuClassifica")
+																				sounds.play('tap', { channel=2})
+																			 end)
+
 	musicTrack = audio.loadStream( "sounds/menu.wav" )
 
 	-- Touch event listener for button
 	function mappa1()
-	
+
 			local newGame = 1
 			print (newGame)
 			composer.gotoScene( "gotoGame", "zoomOutInFade", 300  )
-			
+
 	end
 
 	print( "\n1: create event")
