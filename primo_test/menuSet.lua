@@ -49,18 +49,12 @@ end
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
-
-	--local myLevel = {}
-	--myLevel= LD_Loader:new(self.view)
-	--myLevel:loadLevel("Level02") -- set your scene/level name here
-	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
-	
-	local bg = display.newImageRect("images/bg.png", 1800*1.3, 893*1.3)
+	local bg = display.newImageRect("images/BG.png", 1800*1.3, 893*1.3)
 	sceneGroup:insert( bg )
 	bg.x = display.contentCenterX
-	bg.y = display.contentCenterY 
-	
-	
+	bg.y = display.contentCenterY
+
+
 
 	local bottoneM1 = display.newImageRect(sceneGroup, "images/music_on.png",300, 300)
 	sceneGroup:insert( bottoneM1 )
@@ -81,7 +75,7 @@ function scene:create( event )
 	sceneGroup:insert( bottoneM4 )
 	bottoneM4.x = 1400
 	bottoneM4.y = 750
-	
+
 	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
 	sceneGroup:insert( home )
 	home.x = 100
