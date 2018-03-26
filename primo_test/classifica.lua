@@ -23,14 +23,18 @@ function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 	sceneGroup:insert( database )
+	
 	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
 	sceneGroup:insert( home )
 	home.x = 500
 	home.y = 1000
+	
 	local bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",150, 150)
 	sceneGroup:insert( bottoneGioca )
 	bottoneGioca.x = 1300
 	bottoneGioca.y = 1000
+	
+	
 	local distanzaText = display.newText("Distanza",  0, 0, native.systemFont, 80)
 	local punteggioText = display.newText("Punteggio", 0, 0, native.systemFont, 80)
 	sceneGroup:insert( distanzaText )
