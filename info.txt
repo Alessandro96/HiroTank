@@ -11,3 +11,5 @@ Link utili:
 https://confluence.atlassian.com/get-started-with-bitbucket/get-started-with-bitbucket-cloud-856845168.html
 
 http://rogerdudler.github.io/git-guide/index.it.html
+
+ "nuovo livello sunset, nuovi pulsanti livelli, nuove mappe di default e aggiunti score singoli livelli"

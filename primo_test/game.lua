@@ -31,6 +31,7 @@ m.result = "none"
 m.rotate = {}
 metri = nil
 local cielo
+local mont
 local sx, dx, sparo
 cannon = 0
 local weldJoint, pivotJointCannon
@@ -51,6 +52,7 @@ lifeText = ""  --serve globale, thanks
 local inVita = true
 local terrainTable = {}
 position = 300
+cont=-600
 metamappa = 20
 whereFrom = 0
 local verifica = true
@@ -93,7 +95,17 @@ function createTerrain()
 	end
 	mappaAttuale = whereFrom
 
-
+if (newGame==3) then
+	monte = display.newImage("images/mont.png")
+	alberi = display.newImage("images/alb.png")
+  cont=cont+4000
+	monte.x = cont
+	monte.y = display.contentCenterY+120
+	alberi.x = cont
+	alberi.y = display.contentCenterY+260
+  camera:add(monte, 7, false)
+	camera:add(alberi, 6, false)
+end
 
 	---------------------------------------------------------
 	-- GENERATORE DINAMICO MAPPA "GROUND"
@@ -175,6 +187,8 @@ function createTerrain()
 			sunset1.y=display.contentHeight
 			sunset1.x=position
 
+
+
 		elseif ( whereFrom == 2 and newGame == 3 ) then
 
 			sunset2.y=display.contentHeight
@@ -192,10 +206,12 @@ function createTerrain()
 			sunset4.y=display.contentHeight
 			sunset4.x=position
 
+
 		elseif ( whereFrom == 5 and newGame == 3) then
 
 			sunset5.y=display.contentHeight
 			sunset5.x=position
+
 
 		elseif ( whereFrom == 6 and newGame == 3) then
 
@@ -210,40 +226,44 @@ function createTerrain()
 		verifica = true
 	end
 end
+---------------------------------------------------------
+-- GENERATORE nuvole
+---------------------------------------------------------
 
 local function cloudGen()
 	local nuvole = math.random(4)
-	
-	if (nuvole == 1) then 
+
+	if (nuvole == 1) then
 	local cloud1 = display.newImageRect("images/cloud.png", 100 * 2, 63 * 2)
 	cloud1.y = display.contentCenterY
 	cloud1.x = cannon.x +1500
 	table.insert( cloudTable, cloud1)
 	camera:add(cloud1, 3, false)
-	
-	elseif (nuvole == 2) then 
+
+	elseif (nuvole == 2) then
 	local cloud2 = display.newImageRect("images/cloud2.png", 100 * 3, 63 * 3)
 	cloud2.y = display.contentCenterY
 	cloud2.x = cannon.x +1500
 	table.insert( cloudTable, cloud2)
 	camera:add(cloud2, 3, false)
-	
-	elseif (nuvole == 3) then 
+
+	elseif (nuvole == 3) then
 	local cloud3 = display.newImageRect("images/cloud3.png", 100 * 1.5, 63 * 1.5)
 	cloud3.y = display.contentCenterY-50
 	cloud3.x = cannon.x +1500
 	table.insert( cloudTable, cloud3)
 	camera:add(cloud3, 3, false)
-	
-	elseif (nuvole == 4) then 
+
+	elseif (nuvole == 4) then
 	local cloud4 = display.newImageRect("images/cloud4.png", 100 *3 , 63 *3 )
 	cloud4.y = display.contentCenterY-50
 	cloud4.x = cannon.x +1500
 	table.insert( cloudTable, cloud4)
 	camera:add(cloud4, 3, false)
 	end
-	
+
 end
+---------------------------------------------------------
 
 
 local function onCollision(event)
@@ -341,25 +361,34 @@ function scene:create( event )
 	cielo.x = display.contentCenterX
 	cielo.y = display.contentCenterY
 	cielo:scale(5,4)
-	
-  elseif (newGame == 2) then 
+
+  elseif (newGame == 2) then
 	cielo = display.newImage("images/sky.jpg")
 	cielo.x = display.contentCenterX
 	cielo.y = display.contentCenterY
 	cielo:scale(5,4)
 
-  elseif (newGame == 3) then 
-	cielo = display.newImageRect("images/bg3.jfif", 1600*2.3, 900*2.3)
+  elseif (newGame == 3) then
+	monteBase = display.newImage("images/mont.png")
+	monteBase.x = cont
+	monteBase.y = display.contentCenterY+120
+	alberiBase = display.newImage("images/alb.png")
+	alberiBase.x = cont
+	alberiBase.y = display.contentCenterY+260
+	cielo = display.newImage("images/sky.jpg")
 	cielo.x = display.contentCenterX
 	cielo.y = display.contentCenterY
+	cielo:scale(5,4)
+	camera:add(monteBase, 6, false)
+	camera:add(alberiBase, 6, false)
 	--cielo:scale(5,4)
 
-  elseif (newGame == 4) then 
+  elseif (newGame == 4) then
 	cielo = display.newImage("images/sky.jpg")
 	cielo.x = display.contentCenterX
 	cielo.y = display.contentCenterY
 	cielo:scale(5,4)
-	
+
   end
 --------------------------------------------------------------------------------
 --TASTI HOME-RESTART
@@ -608,8 +637,10 @@ table.insert( cuoreTable, cuore5 )
 --CAMERA
 --------------------------------------------------------------------------------
  -- camera:add(shape, 5, false)
-  camera:add(cielo, 6, false)
-  camera:setBounds(-1920000,1920000,-2000,780)
+  camera:add(cielo, 7, false)
+
+
+	camera:setBounds(-1920000,1920000,-2000,780)
 
   camera:track()
 
@@ -654,9 +685,9 @@ function scene:show( event )
 	Runtime:addEventListener("collision", onCollision)
 
   Runtime:addEventListener("enterFrame", enterFrame)
-  
+
 	cloudGen()
-  
+
    cloudLoopTimer = timer.performWithDelay(5000, cloudGen, 0)
 
    gameLoopTimer = timer.performWithDelay(10000, function()

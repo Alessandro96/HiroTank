@@ -41,21 +41,21 @@ function scene:create( event )
 	home.x = 100
 	home.y = 1000
 
-	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",1200, 600)
+	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",800, 300)
 	sceneGroup:insert( bottoneM1 )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
-	
+
 	local coppa = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
 	sceneGroup:insert( coppa )
 	coppa.x = 725
 	coppa.y = 440
-	
+
 	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
 	sceneGroup:insert( piedi )
 	piedi.x = 180
 	piedi.y = 440
-	
+
 	maxT1Punteggio=display.newText(" "..maxT1.punteggio, 800, 440, native.systemFont, 50)
 	maxT1Distanza=display.newText(" "..maxT1.distanza, 270, 440, native.systemFont, 50)
 	sceneGroup:insert(maxT1Punteggio)
@@ -68,13 +68,13 @@ function scene:create( event )
 	sceneGroup:insert( coppa )
 	coppa.x = 1625
 	coppa.y = 440
-	
+
 	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
 	sceneGroup:insert( piedi )
 	piedi.x = 1100
 	piedi.y = 440
-	
-	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",1200, 600)
+
+	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
@@ -84,18 +84,18 @@ function scene:create( event )
 	sceneGroup:insert(maxT2Distanza)
 	maxT2Punteggio:setFillColor(1,1,1)
 	maxT2Distanza:setFillColor(1,1,1)
-	
+
 	local coppa = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
 	sceneGroup:insert( coppa )
 	coppa.x = 725
 	coppa.y = 950
-	
+
 	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
 	sceneGroup:insert( piedi )
 	piedi.x = 180
 	piedi.y = 950
 
-	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",1200, 600)
+	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
 	sceneGroup:insert( bottoneM3 )
 	maxT3Punteggio=display.newText(" "..maxT3.punteggio, 800, 950, native.systemFont, 50)
 	maxT3Distanza=display.newText(" "..maxT3.distanza, 270, 950, native.systemFont, 50)
