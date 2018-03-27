@@ -1,6 +1,5 @@
 
--------------------------------------INIZIO-------------------------------------
-
+system.activate( "multitouch" )
 
 local l = {}
 
@@ -14,7 +13,8 @@ function l.pulsantiMovimentoCingolo()
   	local t = event.target
 
   	if "began" == event.phase then
-  		display.getCurrentStage():setFocus(t)
+		display.getCurrentStage():setFocus( event.target, event.id )
+  		--display.getCurrentStage():setFocus(t)
   		t.isFocus = true
   		params.m.result = t.result
 
@@ -26,11 +26,16 @@ function l.pulsantiMovimentoCingolo()
 
   	  elseif t.isFocus then
   		  if "moved" == event.phase then
-  		elseif "ended" == event.phase then
-  			display.getCurrentStage():setFocus(nil)
+  	elseif "ended" == event.phase or controlloc == false then
+			display.getCurrentStage():setFocus( event.target, nil )
+  			--display.getCurrentStage():setFocus(nil)
   			t.isFocus = false
+			params.ruota1:applyTorque(0)
+            params.ruota2:applyTorque(0)
+		    params.ruota3:applyTorque(0)
+            params.ruota4:applyTorque(0)
   			params.m.result = "none"
-  		end
+  	end
   	end
   end
 
@@ -50,10 +55,10 @@ function l.pulsantiMovimentoCingolo()
 
   	end
   end
+  
 
   function m.rotate.dx()
-    local pulsanteDx = display.newImage("images/dx.png")
-    pulsanteDx:scale(2,2)
+    local pulsanteDx = display.newImageRect("images/pulsanti/dx.png",160,160)
     pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 1550
     pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 10
     pulsanteDx.result = "rotate:right"
@@ -75,9 +80,8 @@ function l.pulsantiMovimentoCingolo()
     end
 
   function m.rotate.sx()
-    local pulsanteSx = display.newImage("images/sx.png")
-    pulsanteSx:scale(2,2)
-    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1350
+    local pulsanteSx = display.newImageRect("images/pulsanti/sx.png",160,160)
+    pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth + 1250
     pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 8
     pulsanteSx.result = "rotate:left"
 
@@ -95,24 +99,24 @@ function l.pulsantiMovimentoCingolo()
 end
 
 function l.pulsanteCannoneDx()
-  local pulsanteDx = display.newImageRect("images/bottone.png", 150, 150)
+  local pulsanteDx = display.newImageRect("images/pulsanti/down.png", 150, 150)
   pulsanteDx.x = display.screenOriginX + pulsanteDx.contentWidth + 253
   pulsanteDx.y = display.contentHeight - pulsanteDx.contentHeight - 150
   return pulsanteDx
 end
 
 function l.pulsanteCannoneSx()
-  local pulsanteSx = display.newImageRect("images/bottone.png", 150, 150)
+  local pulsanteSx = display.newImageRect("images/pulsanti/up.png", 150, 150)
   pulsanteSx.x = display.screenOriginX + pulsanteSx.contentWidth+15
-    pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 150
+  pulsanteSx.y = display.contentHeight - pulsanteSx.contentHeight - 150
   return pulsanteSx
 end
 
 function l.pulsanteSparo()
-  local pulsanteSparo = display.newImageRect("images/missile2.png",230, 230)
+  local pulsanteSparo = display.newImageRect("images/pulsanti/bomba.png",160, 160)
   --pulsanteSparo:scale(2,2)
-  pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+60
-  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight + 110
+  pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+120
+  pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight+30
   return pulsanteSparo
 end
 

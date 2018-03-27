@@ -12,15 +12,10 @@ local sounds = {
     menu_music = 'sounds/menu_music.mp3',
     game_music = 'sounds/game_music.mp3',
     tap = 'sounds/tap.wav',
-    bug = 'sounds/bug.wav',
-    cannon_touch = 'sounds/cannon_touch.wav',
-    ball_destroy = 'sounds/ball_destroy.wav',
+    tank = 'sounds/tank.mp3',
 	explosion = 'sounds/explosion.wav',
-	poof = 'sounds/poof.wav',
 	impact = 'sounds/impact.wav',
 	cannon = 'sounds/cannon.wav',
-	win = 'sounds/win.wav',
-	lose = 'sounds/lose.wav'
 }
 
 -- Reserve two channels for streams and switch between them with a nice fade out / fade in transition

@@ -56,36 +56,112 @@ function scene:create( event )
 
 
 
-	local bottoneM1 = display.newImageRect(sceneGroup, "images/music_on.png",300, 300)
+	local bottoneM1 = display.newImageRect(sceneGroup, "images/pulsanti/mon.png",300, 300)
 	sceneGroup:insert( bottoneM1 )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
 
-	local bottoneM2 = display.newImageRect(sceneGroup, "images/music_off.png",300, 300)
+	local bottoneM2 = display.newImageRect(sceneGroup, "images/pulsanti/moff.png",300, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
 
-	local bottoneM3 = display.newImageRect(sceneGroup, "images/sounds_on.png",300, 300)
+	local bottoneM3 = display.newImageRect(sceneGroup, "images/pulsanti/aon.png",300, 300)
 	sceneGroup:insert( bottoneM3 )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
 
-	local bottoneM4 = display.newImageRect(sceneGroup, "images/sounds_off.png",300, 300)
+	local bottoneM4 = display.newImageRect(sceneGroup, "images/pulsanti/aoff.png",300, 300)
 	sceneGroup:insert( bottoneM4 )
 	bottoneM4.x = 1400
 	bottoneM4.y = 750
 
-	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
+	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
 	home.x = 100
 	home.y = 1000
 
-	bottoneM1:addEventListener("tap", mOn)
-	bottoneM2:addEventListener("tap", mOff)
-	bottoneM3:addEventListener("tap", sOn)
-	bottoneM4:addEventListener("tap", sOff)
-	home:addEventListener("tap", gotoMenu)
+	
+	
+	bottoneM1:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						b1p = display.newImageRect("images/pulsanti/monp.png",300, 300)
+						b1p.x = 500
+						b1p.y = 250
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						b1p:removeSelf()
+						b1p = nil
+						mOn()
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+	end )
+	
+	bottoneM2:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						b2p = display.newImageRect("images/pulsanti/moffp.png",300, 300)
+						b2p.x = 1400
+						b2p.y = 250
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						b2p:removeSelf()
+						b2p = nil
+						mOff()
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+	end )
+	
+	bottoneM3:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						b3p = display.newImageRect("images/pulsanti/aonp.png",300, 300)
+						b3p.x = 500
+						b3p.y = 750
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						b3p:removeSelf()
+						b3p = nil
+						sOn()
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+	end )
+	
+	bottoneM4:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						b4p = display.newImageRect("images/pulsanti/aoffp.png",300, 300)
+						b4p.x = 1400
+						b4p.y = 750
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						b4p:removeSelf()
+						b4p = nil
+						sOff()
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+	end )
+	
+	home:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
+						homep.x = 100
+						homep.y = 1000
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						homep:removeSelf()
+						homep = nil
+						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+	end )
 
 	-- Touch event listener for button
 	function onButtonClick( event )

@@ -26,27 +26,27 @@ function scene:create( event )
 	bg.y = display.contentCenterY
 
 
-	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
+	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
 	home.x = 100
 	home.y = 1000
 
-	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",1200, 600)
+	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",800, 300)
 	sceneGroup:insert( bottoneM1 )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
 
-	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",1200, 600)
+	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
 
-	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",1200, 600)
+	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
 	sceneGroup:insert( bottoneM3 )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
 
-	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",1200, 600)
+	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",800, 300)
 	sceneGroup:insert( bottoneM4 )
 	bottoneM4.x = 1400
 	bottoneM4.y = 750
@@ -66,8 +66,21 @@ function scene:create( event )
 																			sounds.play('tap', { channel=2})
 																			composer.gotoScene("classifica")
 																		end)
-	home:addEventListener("tap", function() composer.gotoScene("menu")
-								 sounds.play('tap', { channel=2}) end)
+	home:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
+						homep.x = 100
+						homep.y = 1000
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						homep:removeSelf()
+						homep = nil
+						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+					end )
 
 end
 

@@ -36,7 +36,7 @@ function scene:create( event )
 	bg.x = display.contentCenterX
 	bg.y = display.contentCenterY
 
-	local home = display.newImageRect(sceneGroup, "images/home.png",150, 150)
+	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
 	home.x = 100
 	home.y = 1000
@@ -129,10 +129,21 @@ function scene:create( event )
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
-	home:addEventListener("tap", function()
-																	composer.gotoScene("menu")
-																	sounds.play('tap', { channel=2})
-															 end)
+	home:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
+						homep.x = 100
+						homep.y = 1000
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						homep:removeSelf()
+						homep = nil
+						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+					end )
 
 	-- Touch event listener for button
 	function onButtonClick( event )

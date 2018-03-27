@@ -9,6 +9,7 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 display.setStatusBar( display.HiddenStatusBar )
+system.activate( "multitouch" )
 
 local physics = require("physics")
 physics.start()
@@ -234,28 +235,28 @@ local function cloudGen()
 	local nuvole = math.random(4)
 
 	if (nuvole == 1) then
-	local cloud1 = display.newImageRect("images/cloud.png", 100 * 2, 63 * 2)
+	local cloud1 = display.newImageRect("images/nuvole/cloud.png", 100 * 2, 63 * 2)
 	cloud1.y = display.contentCenterY
 	cloud1.x = cannon.x +1500
 	table.insert( cloudTable, cloud1)
 	camera:add(cloud1, 3, false)
 
 	elseif (nuvole == 2) then
-	local cloud2 = display.newImageRect("images/cloud2.png", 100 * 3, 63 * 3)
+	local cloud2 = display.newImageRect("images/nuvole/cloud2.png", 100 * 3, 63 * 3)
 	cloud2.y = display.contentCenterY
 	cloud2.x = cannon.x +1500
 	table.insert( cloudTable, cloud2)
 	camera:add(cloud2, 3, false)
 
 	elseif (nuvole == 3) then
-	local cloud3 = display.newImageRect("images/cloud3.png", 100 * 1.5, 63 * 1.5)
+	local cloud3 = display.newImageRect("images/nuvole/cloud3.png", 100 * 1.5, 63 * 1.5)
 	cloud3.y = display.contentCenterY-50
 	cloud3.x = cannon.x +1500
 	table.insert( cloudTable, cloud3)
 	camera:add(cloud3, 3, false)
 
 	elseif (nuvole == 4) then
-	local cloud4 = display.newImageRect("images/cloud4.png", 100 *3 , 63 *3 )
+	local cloud4 = display.newImageRect("images/nuvole/cloud4.png", 100 *3 , 63 *3 )
 	cloud4.y = display.contentCenterY-50
 	cloud4.x = cannon.x +1500
 	table.insert( cloudTable, cloud4)
@@ -393,13 +394,24 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --TASTI HOME-RESTART
 --------------------------------------------------------------------------------
-home = display.newImageRect("images/home.png",150, 150)
+home = display.newImageRect("images/pulsanti/home.png",150, 150)
 home.x = display.contentWidth-80
 home.y = 80
-home:addEventListener("tap", function()
-					sounds.play('tap', { channel=2})
-				 	timer.performWithDelay( 10,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
-																		end )
+home:addEventListener("touch", function(event)
+					local t = event.target
+					if "began" == event.phase then
+						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
+						homep.x = display.contentWidth-80
+						homep.y = 80
+						display.getCurrentStage():setFocus( event.target, event.id )
+						sounds.play('tap', { channel=2})
+					elseif "ended" == event.phase then
+						homep:removeSelf()
+						homep = nil
+						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+						display.getCurrentStage():setFocus( event.target, nil )
+					end
+					end )
 --------------------------------------------------------------------------------
 --CARICAMENTO TERRENO TIPOLOGIA "GROUND"
 --------------------------------------------------------------------------------
@@ -648,22 +660,85 @@ table.insert( cuoreTable, cuore5 )
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
 
-  sx:addEventListener("tap", function() if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end end)
-  dx:addEventListener("tap", function() if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end end)
+ sx:addEventListener("touch", function(event) 
+									local t = event.target
+									if "began" == event.phase then
+										pulsanteSx2 = display.newImageRect("images/pulsanti/upp.png", 150, 150)
+										pulsanteSx2.x = display.screenOriginX + pulsanteSx2.contentWidth+15
+										pulsanteSx2.y = display.contentHeight - pulsanteSx2.contentHeight - 150
+										display.getCurrentStage():setFocus( event.target, event.id )
+										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end 
+									elseif "ended" == event.phase then
+										pulsanteSx2:removeSelf()
+										pulsanteSx2 = nil
+										display.getCurrentStage():setFocus( event.target, nil )
+									end
+								end)
+	
+  dx:addEventListener("touch", function(event) 
+									local t = event.target
+									if "began" == event.phase then
+										pulsanteDx2 = display.newImageRect("images/pulsanti/downp.png", 150, 150)
+										pulsanteDx2.x = display.screenOriginX + pulsanteDx2.contentWidth + 253
+										pulsanteDx2.y = display.contentHeight - pulsanteDx2.contentHeight - 150
+										display.getCurrentStage():setFocus( event.target, event.id )
+										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end 
+									elseif "ended" == event.phase then
+										pulsanteDx2:removeSelf()
+										pulsanteDx2 = nil
+										display.getCurrentStage():setFocus( event.target, nil )
+									end
+								end)
 
 
-  sparo:addEventListener("tap", function()
-									local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
-									sounds.play('cannon', { channel=2})
-									ball:shoot(camera)
+  sparo:addEventListener("touch",function(event)
+									local t = event.target
+									if "began" == event.phase then
+										pulsanteSparo = display.newImageRect("images/pulsanti/bombap.png",160, 160)
+										pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+120
+										pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight + 30
+										display.getCurrentStage():setFocus( event.target, event.id )
+										local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
+										sounds.play('cannon', { channel=2})
+										ball:shoot(camera)
+									elseif "ended" == event.phase then
+										pulsanteSparo:removeSelf()
+										pulsanteSparo = nil
+										display.getCurrentStage():setFocus( event.target, nil )
+									end
 								end)
 
   m.rotate.left:addEventListener("touch", function(event)
-											pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+											local t = event.target
+											if "began" == event.phase then
+												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+												pulsanteSx3 = display.newImageRect("images/pulsanti/sxp.png",160,160)
+												pulsanteSx3.x = display.screenOriginX + pulsanteSx3.contentWidth + 1250
+												pulsanteSx3.y = display.contentHeight - pulsanteSx3.contentHeight - 8
+												--test = sounds.play( 'tank' ) 
+												
+											elseif "ended" == event.phase then
+												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+												pulsanteSx3:removeSelf()
+												pulsanteSx3 = nil
+												--sounds.stop( backgroundMusicChannel )
+												display.getCurrentStage():setFocus( event.target, nil )
+											end
 										  end)
 
   m.rotate.right:addEventListener("touch",  function(event)
-												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+												local t = event.target
+												if "began" == event.phase then
+													pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+													pulsanteDx3 = display.newImageRect("images/pulsanti/dxp.png",160,160)
+													pulsanteDx3.x = display.screenOriginX + pulsanteDx3.contentWidth + 1550
+													pulsanteDx3.y = display.contentHeight - pulsanteDx3.contentHeight - 10
+												elseif "ended" == event.phase then
+													pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
+													pulsanteDx3:removeSelf()
+													pulsanteDx3 = nil
+													display.getCurrentStage():setFocus( event.target, nil )
+												end
 											end)
 end
 

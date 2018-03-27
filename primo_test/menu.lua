@@ -17,7 +17,6 @@ physics.start()
 
 local btn = nil
 local myLevel = {}
-local bottoneGioca
 maxT1={distanza=800, punteggio=74}
 maxT2={distanza=800, punteggio=74}
 maxT3={distanza=800, punteggio=74}
@@ -37,29 +36,67 @@ function scene:create( event )
 
 	sounds.play('menu')
 
-	bottoneGioca = display.newImageRect(sceneGroup, "images/play.png",300, 300)
+	local bottoneGioca = display.newImageRect(sceneGroup, "images/pulsanti/play.png",300, 300)
 	bottoneGioca.x = 1500
 	bottoneGioca.y = 250
 
-	bottoneScore = display.newImageRect(sceneGroup, "images/score.png",300, 300)
+	local bottoneScore = display.newImageRect(sceneGroup, "images/pulsanti/score.png",300, 300)
 	bottoneScore.x = 1500
 	bottoneScore.y = 550
 
-	bottoneSet = display.newImageRect(sceneGroup, "images/settings.png",300, 300)
+	local bottoneSet = display.newImageRect(sceneGroup, "images/pulsanti/settings.png",300, 300)
 	bottoneSet.x = 1500
 	bottoneSet.y = 850
 
-	bottoneGioca:addEventListener("tap", function()
-																				composer.gotoScene("menuLivelli")
-																				sounds.play('tap', { channel=2})
-																			 end)
-	bottoneSet:addEventListener("tap", function()
-																			composer.gotoScene("menuSet")
-																			sounds.play('tap', { channel=2})
-																		 end)
-	bottoneScore:addEventListener("tap", function()
-																				composer.gotoScene("menuClassifica")
-																				sounds.play('tap', { channel=2})
+	bottoneGioca:addEventListener("touch", function(event)
+												local t = event.target
+												if "began" == event.phase then
+													display.getCurrentStage():setFocus( event.target, event.id )
+													bottoneGioca2 = display.newImageRect("images/pulsanti/playp.png",300, 300)
+													bottoneGioca2.x = 1500
+													bottoneGioca2.y = 250
+													sounds.play('tap', { channel=2})
+													--composer.gotoScene("menuLivelli")
+													
+												elseif "ended" == event.phase then
+													bottoneGioca2:removeSelf()
+													bottoneGioca2 = nil
+													timer.performWithDelay( 10,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
+													display.getCurrentStage():setFocus( event.target, nil )
+												end
+								 end)
+								 
+	bottoneSet:addEventListener("touch", function(event)
+											local t = event.target
+											if "began" == event.phase then
+												display.getCurrentStage():setFocus( event.target, event.id )
+												bottoneSet2 = display.newImageRect("images/pulsanti/settingsp.png",300, 300)
+												bottoneSet2.x = 1500
+												bottoneSet2.y = 850
+												sounds.play('tap', { channel=2})
+											elseif "ended" == event.phase then
+												bottoneSet2:removeSelf()
+												bottoneSet2 = nil
+												timer.performWithDelay( 10,composer.gotoScene( "menuSet", { time=800, effect="crossFade" } ))
+												display.getCurrentStage():setFocus( event.target, nil )
+											end
+								
+								end)
+								
+	bottoneScore:addEventListener("touch", function(event)
+											local t = event.target
+											if "began" == event.phase then
+												display.getCurrentStage():setFocus( event.target, event.id )
+												bottoneScore2 = display.newImageRect("images/pulsanti/scorep.png",300, 300)
+												bottoneScore2.x = 1500
+												bottoneScore2.y = 550
+												sounds.play('tap', { channel=2})
+											elseif "ended" == event.phase then
+												bottoneScore2:removeSelf()
+												bottoneScore2 = nil
+												timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
+												display.getCurrentStage():setFocus( event.target, nil )
+											end
 																			 end)
 
 	musicTrack = audio.loadStream( "sounds/menu.wav" )
