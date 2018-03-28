@@ -5,6 +5,7 @@
 ---------------------------------------------------------------------------------
 local composer = require( "composer" )
 local sounds = require('lib.sounds')
+local database = require("class.database")
 local scene = composer.newScene()
 require("lib.LD_LoaderX")
 physics = require ("physics")
@@ -17,10 +18,6 @@ physics.start()
 
 local btn = nil
 local myLevel = {}
-maxT1={distanza=800, punteggio=74}
-maxT2={distanza=800, punteggio=74}
-maxT3={distanza=800, punteggio=74}
-
 local musicTrack
 
 -- Called when the scene's view does not exist:
@@ -33,6 +30,7 @@ function scene:create( event )
 	myLevel= LD_Loader:new(self.view)
 	myLevel:loadLevel("Level02") -- set your scene/level name here
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
+	database.createDatabase()
 
 	sounds.play('menu')
 
@@ -57,7 +55,7 @@ function scene:create( event )
 													bottoneGioca2.y = 250
 													sounds.play('tap', { channel=2})
 													--composer.gotoScene("menuLivelli")
-													
+
 												elseif "ended" == event.phase then
 													bottoneGioca2:removeSelf()
 													bottoneGioca2 = nil
@@ -65,7 +63,7 @@ function scene:create( event )
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
 								 end)
-								 
+
 	bottoneSet:addEventListener("touch", function(event)
 											local t = event.target
 											if "began" == event.phase then
@@ -80,9 +78,9 @@ function scene:create( event )
 												timer.performWithDelay( 10,composer.gotoScene( "menuSet", { time=800, effect="crossFade" } ))
 												display.getCurrentStage():setFocus( event.target, nil )
 											end
-								
+
 								end)
-								
+
 	bottoneScore:addEventListener("touch", function(event)
 											local t = event.target
 											if "began" == event.phase then

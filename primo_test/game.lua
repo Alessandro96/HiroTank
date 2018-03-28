@@ -50,15 +50,19 @@ local go = nil
 local tempRotazione = 180
 scoreText = "" --serve globale, thanks
 lifeText = ""  --serve globale, thanks
+local messaggioRecordPunteggio
 local inVita = true
 local terrainTable = {}
 position = 300
-cont=-600
+cont = -600
 metamappa = 20
 whereFrom = 0
 local verifica = true
+local controlloPunteggio = true
+local controlloDistanza = true
 local mappaAttuale = -1
 metri = 0
+local primoInClassifica = {}
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -79,11 +83,27 @@ local function enterFrame(event)
 		end
 	else
 	end
+	if ((score==primoInClassifica.punteggio) and (controlloPunteggio==true)) then
+		local messaggioRecordPunteggio = display.newText("DA GRANDE DIVENTERAI UNA STAR, CAMPIONE", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
+		messaggioRecordPunteggio:setFillColor(0.6,0.5,0)
+		controlloPunteggio=false
+		timer.performWithDelay(2000, function()
+																		messaggioRecordPunteggio:removeSelf()
+																		messaggioRecordPunteggio=nil
+																 end)
+	end
+	if (metri==primoInClassifica.distanza and controlloDistanza==true) then
+		local messaggioRecordDistanza = display.newText("PIETRO TARICONE", display.contentCenterX, display.contentCenterY-100, native.systemFont , 60)
+		messaggioRecordDistanza:setFillColor(0.6,0.5,0)
+		controlloDistanza=false
+		timer.performWithDelay(2000, function()
+																		messaggioRecordDistanza:removeSelf()
+																		messaggioRecordDistanza=nil
+																 end)
+	end
 end
 
 function createTerrain()
-
-
 	position = position+2000
 	whereFrom = math.random(6)
 
@@ -293,7 +313,6 @@ local function onCollision(event)
 			life=0
 		end
 		if(life==0 and inVita==true)then
-			--sounds.play('explosion', { channel=4})
 			database.writeDatabase(score, metri)
 			inVita = false
 			screenOff()
@@ -318,7 +337,7 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
-  --physics.setDrawMode("hybrid")
+  physics.setDrawMode("hybrid")
 
   scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
@@ -331,6 +350,13 @@ function scene:create( event )
 --CINGOLO
 --------------------------------------------------------------------------------
 	cingolo = carrarmato.newCingolo(camera)
+
+--------------------------------------------------------------------------------
+--PRIMO IN CLASSIFICA
+--------------------------------------------------------------------------------
+	primoInClassifica = database.primoInClassifica()
+	print(primoInClassifica.punteggio)
+	print(primoInClassifica.distanza)
 
 --------------------------------------------------------------------------------
 --TANK
@@ -648,9 +674,7 @@ table.insert( cuoreTable, cuore5 )
 --------------------------------------------------------------------------------
 --CAMERA
 --------------------------------------------------------------------------------
- -- camera:add(shape, 5, false)
   camera:add(cielo, 7, false)
-
 
 	camera:setBounds(-1920000,1920000,-2000,780)
 
@@ -660,29 +684,29 @@ table.insert( cuoreTable, cuore5 )
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
 
- sx:addEventListener("touch", function(event) 
+ sx:addEventListener("touch", function(event)
 									local t = event.target
 									if "began" == event.phase then
 										pulsanteSx2 = display.newImageRect("images/pulsanti/upp.png", 150, 150)
 										pulsanteSx2.x = display.screenOriginX + pulsanteSx2.contentWidth+15
 										pulsanteSx2.y = display.contentHeight - pulsanteSx2.contentHeight - 150
 										display.getCurrentStage():setFocus( event.target, event.id )
-										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end 
+										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end
 									elseif "ended" == event.phase then
 										pulsanteSx2:removeSelf()
 										pulsanteSx2 = nil
 										display.getCurrentStage():setFocus( event.target, nil )
 									end
 								end)
-	
-  dx:addEventListener("touch", function(event) 
+
+  dx:addEventListener("touch", function(event)
 									local t = event.target
 									if "began" == event.phase then
 										pulsanteDx2 = display.newImageRect("images/pulsanti/downp.png", 150, 150)
 										pulsanteDx2.x = display.screenOriginX + pulsanteDx2.contentWidth + 253
 										pulsanteDx2.y = display.contentHeight - pulsanteDx2.contentHeight - 150
 										display.getCurrentStage():setFocus( event.target, event.id )
-										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end 
+										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end
 									elseif "ended" == event.phase then
 										pulsanteDx2:removeSelf()
 										pulsanteDx2 = nil
@@ -715,8 +739,8 @@ table.insert( cuoreTable, cuore5 )
 												pulsanteSx3 = display.newImageRect("images/pulsanti/sxp.png",160,160)
 												pulsanteSx3.x = display.screenOriginX + pulsanteSx3.contentWidth + 1250
 												pulsanteSx3.y = display.contentHeight - pulsanteSx3.contentHeight - 8
-												--test = sounds.play( 'tank' ) 
-												
+												--test = sounds.play( 'tank' )
+
 											elseif "ended" == event.phase then
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
 												pulsanteSx3:removeSelf()

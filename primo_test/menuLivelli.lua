@@ -1,10 +1,6 @@
----------------------------------------------------------------------------------
---
--- scene1.lua
---
----------------------------------------------------------------------------------
 local composer = require( "composer" )
 local sounds = require('lib.sounds')
+local database = require("class.database")
 local scene = composer.newScene()
 require("lib.LD_LoaderX")
 
@@ -46,65 +42,72 @@ function scene:create( event )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
 
-	local coppa = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa )
-	coppa.x = 725
-	coppa.y = 440
-
-	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi )
-	piedi.x = 180
-	piedi.y = 440
-
-	maxT1Punteggio=display.newText(" "..maxT1.punteggio, 800, 440, native.systemFont, 50)
-	maxT1Distanza=display.newText(" "..maxT1.distanza, 270, 440, native.systemFont, 50)
-	sceneGroup:insert(maxT1Punteggio)
-	sceneGroup:insert(maxT1Distanza)
-	maxT1Punteggio:setFillColor(1,1,1)
-	maxT1Distanza:setFillColor(1,1,1)
-
-
-	local coppa = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa )
-	coppa.x = 1625
-	coppa.y = 440
-
-	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi )
-	piedi.x = 1100
-	piedi.y = 440
-
 	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
-	maxT2Punteggio=display.newText(" "..maxT2.punteggio, 1700, 440, native.systemFont, 50)
-	maxT2Distanza=display.newText(" "..maxT2.distanza, 1190, 440, native.systemFont, 50)
-	sceneGroup:insert(maxT2Punteggio)
-	sceneGroup:insert(maxT2Distanza)
-	maxT2Punteggio:setFillColor(1,1,1)
-	maxT2Distanza:setFillColor(1,1,1)
-
-	local coppa = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa )
-	coppa.x = 725
-	coppa.y = 950
-
-	local piedi = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi )
-	piedi.x = 180
-	piedi.y = 950
 
 	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
 	sceneGroup:insert( bottoneM3 )
-	maxT3Punteggio=display.newText(" "..maxT3.punteggio, 800, 950, native.systemFont, 50)
-	maxT3Distanza=display.newText(" "..maxT3.distanza, 270, 950, native.systemFont, 50)
-	sceneGroup:insert(maxT3Punteggio)
-	sceneGroup:insert(maxT3Distanza)
-	maxT3Punteggio:setFillColor(1,1,1)
-	maxT3Distanza:setFillColor(1,1,1)
 	bottoneM3.x = 500
 	bottoneM3.y = 750
+
+	local coppa1 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+	sceneGroup:insert( coppa1 )
+	coppa1.x = bottoneM1.x+230
+	coppa1.y = 440
+
+	local piedi1 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+	sceneGroup:insert( piedi1 )
+	piedi1.x = bottoneM1.x-250
+	piedi1.y = 440
+
+	local coppa2 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+	sceneGroup:insert( coppa2 )
+	coppa2.x = bottoneM2.x+230
+	coppa2.y = 440
+
+	local piedi2 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+	sceneGroup:insert( piedi2 )
+	piedi2.x = bottoneM2.x-250
+	piedi2.y = 440
+
+	local coppa3 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+	sceneGroup:insert( coppa3 )
+	coppa3.x = bottoneM3.x+230
+	coppa3.y = 950
+
+	local piedi3 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+	sceneGroup:insert( piedi3 )
+	piedi3.x = bottoneM3.x-250
+	piedi3.y = 950
+
+	maxT1Punteggio=display.newText("cavoletto", bottoneM1.x+255, 440, native.systemFont, 50)
+	maxT1Distanza=display.newText("cavoletto", bottoneM1.x-220, 440, native.systemFont, 50)
+	sceneGroup:insert(maxT1Punteggio)
+	sceneGroup:insert(maxT1Distanza)
+	maxT1Punteggio:setFillColor(0,0,0)
+	maxT1Distanza:setFillColor(0,0,0)
+	maxT1Punteggio.anchorX=0
+	maxT1Distanza.anchorX=0
+
+	maxT2Punteggio=display.newText("cavoletto", bottoneM2.x+255, 440, native.systemFont, 50)
+	maxT2Distanza=display.newText("cavoletto", bottoneM2.x-220, 440, native.systemFont, 50)
+	sceneGroup:insert(maxT2Punteggio)
+	sceneGroup:insert(maxT2Distanza)
+	maxT2Punteggio:setFillColor(0,0,0)
+	maxT2Distanza:setFillColor(0,0,0)
+	maxT2Punteggio.anchorX=0
+	maxT2Distanza.anchorX=0
+
+	maxT3Punteggio=display.newText("cavoletto", bottoneM3.x+255, 950, native.systemFont, 50)
+	maxT3Distanza=display.newText("cavoletto", bottoneM3.x-220, 950, native.systemFont, 50)
+	sceneGroup:insert(maxT3Punteggio)
+	sceneGroup:insert(maxT3Distanza)
+	maxT3Punteggio:setFillColor(0,0,0)
+	maxT3Distanza:setFillColor(0,0,0)
+	maxT3Punteggio.anchorX=0
+	maxT3Distanza.anchorX=0
 
 	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",1200, 600)
 	sceneGroup:insert( bottoneM4 )
@@ -170,6 +173,7 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
+				database.aggiornaPunteggiMax(maxT1Punteggio, maxT2Punteggio, maxT3Punteggio, maxT1Distanza, maxT2Distanza, maxT3Distanza)
     elseif ( phase == "did" ) then
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.

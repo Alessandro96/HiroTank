@@ -1,108 +1,101 @@
 require("sqlite3")
 local M={}
-local path = system.pathForFile("data.db", system.DocumentsDirectory)
-local db=sqlite3.open(path)
+
+function M.createDatabase()
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+
+	local classificaT1 = [[CREATE TABLE IF NOT EXISTS classificaT1 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
+	db:exec(classificaT1)
+
+	local contaRigheT1=[[CREATE VIEW IF NOT EXISTS contaRigheT1 AS SELECT COUNT (*) as contatore FROM classificaT1;]]
+	db:exec(contaRigheT1)
+
+	local ordinaClassificaT1=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT1 AS	SELECT punteggio, distanza FROM classificaT1	ORDER BY distanza DESC;]]
+	db:exec(ordinaClassificaT1)
+
+	local ordinaClassificaPunteggioT1 = [[CREATE VIEW IF NOT EXISTS ordinePunteggioT1 AS	SELECT punteggio, distanza FROM classificaT1	ORDER BY punteggio DESC;]]
+	db:exec(ordinaClassificaPunteggioT1)
+
+	local classificaT2 = [[CREATE TABLE IF NOT EXISTS classificaT2 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
+	db:exec(classificaT2)
+
+	local contaRigheT2=[[CREATE VIEW IF NOT EXISTS contaRigheT2 AS	SELECT COUNT (*) as contatore FROM classificaT2;]]
+	db:exec(contaRigheT2)
+
+	local ordinaClassificaT2=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT2 AS	SELECT punteggio, distanza FROM classificaT2	ORDER BY distanza DESC;]]
+	db:exec(ordinaClassificaT2)
+
+	local ordinaClassificaPunteggioT2 = [[CREATE VIEW IF NOT EXISTS ordinePunteggioT2 AS	SELECT punteggio, distanza FROM classificaT2	ORDER BY punteggio DESC;]]
+	db:exec(ordinaClassificaPunteggioT2)
+
+	local classificaT3 = [[CREATE TABLE IF NOT EXISTS classificaT3 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
+	db:exec(classificaT3)
+
+	local contaRigheT3=[[CREATE VIEW IF NOT EXISTS contaRigheT3 AS	SELECT COUNT (*) as contatore FROM classificaT3;]]
+	db:exec(contaRigheT3)
+
+	local ordinaClassificaT3=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT3 AS	SELECT punteggio, distanza FROM classificaT3	ORDER BY distanza DESC;]]
+	db:exec(ordinaClassificaT3)
+
+	local ordinaClassificaPunteggioT3 = [[CREATE VIEW IF NOT EXISTS ordinePunteggioT3 AS	SELECT punteggio, distanza FROM classificaT3	ORDER BY punteggio DESC;]]
+	db:exec(ordinaClassificaPunteggioT3)
+
+	for row in db:nrows("SELECT * FROM contaRigheT1") do
+		if(row.contatore==0) then
+			db:exec([[INSERT INTO classificaT1 VALUES(null,]].. (0)..[[, ]]..(0)..[[);]])
+		end
+	end
+
+	for row in db:nrows("SELECT * FROM contaRigheT2") do
+		if(row.contatore==0) then
+			db:exec([[INSERT INTO classificaT2 VALUES(null,]]..(0)..[[, ]]..(0)..[[);]])
+		end
+	end
+
+	for row in db:nrows("SELECT * FROM contaRigheT3") do
+		if(row.contatore==0) then
+			db:exec([[INSERT INTO classificaT3 VALUES(null,]]..(0)..[[, ]]..(0)..[[);]])
+		end
+	end
+
+	if ( db and db:isopen() ) then
+    db:close()
+	end
+end
 
 function M.writeDatabase(score, metri)
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
 	if(newGame==1) then
-		local classificaT1 = [[CREATE TABLE IF NOT EXISTS classificaT1 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT1)
-
-		local contaRigheT1=[[CREATE VIEW IF NOT EXISTS contaRigheT1 AS
-												SELECT COUNT (*) as contatore FROM classificaT1;]]
-		db:exec(contaRigheT1)
-
-		for row in db:nrows("SELECT * FROM contaRigheT1") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT1 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
-		if(score>maxT1.punteggio)then
-			maxT1.punteggio=score
-		end
-		if(metri>maxT1.distanza)then
-			maxT1.distanza=metri
-		end
 		local query=[[INSERT INTO classificaT1 VALUES(null,]].. score..[[, ]]..metri..[[);]]
 		db:exec(query)
 
 	elseif(newGame==2) then
-		local classificaT2 = [[CREATE TABLE IF NOT EXISTS classificaT2 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT2)
-
-		local contaRigheT2=[[CREATE VIEW IF NOT EXISTS contaRigheT2 AS
-												SELECT COUNT (*) as contatore FROM classificaT2;]]
-		db:exec(contaRigheT2)
-
-		for row in db:nrows("SELECT * FROM contaRigheT2") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT2 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
-
-		if(score>maxT2.punteggio)then
-			maxT2.punteggio=score
-		end
-		if(metri>maxT2.distanza)then
-			maxT2.distanza=metri
-		end
 		local query=[[INSERT INTO classificaT2 VALUES(null,]].. score..[[, ]]..metri..[[);]]
 		db:exec(query)
+
 	elseif(newGame==3) then
-		local classificaT3 = [[CREATE TABLE IF NOT EXISTS classificaT3 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT3)
-
-		local contaRigheT3=[[CREATE VIEW IF NOT EXISTS contaRigheT3 AS
-												SELECT COUNT (*) as contatore FROM classificaT3;]]
-		db:exec(contaRigheT3)
-
-		for row in db:nrows("SELECT * FROM contaRigheT3") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT3 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
-		if(score>maxT3.punteggio)then
-			maxT3.punteggio=score
-		end
-		if(metri>maxT3.distanza)then
-			maxT3.distanza=metri
-		end
 		local query=[[INSERT INTO classificaT3 VALUES(null,]].. score..[[, ]]..metri..[[);]]
 		db:exec(query)
+	end
+	if ( db and db:isopen() ) then
+    db:close()
 	end
 end
 
 function M.readDatabase()
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+
 	local widget=require("widget")
 	local cont = 1
 	local tableInfo = {}
 
 	if(selezioneClassifica==1) then
-		local classificaT1 = [[CREATE TABLE IF NOT EXISTS classificaT1 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT1)
-
-		local ordinaClassificaT1=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT1 AS
-							    						SELECT punteggio, distanza FROM classificaT1
-							    						ORDER BY distanza DESC;]]
-		db:exec(ordinaClassificaT1)
-
-		local contaRigheT1=[[CREATE VIEW IF NOT EXISTS contaRigheT1 AS
-												SELECT COUNT (*) as contatore FROM classificaT1;]]
-		db:exec(contaRigheT1)
-
-		for row in db:nrows("SELECT * FROM contaRigheT1") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT1 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
 
 		for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio}
@@ -137,34 +130,18 @@ function M.readDatabase()
 			x=display.contentCenterX,
 			onRowRender=onRowRender
 		}
+
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
 				rowHeight=70
 			}
 		end
+		if ( db and db:isopen() ) then
+    	db:close()
+		end
 		return tableView
 
 	elseif(selezioneClassifica==2) then
-		local classificaT2 = [[CREATE TABLE IF NOT EXISTS classificaT2 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT2)
-
-		local ordinaClassificaT2=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT2 AS
-							    						SELECT punteggio, distanza FROM classificaT2
-							    						ORDER BY distanza DESC;]]
-		db:exec(ordinaClassificaT2)
-
-		local contaRigheT2=[[CREATE VIEW IF NOT EXISTS contaRigheT2 AS
-												SELECT COUNT (*) as contatore FROM classificaT2;]]
-		db:exec(contaRigheT2)
-
-		for row in db:nrows("SELECT * FROM contaRigheT2") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT2 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
-
 		for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio}
 			cont=cont+1
@@ -198,33 +175,17 @@ function M.readDatabase()
 			x=display.contentCenterX,
 			onRowRender=onRowRender
 		}
+
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
 				rowHeight=70
 			}
 		end
+		if ( db and db:isopen() ) then
+    	db:close()
+		end
 		return tableView
 	elseif(selezioneClassifica==3) then
-		local classificaT3 = [[CREATE TABLE IF NOT EXISTS classificaT3 (id INTEGER PRIMARY KEY autoincrement, punteggio INTEGER, distanza INTEGER);]]
-		db:exec(classificaT3)
-
-		local ordinaClassificaT3=[[CREATE VIEW IF NOT EXISTS ordineDistanzaT3 AS
-															SELECT punteggio, distanza FROM classificaT3
-															ORDER BY distanza DESC;]]
-		db:exec(ordinaClassificaT3)
-
-		local contaRigheT3=[[CREATE VIEW IF NOT EXISTS contaRigheT3 AS
-												SELECT COUNT (*) as contatore FROM classificaT3;]]
-		db:exec(contaRigheT3)
-
-		for row in db:nrows("SELECT * FROM contaRigheT3") do
-			if(row.contatore==0) then
-				for i=1, 8, 1 do
-					db:exec([[INSERT INTO classificaT3 VALUES(null,]].. (i*10-i+2)..[[, ]]..(i*100)..[[);]])
-				end
-			end
-		end
-
 		for row in db:nrows("SELECT * FROM ordineDistanzaT3") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio}
 			cont=cont+1
@@ -263,8 +224,90 @@ function M.readDatabase()
 				rowHeight=70
 			}
 		end
+		if ( db and db:isopen() ) then
+    	db:close()
+		end
 		return tableView
 	end
 end
 
+function M.aggiornaPunteggiMax(maxT1Punteggio, maxT2Punteggio, maxT3Punteggio, maxT1Distanza, maxT2Distanza, maxT3Distanza)
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
+		maxT1Distanza.text=" "..row.distanza
+		break
+	end
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
+		maxT2Distanza.text=" "..row.distanza
+		break
+	end
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT3") do
+		maxT3Distanza.text=" "..row.distanza
+		break
+	end
+
+	for row in db:nrows("SELECT * FROM ordinePunteggioT1") do
+		maxT1Punteggio.text=" "..row.punteggio
+		break
+	end
+
+	for row in db:nrows("SELECT * FROM ordinePunteggioT2") do
+		maxT2Punteggio.text=" "..row.punteggio
+		break
+	end
+
+	for row in db:nrows("SELECT * FROM ordinePunteggioT3") do
+		maxT3Punteggio.text=" "..row.punteggio
+		break
+	end
+	if ( db and db:isopen() ) then
+    db:close()
+	end
+end
+
+function M.primoInClassifica()
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+
+	local primaPosizione = {distanza=0, punteggio=0}
+
+	if(newGame==1) then
+		for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
+			primaPosizione.distanza=row.distanza
+			break
+		end
+		for row in db:nrows("SELECT * FROM ordinePunteggioT1") do
+			primaPosizione.punteggio=row.punteggio
+			break
+		end
+	elseif(newGame==2) then
+		for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
+			primaPosizione.distanza=row.distanza
+			break
+		end
+		for row in db:nrows("SELECT * FROM ordinePunteggioT2") do
+			primaPosizione.punteggio=row.punteggio
+			break
+		end
+	elseif(newGame==3) then
+		for row in db:nrows("SELECT * FROM ordineDistanzaT3") do
+			primaPosizione.distanza=row.distanza
+			break
+		end
+		for row in db:nrows("SELECT * FROM ordinePunteggioT3") do
+			primaPosizione.punteggio=row.punteggio
+			break
+		end
+	end
+	if ( db and db:isopen() ) then
+    db:close()
+	end
+	return primaPosizione
+end
 return M
