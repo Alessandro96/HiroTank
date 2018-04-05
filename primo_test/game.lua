@@ -337,7 +337,7 @@ function scene:create( event )
 
   physics.pause()
   camera = perspective.createView()
-  physics.setDrawMode("hybrid")
+ -- physics.setDrawMode("hybrid")
 
   scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
   scoreText:setFillColor(0,0,0)
@@ -432,8 +432,11 @@ home:addEventListener("touch", function(event)
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (homep~=nil) then
 						homep:removeSelf()
 						homep = nil
+						end
+						--display.remove( homep )
 						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
 						display.getCurrentStage():setFocus( event.target, nil )
 					end
@@ -693,8 +696,11 @@ table.insert( cuoreTable, cuore5 )
 										display.getCurrentStage():setFocus( event.target, event.id )
 										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end
 									elseif "ended" == event.phase then
-										pulsanteSx2:removeSelf()
-										pulsanteSx2 = nil
+										if (pulsanteSx2~= nil)then 
+											pulsanteSx2:removeSelf()
+											pulsanteSx2 = nil
+										end
+										--display.remove( pulsanteSx2 )
 										display.getCurrentStage():setFocus( event.target, nil )
 									end
 								end)
@@ -708,8 +714,11 @@ table.insert( cuoreTable, cuore5 )
 										display.getCurrentStage():setFocus( event.target, event.id )
 										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end
 									elseif "ended" == event.phase then
-										pulsanteDx2:removeSelf()
-										pulsanteDx2 = nil
+										if (pulsanteDx2~= nil)then 
+											pulsanteDx2:removeSelf()
+											pulsanteDx2 = nil
+										end
+										--display.remove( pulsanteDx2 )
 										display.getCurrentStage():setFocus( event.target, nil )
 									end
 								end)
@@ -726,8 +735,12 @@ table.insert( cuoreTable, cuore5 )
 										sounds.play('cannon', { channel=2})
 										ball:shoot(camera)
 									elseif "ended" == event.phase then
-										pulsanteSparo:removeSelf()
-										pulsanteSparo = nil
+										
+										if (pulsanteSparo~= nil)then 
+											pulsanteSparo:removeSelf()
+											pulsanteSparo = nil
+										end
+										--display.remove( pulsanteSparo )
 										display.getCurrentStage():setFocus( event.target, nil )
 									end
 								end)
@@ -743,8 +756,10 @@ table.insert( cuoreTable, cuore5 )
 
 											elseif "ended" == event.phase then
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-												pulsanteSx3:removeSelf()
-												pulsanteSx3 = nil
+												if (pulsanteSx3~= nil)then 
+													pulsanteSx3:removeSelf()
+													pulsanteSx3 = nil
+												end
 												--sounds.stop( backgroundMusicChannel )
 												display.getCurrentStage():setFocus( event.target, nil )
 											end
@@ -759,8 +774,10 @@ table.insert( cuoreTable, cuore5 )
 													pulsanteDx3.y = display.contentHeight - pulsanteDx3.contentHeight - 10
 												elseif "ended" == event.phase then
 													pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-													pulsanteDx3:removeSelf()
-													pulsanteDx3 = nil
+													if (pulsanteDx3~= nil)then 
+														pulsanteDx3:removeSelf()
+														pulsanteDx3 = nil
+													end
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
 											end)

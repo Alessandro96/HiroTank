@@ -92,8 +92,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (b1p~=nil) then
 						b1p:removeSelf()
 						b1p = nil
+						end
 						mOn()
 						display.getCurrentStage():setFocus( event.target, nil )
 					end
@@ -108,8 +110,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (b2p~=nil) then
 						b2p:removeSelf()
 						b2p = nil
+						end
 						mOff()
 						display.getCurrentStage():setFocus( event.target, nil )
 					end
@@ -124,8 +128,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (b3p~=nil) then
 						b3p:removeSelf()
 						b3p = nil
+						end
 						sOn()
 						display.getCurrentStage():setFocus( event.target, nil )
 					end
@@ -140,8 +146,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (b4p~=nil) then
 						b4p:removeSelf()
 						b4p = nil
+						end
 						sOff()
 						display.getCurrentStage():setFocus( event.target, nil )
 					end
@@ -156,8 +164,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (homep~=nil) then
 						homep:removeSelf()
 						homep = nil
+						end
 						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
 						display.getCurrentStage():setFocus( event.target, nil )
 					end

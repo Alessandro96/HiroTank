@@ -141,8 +141,10 @@ function scene:create( event )
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
 					elseif "ended" == event.phase then
+						if (homep~=nil) then
 						homep:removeSelf()
 						homep = nil
+						end
 						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
 						display.getCurrentStage():setFocus( event.target, nil )
 					end

@@ -57,8 +57,10 @@ function scene:create( event )
 													--composer.gotoScene("menuLivelli")
 
 												elseif "ended" == event.phase then
+													if (bottoneGioca2 ~= nil) then
 													bottoneGioca2:removeSelf()
 													bottoneGioca2 = nil
+													end
 													timer.performWithDelay( 10,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
@@ -73,8 +75,10 @@ function scene:create( event )
 												bottoneSet2.y = 850
 												sounds.play('tap', { channel=2})
 											elseif "ended" == event.phase then
+												if(bottoneSet2 ~= nil)then
 												bottoneSet2:removeSelf()
 												bottoneSet2 = nil
+												end
 												timer.performWithDelay( 10,composer.gotoScene( "menuSet", { time=800, effect="crossFade" } ))
 												display.getCurrentStage():setFocus( event.target, nil )
 											end
@@ -90,8 +94,10 @@ function scene:create( event )
 												bottoneScore2.y = 550
 												sounds.play('tap', { channel=2})
 											elseif "ended" == event.phase then
+												if (bottoneScore2~= nil)then
 												bottoneScore2:removeSelf()
 												bottoneScore2 = nil
+												end
 												timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
 												display.getCurrentStage():setFocus( event.target, nil )
 											end
