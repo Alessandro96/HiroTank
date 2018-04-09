@@ -7,4 +7,6 @@ display.setStatusBar( display.HiddenStatusBar )
 math.randomseed( os.time() )
 
 -- Go to the menu screen
+musica = true
+suoni = true
 composer.gotoScene( "menu" )

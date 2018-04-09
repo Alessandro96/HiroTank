@@ -32,7 +32,7 @@ function scene:create( event )
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
 	database.createDatabase()
 
-	sounds.play('menu')
+	--sounds.play('menu')
 
 	local bottoneGioca = display.newImageRect(sceneGroup, "images/pulsanti/play.png",300, 300)
 	bottoneGioca.x = 1500
@@ -103,6 +103,8 @@ function scene:create( event )
 											end
 																			 end)
 
+	audio.setVolume( 0, { channel=7 } )
+	if(musica==true) then audio.setVolume( 0.2, { channel=1 } )	end
 	musicTrack = audio.loadStream( "sounds/menu.wav" )
 
 	-- Touch event listener for button

@@ -63,11 +63,14 @@ local controlloDistanza = true
 local mappaAttuale = -1
 metri = 0
 local primoInClassifica = {}
+local musicTrackTank
+local musicTrackBack
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
 	go.y=display.contentCenterY
 	go.x=display.contentCenterX
+	--audio.setVolume( 0, { channel=6 } )
 end
 
 local function enterFrame(event)
@@ -285,6 +288,18 @@ local function cloudGen()
 
 end
 ---------------------------------------------------------
+--SUONI
+---------------------------------------------------------
+
+audio.setVolume( 0, { channel=1 } )
+audio.setVolume( 0, { channel=6 } )
+audio.stop(6)
+musicTrackTank = audio.loadStream( "sounds/tank.mp3" )
+musicTrackBack = audio.loadStream( "sounds/ghostpocalypse.mp3" )
+if (musica == true )then audio.setVolume( 0.2, { channel=7 } ) end
+if (suoni == true )then audio.setVolume( 0.2, { channel=6 } ) end
+audio.play( musicTrackBack, { channel=7, loops=-1 } )
+---------------------------------------------------------
 
 
 local function onCollision(event)
@@ -431,6 +446,7 @@ home:addEventListener("touch", function(event)
 						homep.y = 80
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})
+						audio.setVolume( 0, { channel=6 } )
 					elseif "ended" == event.phase then
 						if (homep~=nil) then
 						homep:removeSelf()
@@ -694,6 +710,7 @@ table.insert( cuoreTable, cuore5 )
 										pulsanteSx2.x = display.screenOriginX + pulsanteSx2.contentWidth+15
 										pulsanteSx2.y = display.contentHeight - pulsanteSx2.contentHeight - 150
 										display.getCurrentStage():setFocus( event.target, event.id )
+										sounds.play('tap', { channel=2})
 										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end
 									elseif "ended" == event.phase then
 										if (pulsanteSx2~= nil)then 
@@ -712,6 +729,7 @@ table.insert( cuoreTable, cuore5 )
 										pulsanteDx2.x = display.screenOriginX + pulsanteDx2.contentWidth + 253
 										pulsanteDx2.y = display.contentHeight - pulsanteDx2.contentHeight - 150
 										display.getCurrentStage():setFocus( event.target, event.id )
+										sounds.play('tap', { channel=2})
 										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end
 									elseif "ended" == event.phase then
 										if (pulsanteDx2~= nil)then 
@@ -752,7 +770,9 @@ table.insert( cuoreTable, cuore5 )
 												pulsanteSx3 = display.newImageRect("images/pulsanti/sxp.png",160,160)
 												pulsanteSx3.x = display.screenOriginX + pulsanteSx3.contentWidth + 1250
 												pulsanteSx3.y = display.contentHeight - pulsanteSx3.contentHeight - 8
-												--test = sounds.play( 'tank' )
+												if (suoni == true) then audio.setVolume( 0.2, { channel=6 } ) end
+												audio.play( musicTrackTank, { channel=6, loops=-1 } )
+												
 
 											elseif "ended" == event.phase then
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
@@ -760,7 +780,7 @@ table.insert( cuoreTable, cuore5 )
 													pulsanteSx3:removeSelf()
 													pulsanteSx3 = nil
 												end
-												--sounds.stop( backgroundMusicChannel )
+												audio.setVolume( 0, { channel=6 } )
 												display.getCurrentStage():setFocus( event.target, nil )
 											end
 										  end)
@@ -772,12 +792,16 @@ table.insert( cuoreTable, cuore5 )
 													pulsanteDx3 = display.newImageRect("images/pulsanti/dxp.png",160,160)
 													pulsanteDx3.x = display.screenOriginX + pulsanteDx3.contentWidth + 1550
 													pulsanteDx3.y = display.contentHeight - pulsanteDx3.contentHeight - 10
+													if (suoni == true) then audio.setVolume( 0.2, { channel=6 } ) end
+													audio.play( musicTrackTank, { channel=6, loops=-1 } )
+													
 												elseif "ended" == event.phase then
 													pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
 													if (pulsanteDx3~= nil)then 
 														pulsanteDx3:removeSelf()
 														pulsanteDx3 = nil
 													end
+													audio.setVolume( 0, { channel=6 } )
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
 											end)
@@ -838,6 +862,8 @@ end
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		camera:destroy()
+		--audio.stop( 6)
+		--audio.stop( 7)
 		for i = #cuoreTable, 1, -1 do
 		table.remove( aereiTable, i )
 		cuoreTable[i]:removeSelf()

@@ -16,28 +16,35 @@ local btn = nil
 local myLevel = {}
 local bottoneM1
 
+
 newGame = 0
 
 local function mOn()
-	audio.setVolume( 0.5, { channel=1 } )
+	audio.setVolume( 0.2, { channel=1 } )
 	sounds.play('tap', { channel=2})
+	musica = true
 end
 
 local function mOff()
 	audio.setVolume( 0, { channel=1 } )
+	audio.setVolume( 0, { channel=7 } )
 	sounds.play('tap', { channel=2})
+	musica = false
 end
 
 local function sOn()
-	audio.setVolume( 0.5, { channel=2 } )
-	audio.setVolume( 0.5, { channel=3 } )
+	audio.setVolume( 0.3, { channel=2 } )
+	audio.setVolume( 0.3, { channel=3 } )
 	sounds.play('tap', { channel=2})
+	suoni = true
 end
 
 local function sOff()
 	sounds.play('tap', { channel=2})
 	audio.setVolume( 0, { channel=3 } )
 	audio.setVolume( 0, { channel=2 } )
+	audio.setVolume( 0, { channel=6 } )
+	suoni = false
 end
 
 
