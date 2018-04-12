@@ -10,12 +10,13 @@ _M.isMusicOn = true
 
 local sounds = {
     menu_music = 'sounds/menu_music.mp3',
+	start = 'sounds/start.mp3',
     game_music = 'sounds/game_music.mp3',
     tap = 'sounds/tap.wav',
     tank = 'sounds/tank.mp3',
-	explosion = 'sounds/explosion.wav',
+	explosion = 'sounds/explosion.mp3',
 	impact = 'sounds/impact.wav',
-	cannon = 'sounds/cannon.wav',
+	cannon = 'sounds/cannon.mp3',
 }
 
 -- Reserve two channels for streams and switch between them with a nice fade out / fade in transition

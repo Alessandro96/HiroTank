@@ -13,6 +13,7 @@ system.activate( "multitouch" )
 
 local physics = require("physics")
 physics.start()
+local widget = require( "widget" )
 local perspective = require("lib.perspective")
 local m = {}
 local proiettile = require("class.proiettile")
@@ -72,6 +73,30 @@ local function screenOff()
 	go.x=display.contentCenterX
 	--audio.setVolume( 0, { channel=6 } )
 end
+
+local function sbloccaPulsante()
+	pSparo:setEnabled( true )
+	if (pulsanteSparo~= nil)then 
+		pulsanteSparo:removeSelf()
+		pulsanteSparo = nil
+	end
+end
+
+local function fuocoCarro( event )
+	
+    if ( "ended" == event.phase ) then
+        print( "Button was pressed and released" )
+		local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
+		sounds.play('cannon', { channel=2})
+		ball:shoot(camera)
+		pSparo:setEnabled( false )
+		timer.performWithDelay( 1000, sbloccaPulsante )
+		pulsanteSparo = display.newImageRect("images/pulsanti/bombap.png",160, 160)
+		pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+120
+		pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight + 30
+    end
+end
+
 
 local function enterFrame(event)
 	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
@@ -292,12 +317,18 @@ end
 ---------------------------------------------------------
 
 audio.setVolume( 0, { channel=1 } )
+audio.setVolume( 0, { channel=5 } )
 audio.setVolume( 0, { channel=6 } )
 audio.stop(6)
 musicTrackTank = audio.loadStream( "sounds/tank.mp3" )
+musicTrackEngine = audio.loadStream( "sounds/engine.mp3" )
 musicTrackBack = audio.loadStream( "sounds/ghostpocalypse.mp3" )
 if (musica == true )then audio.setVolume( 0.2, { channel=7 } ) end
-if (suoni == true )then audio.setVolume( 0.2, { channel=6 } ) end
+if (suoni == true )then 
+	audio.setVolume( 0.2, { channel=6 } ) 
+	audio.setVolume( 0.8, { channel=5 } ) 
+end
+audio.play( musicTrackEngine, { channel=5, loops=-1 } )
 audio.play( musicTrackBack, { channel=7, loops=-1 } )
 ---------------------------------------------------------
 
@@ -358,7 +389,24 @@ function scene:create( event )
   scoreText:setFillColor(0,0,0)
   posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
   posizioneText:setFillColor(0,0,0)
+ 
+---------------------------------------
+--PULSANTE SPARO CANNONE 
+---------------------------------------
 
+pSparo = widget.newButton(
+    {
+        width = 160,
+        height = 160,
+        defaultFile = "images/pulsanti/bomba.png",
+        overFile = "images/pulsanti/bombap.png",
+        --label = "button",
+        onEvent = fuocoCarro
+    }
+)
+
+pSparo.x = display.screenOriginX+pSparo.contentWidth+120
+pSparo.y = display.contentHeight-pSparo.contentHeight+30
 
 
 --------------------------------------------------------------------------------
@@ -389,7 +437,7 @@ function scene:create( event )
 	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
 	--scoreText2 = display.newText("pos: "..cannon.x, 400, 400, native.systemFont, 60)
 
-	sparo = pulsanti.pulsanteSparo()
+	--sparo = pulsanti.pulsanteSparo()
 
 	sx = pulsanti.pulsanteCannoneSx()
 
@@ -698,6 +746,9 @@ table.insert( cuoreTable, cuore5 )
 	camera:setBounds(-1920000,1920000,-2000,780)
 
   camera:track()
+  
+
+ sounds.play('start', { channel=2})
 
 --------------------------------------------------------------------------------
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
@@ -737,28 +788,6 @@ table.insert( cuoreTable, cuore5 )
 											pulsanteDx2 = nil
 										end
 										--display.remove( pulsanteDx2 )
-										display.getCurrentStage():setFocus( event.target, nil )
-									end
-								end)
-
-
-  sparo:addEventListener("touch",function(event)
-									local t = event.target
-									if "began" == event.phase then
-										pulsanteSparo = display.newImageRect("images/pulsanti/bombap.png",160, 160)
-										pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+120
-										pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight + 30
-										display.getCurrentStage():setFocus( event.target, event.id )
-										local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
-										sounds.play('cannon', { channel=2})
-										ball:shoot(camera)
-									elseif "ended" == event.phase then
-										
-										if (pulsanteSparo~= nil)then 
-											pulsanteSparo:removeSelf()
-											pulsanteSparo = nil
-										end
-										--display.remove( pulsanteSparo )
 										display.getCurrentStage():setFocus( event.target, nil )
 									end
 								end)
@@ -862,6 +891,9 @@ end
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 		camera:destroy()
+		audio.stop(5)
+		audio.stop(7)
+		audio.stop(2)
 		--audio.stop( 6)
 		--audio.stop( 7)
 		for i = #cuoreTable, 1, -1 do
@@ -879,8 +911,8 @@ end
 		sx = nil
 		dx:removeSelf()
 		dx = nil
-		sparo:removeSelf()
-		sparo = nil
+		pSparo:removeSelf()
+		pSparo = nil
 		m.rotate.left:removeSelf()
 		m.rotate.left = nil
 		m.rotate.right:removeSelf()

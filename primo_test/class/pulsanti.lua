@@ -113,19 +113,12 @@ function l.pulsanteCannoneSx()
 end
 
 function l.pulsanteSparo()
-  local pulsanteSparo = display.newImageRect("images/pulsanti/bomba.png",160, 160)
+   pulsanteSparo = display.newImageRect("images/pulsanti/bomba.png",160, 160)
   --pulsanteSparo:scale(2,2)
   pulsanteSparo.x = display.screenOriginX + pulsanteSparo.contentWidth+120
   pulsanteSparo.y = display.contentHeight - pulsanteSparo.contentHeight+30
   return pulsanteSparo
 end
-
-function l.clear()
-	pulsanteSx:removeSelf()
-	pulsanteSx = nil
-
-end
-
 
 
 return l

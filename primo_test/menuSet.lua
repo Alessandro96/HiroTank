@@ -20,7 +20,7 @@ local bottoneM1
 newGame = 0
 
 local function mOn()
-	audio.setVolume( 0.2, { channel=1 } )
+	audio.setVolume( 0.4, { channel=1 } )
 	sounds.play('tap', { channel=2})
 	musica = true
 end
@@ -35,6 +35,7 @@ end
 local function sOn()
 	audio.setVolume( 0.3, { channel=2 } )
 	audio.setVolume( 0.3, { channel=3 } )
+	audio.setVolume( 0.8, { channel=5 } )
 	sounds.play('tap', { channel=2})
 	suoni = true
 end
@@ -44,6 +45,7 @@ local function sOff()
 	audio.setVolume( 0, { channel=3 } )
 	audio.setVolume( 0, { channel=2 } )
 	audio.setVolume( 0, { channel=6 } )
+	audio.setVolume( 0, { channel=5 } )
 	suoni = false
 end
 

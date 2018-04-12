@@ -104,7 +104,8 @@ function scene:create( event )
 																			 end)
 
 	audio.setVolume( 0, { channel=7 } )
-	if(musica==true) then audio.setVolume( 0.2, { channel=1 } )	end
+	audio.setVolume( 0, { channel=5 } )
+	if(musica==true) then audio.setVolume( 0.4, { channel=1 } )	end
 	musicTrack = audio.loadStream( "sounds/menu.wav" )
 
 	-- Touch event listener for button
