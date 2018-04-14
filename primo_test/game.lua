@@ -76,14 +76,14 @@ end
 
 local function sbloccaPulsante()
 	pSparo:setEnabled( true )
-	if (pulsanteSparo~= nil)then 
+	if (pulsanteSparo~= nil)then
 		pulsanteSparo:removeSelf()
 		pulsanteSparo = nil
 	end
 end
 
 local function fuocoCarro( event )
-	
+
     if ( "ended" == event.phase ) then
         print( "Button was pressed and released" )
 		local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
@@ -155,6 +155,15 @@ if (newGame==3) then
   camera:add(monte, 7, false)
 	camera:add(alberi, 6, false)
 end
+
+if (newGame==4) then
+	bgNotte = display.newImage("images/bgNotteStelle.png")
+  cont=cont+4000
+	bgNotte.x = cont
+	bgNotte.y = display.contentCenterY+60
+  camera:add(bgNotte, 6, false)
+end
+
 
 	---------------------------------------------------------
 	-- GENERATORE DINAMICO MAPPA "GROUND"
@@ -267,6 +276,42 @@ end
 			sunset6.y=display.contentHeight
 			sunset6.x=position
 
+			---------------------------------------------------------
+			-- GENERATORE DINAMICO MAPPA "NOTTE"
+			---------------------------------------------------------
+
+		elseif ( whereFrom == 1 and newGame == 4 ) then
+
+				notte1.y=display.contentHeight-60
+			  notte1.x=position
+
+			elseif ( whereFrom == 2 and newGame == 4 ) then
+
+				notte2.y=display.contentHeight-60
+				notte2.x=position
+
+
+			elseif ( whereFrom == 3 and newGame == 4 ) then
+
+				notte3.y=display.contentHeight-60
+				notte3.x=position
+
+
+			elseif ( whereFrom == 4 and newGame == 4 ) then
+
+				notte4.y=display.contentHeight-60
+				notte4.x=position
+
+			elseif ( whereFrom == 5 and newGame == 4) then
+
+				notte5.y=display.contentHeight-60
+				notte5.x=position
+
+			elseif ( whereFrom == 6 and newGame == 4) then
+
+				notte6.y=display.contentHeight-60
+				notte6.x=position
+
 
 	elseif (verifica == false) then
 
@@ -324,9 +369,9 @@ musicTrackTank = audio.loadStream( "sounds/tank.mp3" )
 musicTrackEngine = audio.loadStream( "sounds/engine.mp3" )
 musicTrackBack = audio.loadStream( "sounds/ghostpocalypse.mp3" )
 if (musica == true )then audio.setVolume( 0.2, { channel=7 } ) end
-if (suoni == true )then 
-	audio.setVolume( 0.2, { channel=6 } ) 
-	audio.setVolume( 0.8, { channel=5 } ) 
+if (suoni == true )then
+	audio.setVolume( 0.2, { channel=6 } )
+	audio.setVolume( 0.8, { channel=5 } )
 end
 audio.play( musicTrackEngine, { channel=5, loops=-1 } )
 audio.play( musicTrackBack, { channel=7, loops=-1 } )
@@ -389,9 +434,9 @@ function scene:create( event )
   scoreText:setFillColor(0,0,0)
   posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
   posizioneText:setFillColor(0,0,0)
- 
+
 ---------------------------------------
---PULSANTE SPARO CANNONE 
+--PULSANTE SPARO CANNONE
 ---------------------------------------
 
 pSparo = widget.newButton(
@@ -474,10 +519,14 @@ pSparo.y = display.contentHeight-pSparo.contentHeight+30
 	--cielo:scale(5,4)
 
   elseif (newGame == 4) then
+	notteBG = display.newImage("images/bgNotteStelle.png")
+  notteBG.x = cont
+	notteBG.y = display.contentCenterY+60
 	cielo = display.newImage("images/sky.jpg")
 	cielo.x = display.contentCenterX
 	cielo.y = display.contentCenterY
 	cielo:scale(5,4)
+	camera:add(notteBG, 6, false)
 
   end
 --------------------------------------------------------------------------------
@@ -647,7 +696,7 @@ if (newGame == 3) then
   sunsetDefault.x=position
   camera:add(sunsetDefault, 5, false)
 
-  local physicsData = (require "images.s1").physicsData(scaleFactor)
+	local physicsData = (require "images.s1").physicsData(scaleFactor)
   sunset1 = display.newImage("images/s1.png")
   sunset1.myName = "terreno"
   physics.addBody( sunset1, "static", physicsData:get("s1") )
@@ -695,6 +744,70 @@ if (newGame == 3) then
   sunset6.x=-7000
   camera:add(sunset6, 5, false)
 end
+
+--------------------------------------------------------------------------------
+--CARICAMENTO TERRENO TIPOLOGIA "NOTTE"
+--------------------------------------------------------------------------------
+if (newGame == 4) then
+
+  local scaleFactor = 1.0
+  local physicsData = (require "images.nottebase").physicsData(scaleFactor)
+  notteDefault = display.newImage("images/nottebase.png")
+  notteDefault.myName = "terreno"
+  physics.addBody( notteDefault, "static", physicsData:get("nottebase") )
+  notteDefault.y=display.contentHeight-60
+  notteDefault.x=position
+  camera:add(notteDefault, 5, false)
+
+	local physicsData = (require "images.u1").physicsData(scaleFactor)
+  notte1 = display.newImage("images/u1.png")
+  notte1.myName = "terreno"
+  physics.addBody( notte1, "static", physicsData:get("u1") )
+  notte1.y=-7000
+  notte1.x=-3000
+  camera:add(notte1, 5, false)
+
+  local physicsData = (require "images.u2").physicsData(scaleFactor)
+  notte2 = display.newImage("images/u2.png")
+  notte2.myName = "terreno"
+  physics.addBody( notte2, "static", physicsData:get("u2") )
+  notte2.y=-3000
+  notte2.x=-7000
+  camera:add(notte2, 5, false)
+
+  local physicsData = (require "images.u3").physicsData(scaleFactor)
+  notte3 = display.newImage("images/u3.png")
+  notte3.myName = "terreno"
+  physics.addBody(notte3, "static", physicsData:get("u3") )
+  notte3.y=-3000
+  notte3.x=-7000
+  camera:add(notte3, 5, false)
+
+  local physicsData = (require "images.u4").physicsData(scaleFactor)
+  notte4 = display.newImage("images/u4.png")
+  notte4.myName = "terreno"
+  physics.addBody( notte4, "static", physicsData:get("u4") )
+  notte4.y=-9000
+  notte4.x=-3000
+  camera:add(notte4, 5, false)
+
+  local physicsData = (require "images.u5").physicsData(scaleFactor)
+  notte5 = display.newImage("images/u5.png")
+  notte5.myName = "terreno"
+  physics.addBody( notte5, "static", physicsData:get("u5") )
+  notte5.y=-3000
+  notte5.x=-7000
+  camera:add(notte5, 5, false)
+
+  local physicsData = (require "images.u6").physicsData(scaleFactor)
+  notte6 = display.newImage("images/u6.png")
+  notte6.myName = "terreno"
+  physics.addBody( notte6, "static", physicsData:get("u6") )
+  notte6.y=-3000
+  notte6.x=-7000
+  camera:add(notte6, 5, false)
+end
+
 -------------------------------------------------------------------------------
 --LIFE HEART
 -------------------------------------------------------------------------------
@@ -746,7 +859,7 @@ table.insert( cuoreTable, cuore5 )
 	camera:setBounds(-1920000,1920000,-2000,780)
 
   camera:track()
-  
+
 
  sounds.play('start', { channel=2})
 
@@ -764,7 +877,7 @@ table.insert( cuoreTable, cuore5 )
 										sounds.play('tap', { channel=2})
 										if (tempRotazione >= 130 and tempRotazione <=180 ) then tempRotazione = tempRotazione-10 end
 									elseif "ended" == event.phase then
-										if (pulsanteSx2~= nil)then 
+										if (pulsanteSx2~= nil)then
 											pulsanteSx2:removeSelf()
 											pulsanteSx2 = nil
 										end
@@ -783,7 +896,7 @@ table.insert( cuoreTable, cuore5 )
 										sounds.play('tap', { channel=2})
 										if (tempRotazione >= 120 and tempRotazione <180 ) then tempRotazione = tempRotazione+10 end
 									elseif "ended" == event.phase then
-										if (pulsanteDx2~= nil)then 
+										if (pulsanteDx2~= nil)then
 											pulsanteDx2:removeSelf()
 											pulsanteDx2 = nil
 										end
@@ -801,11 +914,11 @@ table.insert( cuoreTable, cuore5 )
 												pulsanteSx3.y = display.contentHeight - pulsanteSx3.contentHeight - 8
 												if (suoni == true) then audio.setVolume( 0.2, { channel=6 } ) end
 												audio.play( musicTrackTank, { channel=6, loops=-1 } )
-												
+
 
 											elseif "ended" == event.phase then
 												pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-												if (pulsanteSx3~= nil)then 
+												if (pulsanteSx3~= nil)then
 													pulsanteSx3:removeSelf()
 													pulsanteSx3 = nil
 												end
@@ -823,10 +936,10 @@ table.insert( cuoreTable, cuore5 )
 													pulsanteDx3.y = display.contentHeight - pulsanteDx3.contentHeight - 10
 													if (suoni == true) then audio.setVolume( 0.2, { channel=6 } ) end
 													audio.play( musicTrackTank, { channel=6, loops=-1 } )
-													
+
 												elseif "ended" == event.phase then
 													pulsanti.pulsantiMovimentoCingolo().touch(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3]})
-													if (pulsanteDx3~= nil)then 
+													if (pulsanteDx3~= nil)then
 														pulsanteDx3:removeSelf()
 														pulsanteDx3 = nil
 													end

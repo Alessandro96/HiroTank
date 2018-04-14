@@ -52,6 +52,11 @@ function scene:create( event )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
 
+	local bottoneM4 = display.newImageRect(sceneGroup, "images/livello4.png",800, 300)
+	sceneGroup:insert( bottoneM4 )
+	bottoneM4.x = 1400
+	bottoneM4.y = 750
+
 	local coppa1 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
 	sceneGroup:insert( coppa1 )
 	coppa1.x = bottoneM1.x+230
@@ -82,6 +87,16 @@ function scene:create( event )
 	piedi3.x = bottoneM3.x-250
 	piedi3.y = 950
 
+	local coppa4 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+	sceneGroup:insert( coppa4 )
+	coppa4.x = bottoneM4.x+230
+	coppa4.y = 950
+
+	local piedi4 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+	sceneGroup:insert( piedi4 )
+	piedi4.x = bottoneM4.x-250
+	piedi4.y = 950
+
 	maxT1Punteggio=display.newText("cavoletto", bottoneM1.x+255, 440, native.systemFont, 50)
 	maxT1Distanza=display.newText("cavoletto", bottoneM1.x-220, 440, native.systemFont, 50)
 	sceneGroup:insert(maxT1Punteggio)
@@ -109,10 +124,14 @@ function scene:create( event )
 	maxT3Punteggio.anchorX=0
 	maxT3Distanza.anchorX=0
 
-	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",1200, 600)
-	sceneGroup:insert( bottoneM4 )
-	bottoneM4.x = 1400
-	bottoneM4.y = 750
+	maxT4Punteggio=display.newText("cavoletto", bottoneM4.x+255, 950, native.systemFont, 50)
+	maxT4Distanza=display.newText("cavoletto", bottoneM4.x-220, 950, native.systemFont, 50)
+	sceneGroup:insert(maxT4Punteggio)
+	sceneGroup:insert(maxT4Distanza)
+	maxT4Punteggio:setFillColor(0,0,0)
+	maxT4Distanza:setFillColor(0,0,0)
+	maxT4Punteggio.anchorX=0
+	maxT4Distanza.anchorX=0
 
 	bottoneM1:addEventListener("tap", function()
 																			newGame = 1
@@ -132,6 +151,11 @@ function scene:create( event )
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
+	bottoneM4:addEventListener("tap", function()
+						                          newGame = 4
+																			composer.gotoScene("game")
+																			sounds.play('tap', { channel=2})
+																			end)
 	home:addEventListener("touch", function(event)
 					local t = event.target
 					if "began" == event.phase then
