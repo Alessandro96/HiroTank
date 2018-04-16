@@ -49,7 +49,8 @@ local rotazioneCannone=0
 local rotazioneTot=rotazioneCarrarmato+rotazioneCannone
 local go = nil
 local tempRotazione = 180
-scoreText = "" --serve globale, thanks
+local scoreText, maxScoreText, maxScoreIcon
+local posizioneText, maxPosizioneText, maxPosizioneIcon
 lifeText = ""  --serve globale, thanks
 local messaggioRecordPunteggio
 local inVita = true
@@ -111,7 +112,7 @@ local function enterFrame(event)
 		end
 	else
 	end
-	if ((score==primoInClassifica.punteggio) and (controlloPunteggio==true)) then
+	if ((score>primoInClassifica.punteggio) and (controlloPunteggio==true)) then
 		local messaggioRecordPunteggio = display.newText("DA GRANDE DIVENTERAI UNA STAR, CAMPIONE", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
 		messaggioRecordPunteggio:setFillColor(0.6,0.5,0)
 		controlloPunteggio=false
@@ -120,14 +121,20 @@ local function enterFrame(event)
 																		messaggioRecordPunteggio=nil
 																 end)
 	end
-	if (metri==primoInClassifica.distanza and controlloDistanza==true) then
-		local messaggioRecordDistanza = display.newText("PIETRO TARICONE", display.contentCenterX, display.contentCenterY-100, native.systemFont , 60)
+	if (metri>primoInClassifica.distanza and controlloDistanza==true) then
+		local messaggioRecordDistanza = display.newText("PIETRO TARICONE L'AQUILONE", display.contentCenterX, display.contentCenterY-100, native.systemFont , 60)
 		messaggioRecordDistanza:setFillColor(0.6,0.5,0)
 		controlloDistanza=false
 		timer.performWithDelay(2000, function()
 																		messaggioRecordDistanza:removeSelf()
 																		messaggioRecordDistanza=nil
 																 end)
+	end
+	if(controlloPunteggio==false)then
+		maxScoreText.text=""..score
+	end
+	if(controlloDistanza==false)then
+		maxPosizioneText.text=""..metri
 	end
 end
 
@@ -332,28 +339,28 @@ local function cloudGen()
 	cloud1.y = display.contentCenterY
 	cloud1.x = cannon.x +1500
 	table.insert( cloudTable, cloud1)
-	camera:add(cloud1, 3, false)
+	camera:add(cloud1, 1, false)
 
 	elseif (nuvole == 2) then
 	local cloud2 = display.newImageRect("images/nuvole/cloud2.png", 100 * 3, 63 * 3)
 	cloud2.y = display.contentCenterY
 	cloud2.x = cannon.x +1500
 	table.insert( cloudTable, cloud2)
-	camera:add(cloud2, 3, false)
+	camera:add(cloud2, 1, false)
 
 	elseif (nuvole == 3) then
 	local cloud3 = display.newImageRect("images/nuvole/cloud3.png", 100 * 1.5, 63 * 1.5)
 	cloud3.y = display.contentCenterY-50
 	cloud3.x = cannon.x +1500
 	table.insert( cloudTable, cloud3)
-	camera:add(cloud3, 3, false)
+	camera:add(cloud3, 1, false)
 
 	elseif (nuvole == 4) then
 	local cloud4 = display.newImageRect("images/nuvole/cloud4.png", 100 *3 , 63 *3 )
 	cloud4.y = display.contentCenterY-50
 	cloud4.x = cannon.x +1500
 	table.insert( cloudTable, cloud4)
-	camera:add(cloud4, 3, false)
+	camera:add(cloud4, 1, false)
 	end
 
 end
@@ -386,11 +393,12 @@ local function onCollision(event)
 		scoreText.text="score: "..score
 	elseif(ret==-1) then
 		if(inVita==true)then
-			database.writeDatabase(score, metri)
+			composer.setVariable("score", score)
+			composer.setVariable("metri", metri)
 			inVita = false
 			screenOff()
 			timer.performWithDelay( 1200, function()
-																			timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+																			timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
 																		end)
 		end
 	elseif(ret==20)then
@@ -404,11 +412,12 @@ local function onCollision(event)
 			life=0
 		end
 		if(life==0 and inVita==true)then
-			database.writeDatabase(score, metri)
+			composer.setVariable("score", score)
+			composer.setVariable("metri", metri)
 			inVita = false
 			screenOff()
 			timer.performWithDelay( 1200, function()
-																			timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+																			timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
 																		end)
 		else
 		end
@@ -430,41 +439,55 @@ function scene:create( event )
   camera = perspective.createView()
  -- physics.setDrawMode("hybrid")
 
-  scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
-  scoreText:setFillColor(0,0,0)
-  posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
-  posizioneText:setFillColor(0,0,0)
+ --------------------------------------------------------------------------------
+ --PRIMO IN CLASSIFICA
+ --------------------------------------------------------------------------------
+ 	primoInClassifica = database.primoInClassifica()
+
+------------------------------------------------------------------------------
+--SCRITTE PUNTEGGIO E DISTANZA
+------------------------------------------------------------------------------
+
+	scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
+	scoreText:setFillColor(0,0,0)
+	posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
+	posizioneText:setFillColor(0,0,0)
+	maxScoreIcon = display.newImageRect("images/coppa.png",70, 70)
+	maxScoreIcon.x = 70
+	maxScoreIcon.y = 250
+	maxScoreText = display.newText(""..primoInClassifica.punteggio, 120, 250, native.systemFont, 60)
+	maxScoreText.anchorX = 0
+	maxScoreText:setFillColor(0,0,0)
+	maxPosizioneIcon = display.newImageRect("images/piedi.png",70, 70)
+	maxPosizioneIcon.x = display.contentWidth-360
+	maxPosizioneIcon.y = 180
+	maxPosizioneText = display.newText(""..primoInClassifica.distanza, display.contentWidth-310, 180, native.systemFont, 60)
+	maxPosizioneText.anchorX = 0
+	maxPosizioneText:setFillColor(0,0,0)
 
 ---------------------------------------
 --PULSANTE SPARO CANNONE
 ---------------------------------------
 
-pSparo = widget.newButton(
-    {
-        width = 160,
-        height = 160,
-        defaultFile = "images/pulsanti/bomba.png",
-        overFile = "images/pulsanti/bombap.png",
-        --label = "button",
-        onEvent = fuocoCarro
-    }
-)
+	pSparo = widget.newButton(
+	    {
+	        width = 160,
+	        height = 160,
+	        defaultFile = "images/pulsanti/bomba.png",
+	        overFile = "images/pulsanti/bombap.png",
+	        --label = "button",
+	        onEvent = fuocoCarro
+	    }
+	)
 
-pSparo.x = display.screenOriginX+pSparo.contentWidth+120
-pSparo.y = display.contentHeight-pSparo.contentHeight+30
+	pSparo.x = display.screenOriginX+pSparo.contentWidth+120
+	pSparo.y = display.contentHeight-pSparo.contentHeight+30
 
 
 --------------------------------------------------------------------------------
 --CINGOLO
 --------------------------------------------------------------------------------
 	cingolo = carrarmato.newCingolo(camera)
-
---------------------------------------------------------------------------------
---PRIMO IN CLASSIFICA
---------------------------------------------------------------------------------
-	primoInClassifica = database.primoInClassifica()
-	print(primoInClassifica.punteggio)
-	print(primoInClassifica.distanza)
 
 --------------------------------------------------------------------------------
 --TANK
@@ -480,9 +503,6 @@ pSparo.y = display.contentHeight-pSparo.contentHeight+30
 --CANNONE, PULSANTE SPARO, PULSANTE ROT. CANN. DX, PULSANTE ROT. CANN. SX
 --------------------------------------------------------------------------------
 	cannon = cannone.newCannon({corpoCarrarmato = corpoCarrarmato.corpo, camera = camera})
-	--scoreText2 = display.newText("pos: "..cannon.x, 400, 400, native.systemFont, 60)
-
-	--sparo = pulsanti.pulsanteSparo()
 
 	sx = pulsanti.pulsanteCannoneSx()
 
@@ -856,7 +876,7 @@ table.insert( cuoreTable, cuore5 )
 --------------------------------------------------------------------------------
   camera:add(cielo, 7, false)
 
-	camera:setBounds(-1920000,1920000,-2000,780)
+  camera:setBounds(-1920000,1920000,-2000,780)
 
   camera:track()
 
@@ -1014,12 +1034,20 @@ end
 		cuoreTable[i]:removeSelf()
 		cuoreTable[i] = nil
 		end
-		scoreText:removeSelf()
-		scoreText = nil
 		home:removeSelf()
 		home = nil
+		scoreText:removeSelf()
+		scoreText = nil
+		maxScoreIcon:removeSelf()
+		maxScoreIcon = nil
+		maxScoreText:removeSelf()
+		maxScoreText = nil
 		posizioneText:removeSelf()
 		posizioneText = nil
+		maxPosizioneText:removeSelf()
+		maxPosizioneText = nil
+		maxPosizioneIcon:removeSelf()
+		maxPosizioneIcon = nil
 		sx:removeSelf()
 		sx = nil
 		dx:removeSelf()

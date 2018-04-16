@@ -1,5 +1,5 @@
 
-local composer = require( "composer") 
+local composer = require( "composer")
 local sounds = require('lib.sounds')
 
 local scene = composer.newScene()
@@ -19,7 +19,7 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-	
+
 	local bg = display.newImageRect("images/BG.png", 1800*1.3, 893*1.3)
 	sceneGroup:insert( bg )
 	bg.x = display.contentCenterX
@@ -46,7 +46,7 @@ function scene:create( event )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
 
-	local bottoneM4 = display.newImageRect(sceneGroup, "images/nomappa.png",800, 300)
+	local bottoneM4 = display.newImageRect(sceneGroup, "images/livello4.png",800, 300)
 	sceneGroup:insert( bottoneM4 )
 	bottoneM4.x = 1400
 	bottoneM4.y = 750
@@ -63,6 +63,11 @@ function scene:create( event )
 																		end)
   bottoneM3:addEventListener("tap", function()
 																			selezioneClassifica=3
+																			sounds.play('tap', { channel=2})
+																			composer.gotoScene("classifica")
+																		end)
+	bottoneM4:addEventListener("tap", function()
+																			selezioneClassifica=4
 																			sounds.play('tap', { channel=2})
 																			composer.gotoScene("classifica")
 																		end)

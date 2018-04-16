@@ -14,15 +14,9 @@ local bottoneM1
 local maxT1Punteggio, maxT1Distanza
 local maxT2Punteggio, maxT2Distanza
 local maxT3Punteggio, maxT3Distanza
+local maxT4Punteggio, maxT4Distanza
 
 newGame = 0
-
-local function gotoGame4()
-	newGame = 4
-	--audio.stop( 1 )
-	composer.gotoScene("game")
-	sounds.play('tap', { channel=2})
-end
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
@@ -199,7 +193,7 @@ function scene:show( event )
 
     if ( phase == "will" ) then
         -- Called when the scene is still off screen (but is about to come on screen).
-				database.aggiornaPunteggiMax(maxT1Punteggio, maxT2Punteggio, maxT3Punteggio, maxT1Distanza, maxT2Distanza, maxT3Distanza)
+				database.aggiornaPunteggiMax(maxT1Punteggio, maxT2Punteggio, maxT3Punteggio, maxT4Punteggio, maxT1Distanza, maxT2Distanza, maxT3Distanza, maxT4Distanza)
     elseif ( phase == "did" ) then
         -- Called when the scene is now on screen.
         -- Insert code here to make the scene come alive.

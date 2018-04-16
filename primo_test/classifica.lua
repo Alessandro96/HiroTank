@@ -38,12 +38,16 @@ function scene:create( event )
 	
 	local distanzaText = display.newText("Distanza",  0, 0, native.systemFont, 80)
 	local punteggioText = display.newText("Punteggio", 0, 0, native.systemFont, 80)
+	local nomeText = display.newText("Nome", 0, 0, native.systemFont, 80)
+	sceneGroup:insert( nomeText )
 	sceneGroup:insert( distanzaText )
 	sceneGroup:insert( punteggioText )
-	distanzaText.x = display.contentCenterX-30
+	distanzaText.x = display.contentCenterX+150
 	distanzaText.y = 70
-	punteggioText.x = distanzaText.x+750
+	punteggioText.x = distanzaText.x+500
 	punteggioText.y = 70
+	nomeText.x = distanzaText.x-600
+	nomeText.y = 70
 	
 	bottoneGioca:addEventListener("touch", function(event)
 												local t = event.target
