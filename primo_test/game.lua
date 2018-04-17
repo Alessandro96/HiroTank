@@ -67,6 +67,7 @@ metri = 0
 local primoInClassifica = {}
 local musicTrackTank
 local musicTrackBack
+verificaFumo = false
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -85,7 +86,7 @@ end
 
 local function fuocoCarro( event )
 
-    if ( "ended" == event.phase ) then
+    if ( "ended" == event.phase and inVita==true ) then
         print( "Button was pressed and released" )
 		local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
 		sounds.play('cannon', { channel=2})
@@ -105,12 +106,30 @@ local function enterFrame(event)
 	metri = (math.round(((cannon.x-256)/100)*10)*0.1)+9
 	metamappa = (math.round(((position)/100)*10)*0.1)+6.5
 	posizioneText.text="m : "..metri
+	
+	if (verificaFumo == true) then
+	smoke.x = cannon.x-20
+	smoke.y = cannon.y-140
+	end
+	
+	if (cannon.y > 1200 and inVita == true) then 
+		inVita = false 
+		life = 0
+		database.writeDatabase(score, metri)
+		screenOff()
+		timer.performWithDelay( 1300, function()
+									timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+							end)
+	end
+	
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
 		if ((metri> metamappa )and (metri < metamappa+5)) then
 			createTerrain()
 		end
 	else
+	
+	
 	end
 	if ((score>primoInClassifica.punteggio) and (controlloPunteggio==true)) then
 		local messaggioRecordPunteggio = display.newText("new best score!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
@@ -364,6 +383,13 @@ local function cloudGen()
 	end
 
 end
+
+------------------------------
+--FUMO
+------------------------------
+local options2 = {width = 256, height = 512, numFrames = 16, sheetContentWidth = 1024, sheetContentHeight = 2048}
+local sheet2 = graphics.newImageSheet("images/smoke2.png", options2 )
+local sequenceData2 = { name="seq2", sheet=sheet2, start=1, count=16, time=800, loopCount=0 }
 ---------------------------------------------------------
 --SUONI
 ---------------------------------------------------------
@@ -386,39 +412,49 @@ audio.play( musicTrackBack, { channel=7, loops=-1 } )
 
 
 local function onCollision(event)
-	local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato)
+	local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato, camera)
 	--print(inVita)
 	if(ret==10)then
 		score=score+10
 		scoreText.text="score: "..score
 	elseif(ret==-1) then
 		if(inVita==true)then
-			composer.setVariable("score", score)
-			composer.setVariable("metri", metri)
+			composer.setVariable("score",score)
+			composer.setVariable("metri",metri)
 			inVita = false
 			screenOff()
 			timer.performWithDelay( 1200, function()
-																			timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
-																		end)
+								timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
+							end)
 		end
 	elseif(ret==20)then
 		if(life>0)then
+		if (life == 40 and verificaFumo == false) then
+			smoke = display.newSprite(sheet2, sequenceData2)
+			smoke.x = cannon.x-20
+			smoke.y = cannon.y-140
+			verificaFumo = true
+			camera:add(smoke, 4, false)
+			smoke:play()
+		end
 		cuoreDaRimuovere = #cuoreTable
 		cuoreTable[cuoreDaRimuovere]:removeSelf()
 		cuoreTable[cuoreDaRimuovere] = nil
 		table.remove( cuoreTable, cuoreDaRimuovere )
 		life=life-20
+		sounds.play('colpo', { channel=2})
 		elseif(life<=0)then
 			life=0
+			inVita = false
 		end
 		if(life==0 and inVita==true)then
-			composer.setVariable("score", score)
-			composer.setVariable("metri", metri)
+			composer.setVariable("score",score)
+			composer.setVariable("metri",metri)
 			inVita = false
 			screenOff()
 			timer.performWithDelay( 1200, function()
-																			timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
-																		end)
+								timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
+							end)
 		else
 		end
 	end
@@ -886,8 +922,7 @@ table.insert( cuoreTable, cuore5 )
 --------------------------------------------------------------------------------
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
-
- sx:addEventListener("touch", function(event)
+sx:addEventListener("touch", function(event)
 									local t = event.target
 									if "began" == event.phase then
 										pulsanteSx2 = display.newImageRect("images/pulsanti/upp.png", 150, 150)
@@ -968,8 +1003,6 @@ table.insert( cuoreTable, cuore5 )
 												end
 											end)
 end
-
-
 -- show()
 function scene:show( event )
 
@@ -988,10 +1021,11 @@ function scene:show( event )
 
   Runtime:addEventListener("enterFrame", enterFrame)
 
+  if (newGame~= 4) then
 	cloudGen()
 
    cloudLoopTimer = timer.performWithDelay(5000, cloudGen, 0)
-
+	end 
    gameLoopTimer = timer.performWithDelay(10000, function()
 																					gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo, position)
 												  							end, 0)
@@ -1025,6 +1059,7 @@ end
 		-- Code here runs immediately after the scene goes entirely off screen
 		camera:destroy()
 		audio.stop(5)
+		audio.stop(6)
 		audio.stop(7)
 		audio.stop(2)
 		--audio.stop( 6)
@@ -1034,20 +1069,20 @@ end
 		cuoreTable[i]:removeSelf()
 		cuoreTable[i] = nil
 		end
-		home:removeSelf()
-		home = nil
-		scoreText:removeSelf()
-		scoreText = nil
 		maxScoreIcon:removeSelf()
 		maxScoreIcon = nil
-		maxScoreText:removeSelf()
-		maxScoreText = nil
-		posizioneText:removeSelf()
-		posizioneText = nil
-		maxPosizioneText:removeSelf()
-		maxPosizioneText = nil
 		maxPosizioneIcon:removeSelf()
 		maxPosizioneIcon = nil
+		maxPosizioneText:removeSelf()
+		maxPosizioneText = nil
+		maxScoreText:removeSelf()
+		maxScoreText = nil
+		scoreText:removeSelf()
+		scoreText = nil
+		home:removeSelf()
+		home = nil
+		posizioneText:removeSelf()
+		posizioneText = nil
 		sx:removeSelf()
 		sx = nil
 		dx:removeSelf()
@@ -1060,6 +1095,11 @@ end
 		m.rotate.right = nil
 		inVita = true
 		display.remove(go)
+		display.remove(pulsanteDx2)
+		display.remove(pulsanteSx2)
+		display.remove(pulsanteDx3)
+		display.remove(pulsanteSx3)
+		display.remove(pulsanteSparo)
 		Runtime:removeEventListener( "enterFrame", enterFrame )
 		Runtime:removeEventListener("collision", onCollision--[[function(event)
 													collisioni.onCollision(event, aereiTable, bombTable,  corpoCarrarmato)

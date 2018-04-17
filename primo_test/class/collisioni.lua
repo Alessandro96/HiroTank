@@ -1,7 +1,16 @@
 local sounds = require('lib.sounds')
 local M = {}
 hit = 0
-function M.onCollision(event, aereiTable, bombeTable, tank)
+function M.onCollision(event, aereiTable, bombeTable, tank, camera)
+
+	local options = {width = 300, height = 300, numFrames = 34, sheetContentWidth = 1800, sheetContentHeight = 1800}
+	local sheet1 = graphics.newImageSheet("images/explosiontest.png", options )
+	local sequenceData = { name="seq1", sheet=sheet1, start=1, count=34, time=1000, loopCount=1 }
+	
+	
+	 
+
+	
 
 	if ( event.phase == "began" ) then
 
@@ -14,8 +23,14 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 			 ( obj1.myName == "aereo" and obj2.myName == "colpoCarro" ) )
 		then
 			sounds.play('explosion', { channel=3})
+			local explosions = display.newSprite(sheet1, sequenceData)
+			explosions.x = obj1.x
+			explosions.y = obj1.y
+			camera:add(explosions, 3, false)
+			explosions:play()
 			display.remove( obj1 )
 			display.remove( obj2 )
+			
 
 			for i = #aereiTable, 1, -1 do
 				if ( aereiTable[i] == obj1 or aereiTable[i] == obj2 ) then
@@ -28,11 +43,14 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 		elseif ( ( obj1.myName == "colpoCarro" and obj2.myName == "aereo2" ) or
 				 ( obj1.myName == "aereo2" and obj2.myName == "colpoCarro" ) )
 			then
+			sounds.play('colpo', { channel=2})
 				
 				if(obj1.myName == "colpoCarro") then 
 					display.remove( obj1 )
 					obj2.vita = obj2.vita -1
+					
 					if (obj2.vita == 1) then
+					sounds.play('colpo', { channel=2})
 						display.remove(obj2.v2)
 					elseif (obj2.vita == 0) then
 						sounds.play('explosion', { channel=3})
@@ -42,10 +60,16 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 					display.remove( obj2 )
 					obj1.vita = obj1.vita -1
 					if (obj1.vita == 1) then
+						sounds.play('colpo', { channel=2})
 						display.remove(obj1.v2)
 					elseif (obj1.vita == 0) then
 						sounds.play('explosion', { channel=3})
 						display.remove(obj1.v1)
+						local explosions = display.newSprite(sheet1, sequenceData)
+						explosions.x = obj1.x
+						explosions.y = obj1.y
+						camera:add(explosions, 3, false)
+						explosions:play()
 					end
 				end
 
@@ -53,6 +77,11 @@ function M.onCollision(event, aereiTable, bombeTable, tank)
 				display.remove( obj1 )
 				display.remove( obj2 )
 				sounds.play('explosion', { channel=3})
+				local explosions = display.newSprite(sheet1, sequenceData)
+				explosions.x = obj1.x
+				explosions.y = obj1.y
+				camera:add(explosions, 3, false)
+				explosions:play()
         
 					for i = #aereiTable, 1, -1 do
 						if ( aereiTable[i] == obj1 or aereiTable[i] == obj2 ) then

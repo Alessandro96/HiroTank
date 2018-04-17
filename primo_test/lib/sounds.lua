@@ -14,6 +14,7 @@ local sounds = {
     game_music = 'sounds/game_music.mp3',
     tap = 'sounds/tap.wav',
     tank = 'sounds/tank.mp3',
+	colpo = 'sounds/colpo.mp3',
 	explosion = 'sounds/explosion.mp3',
 	impact = 'sounds/impact.wav',
 	cannon = 'sounds/cannon.mp3',

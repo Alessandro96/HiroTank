@@ -35,7 +35,7 @@ end
 
 function M.loop2(aereo2, aereiTable, camera, corpoCarrarmato, metri)
 	
-	if (metri > 200) then
+	if (metri > 380) then
 	aereo2.creaAereo2(aereiTable, camera, corpoCarrarmato)
 	
 	for i = #aereiTable, 1, -1 do
