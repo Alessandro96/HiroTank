@@ -113,7 +113,7 @@ local function enterFrame(event)
 	else
 	end
 	if ((score>primoInClassifica.punteggio) and (controlloPunteggio==true)) then
-		local messaggioRecordPunteggio = display.newText("DA GRANDE DIVENTERAI UNA STAR, CAMPIONE", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
+		local messaggioRecordPunteggio = display.newText("new best score!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
 		messaggioRecordPunteggio:setFillColor(0.6,0.5,0)
 		controlloPunteggio=false
 		timer.performWithDelay(2000, function()
@@ -122,7 +122,7 @@ local function enterFrame(event)
 																 end)
 	end
 	if (metri>primoInClassifica.distanza and controlloDistanza==true) then
-		local messaggioRecordDistanza = display.newText("PIETRO TARICONE L'AQUILONE", display.contentCenterX, display.contentCenterY-100, native.systemFont , 60)
+		local messaggioRecordDistanza = display.newText("new record!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
 		messaggioRecordDistanza:setFillColor(0.6,0.5,0)
 		controlloDistanza=false
 		timer.performWithDelay(2000, function()
@@ -612,10 +612,10 @@ if (newGame == 1) then
   ground3.x=-7000
   camera:add(ground3, 5, false)
 
-  local physicsData = (require "images.t4").physicsData(scaleFactor)
-  ground4 = display.newImage("images/t4.png")
+  local physicsData = (require "images.t40").physicsData(scaleFactor)
+  ground4 = display.newImage("images/t40.png")
   ground4.myName = "terreno"
-  physics.addBody( ground4, "static", physicsData:get("t4") )
+  physics.addBody( ground4, "static", physicsData:get("t40") )
   ground4.y=-9000
   ground4.x=-3000
   camera:add(ground4, 5, false)
