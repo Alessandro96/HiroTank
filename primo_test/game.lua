@@ -118,7 +118,7 @@ local function enterFrame(event)
 		database.writeDatabase(score, metri)
 		screenOff()
 		timer.performWithDelay( 1300, function()
-									timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+									timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
 							end)
 	end
 	

@@ -2,11 +2,13 @@
 local composer = require( "composer" )
 local sounds = require('lib.sounds')
 local database = require("class.database")
+require("lib.LD_LoaderX")
 
 local scene = composer.newScene()
 local home
 local textField
 local nomeUtente
+local myLevel = {}
 
 
 -- -----------------------------------------------------------------------------------
@@ -40,12 +42,12 @@ end
 -- create()
 function scene:create( event )
 
+	local myLevel = {}
+	myLevel= LD_Loader:new(self.view)
+	myLevel:loadLevel("Level01") -- set your scene/level name here
 	local sceneGroup = self.view
+	
 	-- Code here runs when the scene is first created but has not yet appeared on screen
-
-	sfondo = display.newImageRect(sceneGroup, "images/sfondo.png", display.contentWidth, display.contentHeight)
-	sfondo.x=display.contentCenterX
-	sfondo.y=display.contentCenterY
 
 	home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
@@ -84,7 +86,7 @@ function scene:show( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs when the scene is entirely on screen
-		textField = native.newTextField( display.contentCenterX, display.contentCenterY, 300, 100)
+		textField = native.newTextField( display.contentCenterX-70, display.contentCenterY-20, 300, 100)
 		sceneGroup:insert( textField )
 		textField:resizeFontToFitHeight()
 		textField:addEventListener("userInput", textListener)
