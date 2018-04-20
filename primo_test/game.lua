@@ -32,7 +32,6 @@ local gameLoop = require("class.gameLoop")
 m.result = "none"
 m.rotate = {}
 metri = nil
-local cielo
 local mont
 local sx, dx, sparo
 cannon = 0
@@ -102,18 +101,17 @@ end
 
 local function enterFrame(event)
 	pulsanti.pulsantiMovimentoCingolo().enterFrame(event, {m=m, ruota1=cingolo.ruote[1], ruota2=cingolo.ruote[4], ruota3=cingolo.ruote[2], ruota4=cingolo.ruote[3], tank=corpoCarrarmato.corpo})
-	cielo.x=corpoCarrarmato.corpo.x
 	metri = (math.round(((cannon.x-256)/100)*10)*0.1)+9
 	metamappa = (math.round(((position)/100)*10)*0.1)+6.5
 	posizioneText.text="m : "..metri
-	
+
 	if (verificaFumo == true) then
 	smoke.x = cannon.x-20
 	smoke.y = cannon.y-140
 	end
-	
-	if (cannon.y > 1700 and inVita == true) then 
-		inVita = false 
+
+	if (cannon.y > 1700 and inVita == true) then
+		inVita = false
 		life = 0
 		database.writeDatabase(score, metri)
 		screenOff()
@@ -121,15 +119,15 @@ local function enterFrame(event)
 									timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
 							end)
 	end
-	
+
 	if (inVita == true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
 		if ((metri> metamappa )and (metri < metamappa+5)) then
 			createTerrain()
 		end
 	else
-	
-	
+
+
 	end
 	if ((score>primoInClassifica.punteggio) and (controlloPunteggio==true)) then
 		local messaggioRecordPunteggio = display.newText("new best score!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
@@ -169,6 +167,21 @@ function createTerrain()
 		end
 	end
 	mappaAttuale = whereFrom
+	if (newGame==1) then
+		bgGround = display.newImage("images/bgground.png")
+	  cont=cont+4000
+		bgGround.x = cont
+		bgGround.y = display.contentCenterY+60
+	  camera:add(bgGround, 6, false)
+	end
+
+	if (newGame==2) then
+		bgNeve = display.newImage("images/snowground.png")
+	  cont=cont+4000
+		bgNeve.x = cont
+		bgNeve.y = display.contentCenterY+60
+	  camera:add(bgNeve, 6, false)
+	end
 
 if (newGame==3) then
 	monte = display.newImage("images/mont.png")
@@ -547,17 +560,17 @@ function scene:create( event )
 --------------------------------------------------------------------------------
 --BACKGROUND
 --------------------------------------------------------------------------------
-    if (newGame == 1) then
-	cielo = display.newImage("images/sky.jpg")
-	cielo.x = display.contentCenterX
-	cielo.y = display.contentCenterY
-	cielo:scale(5,4)
+  if (newGame == 1) then
+		groundBG = display.newImage("images/bgground.png")
+		groundBG.x = cont
+		groundBG.y = display.contentCenterY+60
+		camera:add(groundBG, 6, false)
 
   elseif (newGame == 2) then
-	cielo = display.newImage("images/sky.jpg")
-	cielo.x = display.contentCenterX
-	cielo.y = display.contentCenterY
-	cielo:scale(5,4)
+		neveBG = display.newImage("images/snowground.png")
+	  neveBG.x = cont
+		neveBG.y = display.contentCenterY+60
+		camera:add(neveBG, 6, false)
 
   elseif (newGame == 3) then
 	monteBase = display.newImage("images/mont.png")
@@ -566,22 +579,14 @@ function scene:create( event )
 	alberiBase = display.newImage("images/alb.png")
 	alberiBase.x = cont
 	alberiBase.y = display.contentCenterY+260
-	cielo = display.newImage("images/sky.jpg")
-	cielo.x = display.contentCenterX
-	cielo.y = display.contentCenterY
-	cielo:scale(5,4)
 	camera:add(monteBase, 6, false)
 	camera:add(alberiBase, 6, false)
-	--cielo:scale(5,4)
+
 
   elseif (newGame == 4) then
 	notteBG = display.newImage("images/bgNotteStelle.png")
   notteBG.x = cont
 	notteBG.y = display.contentCenterY+60
-	cielo = display.newImage("images/sky.jpg")
-	cielo.x = display.contentCenterX
-	cielo.y = display.contentCenterY
-	cielo:scale(5,4)
 	camera:add(notteBG, 6, false)
 
   end
@@ -910,7 +915,7 @@ table.insert( cuoreTable, cuore5 )
 --------------------------------------------------------------------------------
 --CAMERA
 --------------------------------------------------------------------------------
-  camera:add(cielo, 7, false)
+
 
   camera:setBounds(-1920000,1920000,-2000,780)
 
@@ -1025,7 +1030,7 @@ function scene:show( event )
 	cloudGen()
 
    cloudLoopTimer = timer.performWithDelay(5000, cloudGen, 0)
-	end 
+	end
    gameLoopTimer = timer.performWithDelay(10000, function()
 																					gameLoop.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato.corpo, position)
 												  							end, 0)
