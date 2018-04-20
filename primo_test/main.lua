@@ -24,5 +24,6 @@ splashscreen:removeSelf()
 splashscreen = nil
 end
 
-timer.performWithDelay(2000,removeSplash)
+timer.performWithDelay(4000,removeSplash)
 composer.gotoScene( "menu" )
+

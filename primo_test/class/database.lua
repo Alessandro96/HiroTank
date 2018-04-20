@@ -132,35 +132,37 @@ function M.readDatabase()
 			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, native.systemFont, 80)
 			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, native.systemFont, 80)
 			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, native.systemFont, 80)
-			rowTextIndice:setFillColor(1,0,0)
+			rowTextIndice:setFillColor(0,0.2,0.6)
 			rowTextIndice.anchorX =0
 			rowTextIndice.x=200
 			rowTextIndice.y = rowHeight*0.5
-			rowTextNome:setFillColor(1,0,0)
+			rowTextNome:setFillColor(0,0.2,0.6)
 			rowTextNome.anchorX =0
 			rowTextNome.x=300
 			rowTextNome.y = rowHeight*0.5
-			rowTextDistanza:setFillColor(1,0,0)
+			rowTextDistanza:setFillColor(0,0.2,0.6)
 			rowTextDistanza.anchorX =0.5
 			rowTextDistanza.x=row.contentWidth/2+120
 			rowTextDistanza.y = rowHeight*0.5
-			rowTextPunteggio:setFillColor(1,0,0)
+			rowTextPunteggio:setFillColor(0,0.2,0.6)
 			rowTextPunteggio.anchorX =0.5
 			rowTextPunteggio.x=row.contentWidth-350
 			rowTextPunteggio.y = rowHeight*0.5
 		end
 
-		local tableView = widget.newTableView{
-		  height = display.contentHeight-300,
-	    width = display.contentWidth,
+		local tableView = widget.newTableView({
+			height = display.contentHeight-300,
+			width = display.contentWidth,
 			y=display.contentCenterY,
 			x=display.contentCenterX,
 			onRowRender=onRowRender
-		}
+		})
 
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
-				rowHeight=70
+				rowHeight=70,
+				rowColor = {default = {224/255,1,1}, over = {0,1,0}},
+				lineColor = {0,0.2,0.6}
 			}
 		end
 		if ( db and db:isopen() ) then

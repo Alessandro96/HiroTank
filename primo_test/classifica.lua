@@ -23,6 +23,12 @@ end
 function scene:create( event )
 	local sceneGroup = self.view
 	-- Code here runs when the scene is first created but has not yet appeared on screen
+	
+	local bg = display.newImageRect("images/BG.png", 1800*1.3, 893*1.3)
+	sceneGroup:insert( bg )
+	bg.x = display.contentCenterX
+	bg.y = display.contentCenterY
+	
 	sceneGroup:insert( database )
 	
 	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)

@@ -91,8 +91,8 @@ function scene:create( event )
 	piedi4.x = bottoneM4.x-250
 	piedi4.y = 950
 
-	maxT1Punteggio=display.newText("cavoletto", bottoneM1.x+255, 440, native.systemFont, 50)
-	maxT1Distanza=display.newText("cavoletto", bottoneM1.x-220, 440, native.systemFont, 50)
+	maxT1Punteggio=display.newText("cavoletto", bottoneM1.x+255, 440, "Manga.otf", 50)
+	maxT1Distanza=display.newText("cavoletto", bottoneM1.x-220, 440, "Manga.otf", 50)
 	sceneGroup:insert(maxT1Punteggio)
 	sceneGroup:insert(maxT1Distanza)
 	maxT1Punteggio:setFillColor(0,0,0)
@@ -100,8 +100,8 @@ function scene:create( event )
 	maxT1Punteggio.anchorX=0
 	maxT1Distanza.anchorX=0
 
-	maxT2Punteggio=display.newText("cavoletto", bottoneM2.x+255, 440, native.systemFont, 50)
-	maxT2Distanza=display.newText("cavoletto", bottoneM2.x-220, 440, native.systemFont, 50)
+	maxT2Punteggio=display.newText("cavoletto", bottoneM2.x+255, 440, "Manga.otf", 50)
+	maxT2Distanza=display.newText("cavoletto", bottoneM2.x-220, 440, "Manga.otf", 50)
 	sceneGroup:insert(maxT2Punteggio)
 	sceneGroup:insert(maxT2Distanza)
 	maxT2Punteggio:setFillColor(0,0,0)
@@ -109,8 +109,8 @@ function scene:create( event )
 	maxT2Punteggio.anchorX=0
 	maxT2Distanza.anchorX=0
 
-	maxT3Punteggio=display.newText("cavoletto", bottoneM3.x+255, 950, native.systemFont, 50)
-	maxT3Distanza=display.newText("cavoletto", bottoneM3.x-220, 950, native.systemFont, 50)
+	maxT3Punteggio=display.newText("cavoletto", bottoneM3.x+255, 950, "Manga.otf", 50)
+	maxT3Distanza=display.newText("cavoletto", bottoneM3.x-220, 950, "Manga.otf", 50)
 	sceneGroup:insert(maxT3Punteggio)
 	sceneGroup:insert(maxT3Distanza)
 	maxT3Punteggio:setFillColor(0,0,0)
@@ -118,8 +118,8 @@ function scene:create( event )
 	maxT3Punteggio.anchorX=0
 	maxT3Distanza.anchorX=0
 
-	maxT4Punteggio=display.newText("cavoletto", bottoneM4.x+255, 950, native.systemFont, 50)
-	maxT4Distanza=display.newText("cavoletto", bottoneM4.x-220, 950, native.systemFont, 50)
+	maxT4Punteggio=display.newText("cavoletto", bottoneM4.x+255, 950, "Manga.otf", 50)
+	maxT4Distanza=display.newText("cavoletto", bottoneM4.x-220, 950, "Manga.otf", 50)
 	sceneGroup:insert(maxT4Punteggio)
 	sceneGroup:insert(maxT4Distanza)
 	maxT4Punteggio:setFillColor(0,0,0)

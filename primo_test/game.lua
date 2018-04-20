@@ -112,7 +112,7 @@ local function enterFrame(event)
 	smoke.y = cannon.y-140
 	end
 	
-	if (cannon.y > 1200 and inVita == true) then 
+	if (cannon.y > 1700 and inVita == true) then 
 		inVita = false 
 		life = 0
 		database.writeDatabase(score, metri)
@@ -484,20 +484,20 @@ function scene:create( event )
 --SCRITTE PUNTEGGIO E DISTANZA
 ------------------------------------------------------------------------------
 
-	scoreText = display.newText("score: "..score, 140, 170, native.systemFont, 60)
+	scoreText = display.newText("score: "..score, 140, 170,"Manga.otf" , 80)
 	scoreText:setFillColor(0,0,0)
-	posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, native.systemFont, 60)
+	posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, "Manga.otf", 80)
 	posizioneText:setFillColor(0,0,0)
 	maxScoreIcon = display.newImageRect("images/coppa.png",70, 70)
 	maxScoreIcon.x = 70
 	maxScoreIcon.y = 250
-	maxScoreText = display.newText(""..primoInClassifica.punteggio, 120, 250, native.systemFont, 60)
+	maxScoreText = display.newText(""..primoInClassifica.punteggio, 120, 250, "Manga.otf", 80)
 	maxScoreText.anchorX = 0
 	maxScoreText:setFillColor(0,0,0)
 	maxPosizioneIcon = display.newImageRect("images/piedi.png",70, 70)
 	maxPosizioneIcon.x = display.contentWidth-360
 	maxPosizioneIcon.y = 180
-	maxPosizioneText = display.newText(""..primoInClassifica.distanza, display.contentWidth-310, 180, native.systemFont, 60)
+	maxPosizioneText = display.newText(""..primoInClassifica.distanza, display.contentWidth-310, 180, "Manga.otf", 80)
 	maxPosizioneText.anchorX = 0
 	maxPosizioneText:setFillColor(0,0,0)
 
