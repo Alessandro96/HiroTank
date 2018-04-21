@@ -1,4 +1,5 @@
 require("sqlite3")
+local composer = require("composer")
 local M={}
 
 function M.createDatabase()
@@ -87,19 +88,19 @@ function M.writeDatabase(score, metri, nome)
 
 	local path = system.pathForFile("data.db", system.DocumentsDirectory)
 	local db=sqlite3.open(path)
-	if(newGame==1) then
+	if(composer.getVariable("newGame")==1) then
 		local query=[[INSERT INTO classificaT1 VALUES(null,]].. score..[[, ]]..metri..[[, ']]..nome..[[' );]]
 		db:exec(query)
 
-	elseif(newGame==2) then
+	elseif(composer.getVariable("newGame")==2) then
 		local query=[[INSERT INTO classificaT2 VALUES(null,]].. score..[[, ]]..metri..[[, ']]..nome..[[' );]]
 		db:exec(query)
 
-	elseif(newGame==3) then
+	elseif(composer.getVariable("newGame")==3) then
 		local query=[[INSERT INTO classificaT3 VALUES(null,]].. score..[[, ]]..metri..[[, ']]..nome..[[' );]]
 		db:exec(query)
 
-	elseif(newGame==4) then
+	elseif(composer.getVariable("newGame")==4) then
 		local query=[[INSERT INTO classificaT4 VALUES(null,]].. score..[[, ]]..metri..[[, ']]..nome..[[' );]]
 		db:exec(query)
 	end
@@ -110,14 +111,16 @@ end
 
 function M.readDatabase()
 
-	local path = system.pathForFile("data.db", system.DocumentsDirectory)
-	local db=sqlite3.open(path)
+	local path
+	local db
 
 	local widget=require("widget")
 	local cont = 1
 	local tableInfo = {}
 
-	if(selezioneClassifica==1) then
+	if(composer.getVariable("newGame")==1) then
+		path = system.pathForFile("data.db", system.DocumentsDirectory)
+		db=sqlite3.open(path)
 
 		for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio, nome=row.nome}
@@ -128,29 +131,30 @@ function M.readDatabase()
 			local row = event.row
 			local rowHeight = row.contentHeight
 			local rowWidth = row.contentWidth
-			local rowTextIndice = display.newText(row, row.index..".",  0, 0, native.systemFont, 80)
-			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, native.systemFont, 80)
-			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, native.systemFont, 80)
-			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, native.systemFont, 80)
-			rowTextIndice:setFillColor(0,0.2,0.6)
+			local rowTextIndice = display.newText(row, row.index..".",  0, 0, "Manga.otf", 80)
+			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, "Manga.otf", 80)
+			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, "Manga.otf", 80)
+			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, "Manga.otf", 80)
+			rowTextIndice:setFillColor(101/255,67/255,33/255)
 			rowTextIndice.anchorX =0
 			rowTextIndice.x=200
 			rowTextIndice.y = rowHeight*0.5
-			rowTextNome:setFillColor(0,0.2,0.6)
+			rowTextNome:setFillColor(101/255,67/255,33/255)
 			rowTextNome.anchorX =0
 			rowTextNome.x=300
 			rowTextNome.y = rowHeight*0.5
-			rowTextDistanza:setFillColor(0,0.2,0.6)
+			rowTextDistanza:setFillColor(101/255,67/255,33/255)
 			rowTextDistanza.anchorX =0.5
 			rowTextDistanza.x=row.contentWidth/2+120
 			rowTextDistanza.y = rowHeight*0.5
-			rowTextPunteggio:setFillColor(0,0.2,0.6)
+			rowTextPunteggio:setFillColor(101/255,67/255,33/255)
 			rowTextPunteggio.anchorX =0.5
 			rowTextPunteggio.x=row.contentWidth-350
 			rowTextPunteggio.y = rowHeight*0.5
 		end
 
 		local tableView = widget.newTableView({
+			hideBackground = true,
 			height = display.contentHeight-300,
 			width = display.contentWidth,
 			y=display.contentCenterY,
@@ -161,8 +165,8 @@ function M.readDatabase()
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
 				rowHeight=70,
-				rowColor = {default = {224/255,1,1}, over = {0,1,0}},
-				lineColor = {0,0.2,0.6}
+				rowColor = {default = {255,255,255,0}, over = {255,255,255,0}},
+				lineColor = {101/255,67/255,33/255}
 			}
 		end
 		if ( db and db:isopen() ) then
@@ -170,7 +174,10 @@ function M.readDatabase()
 		end
 		return tableView
 
-	elseif(selezioneClassifica==2) then
+	elseif(composer.getVariable("newGame")==2) then
+		path = system.pathForFile("data.db", system.DocumentsDirectory)
+		db=sqlite3.open(path)
+
 		for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio, nome=row.nome}
 			cont=cont+1
@@ -180,30 +187,31 @@ function M.readDatabase()
 			local row = event.row
 			local rowHeight = row.contentHeight
 			local rowWidth = row.contentWidth
-			local rowTextIndice = display.newText(row, row.index..".",  0, 0, native.systemFont, 80)
-			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, native.systemFont, 80)
-			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, native.systemFont, 80)
-			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, native.systemFont, 80)
-			rowTextIndice:setFillColor(1,0,0)
+			local rowTextIndice = display.newText(row, row.index..".",  0, 0, "Manga.otf", 80)
+			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, "Manga.otf", 80)
+			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, "Manga.otf", 80)
+			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, "Manga.otf", 80)
+			rowTextIndice:setFillColor(0/255,49/255,83/255)
 			rowTextIndice.anchorX =0
 			rowTextIndice.x=200
 			rowTextIndice.y = rowHeight*0.5
-			rowTextNome:setFillColor(1,0,0)
+			rowTextNome:setFillColor(0/255,49/255,83/255)
 			rowTextNome.anchorX =0
 			rowTextNome.x=300
 			rowTextNome.y = rowHeight*0.5
-			rowTextDistanza:setFillColor(1,0,0)
+			rowTextDistanza:setFillColor(0/255,49/255,83/255)
 			rowTextDistanza.anchorX =0.5
 			rowTextDistanza.x=row.contentWidth/2+120
 			rowTextDistanza.y = rowHeight*0.5
-			rowTextPunteggio:setFillColor(1,0,0)
+			rowTextPunteggio:setFillColor(0/255,49/255,83/255)
 			rowTextPunteggio.anchorX =0.5
 			rowTextPunteggio.x=row.contentWidth-350
 			rowTextPunteggio.y = rowHeight*0.5
 		end
 
 		local tableView = widget.newTableView{
-		    height = display.contentHeight-300,
+			hideBackground = true,
+		  height = display.contentHeight-300,
 			width = display.contentWidth,
 			y=display.contentCenterY,
 			x=display.contentCenterX,
@@ -212,14 +220,19 @@ function M.readDatabase()
 
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
-				rowHeight=70
+				rowHeight=70,
+				rowColor = {default = {255, 255, 255, 0}, over = {255, 255, 255, 0}},
+				lineColor = {0/255,49/255,83/255}
 			}
 		end
 		if ( db and db:isopen() ) then
     	db:close()
 		end
 		return tableView
-	elseif(selezioneClassifica==3) then
+	elseif(composer.getVariable("newGame")==3) then
+		path = system.pathForFile("data.db", system.DocumentsDirectory)
+		db=sqlite3.open(path)
+
 		for row in db:nrows("SELECT * FROM ordineDistanzaT3") do
 			tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio, nome=row.nome}
 			cont=cont+1
@@ -229,29 +242,30 @@ function M.readDatabase()
 			local row = event.row
 			local rowHeight = row.contentHeight
 			local rowWidth = row.contentWidth
-			local rowTextIndice = display.newText(row, row.index..".",  0, 0, native.systemFont, 80)
-			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, native.systemFont, 80)
-			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, native.systemFont, 80)
-			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, native.systemFont, 80)
-			rowTextIndice:setFillColor(1,0,0)
+			local rowTextIndice = display.newText(row, row.index..".",  0, 0, "Manga.otf", 80)
+			local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, "Manga.otf", 80)
+			local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, "Manga.otf", 80)
+			local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, "Manga.otf", 80)
+			rowTextIndice:setFillColor(49/255,0/255,98/255)
 			rowTextIndice.anchorX =0
 			rowTextIndice.x=200
 			rowTextIndice.y = rowHeight*0.5
-			rowTextNome:setFillColor(1,0,0)
+			rowTextNome:setFillColor(49/255,0/255,98/255)
 			rowTextNome.anchorX =0
 			rowTextNome.x=300
 			rowTextNome.y = rowHeight*0.5
-			rowTextDistanza:setFillColor(1,0,0)
+			rowTextDistanza:setFillColor(49/255,0/255,98/255)
 			rowTextDistanza.anchorX =0.5
 			rowTextDistanza.x=row.contentWidth/2+120
 			rowTextDistanza.y = rowHeight*0.5
-			rowTextPunteggio:setFillColor(1,0,0)
+			rowTextPunteggio:setFillColor(49/255,0/255,98/255)
 			rowTextPunteggio.anchorX =0.5
 			rowTextPunteggio.x=row.contentWidth-350
 			rowTextPunteggio.y = rowHeight*0.5
 		end
 
 		local tableView = widget.newTableView{
+			hideBackground = true,
 			height = display.contentHeight-300,
 			width = display.contentWidth,
 			y=display.contentCenterY,
@@ -260,7 +274,9 @@ function M.readDatabase()
 		}
 		for i=1, cont-1, 1 do
 			tableView:insertRow{
-				rowHeight=70
+				rowHeight=70,
+				rowColor = {default = {255, 255, 255, 0}, over = {255, 255, 255, 0}},
+				lineColor = {49/255,0/255,98/255},
 			}
 		end
 		if ( db and db:isopen() ) then
@@ -268,7 +284,9 @@ function M.readDatabase()
 		end
 		return tableView
 
-	elseif(selezioneClassifica==4) then
+	elseif(composer.getVariable("newGame")==4) then
+			path = system.pathForFile("data.db", system.DocumentsDirectory)
+			db=sqlite3.open(path)
 
 			for row in db:nrows("SELECT * FROM ordineDistanzaT4") do
 				tableInfo[cont]={distanza=row.distanza, punteggio=row.punteggio, nome=row.nome}
@@ -279,29 +297,30 @@ function M.readDatabase()
 				local row = event.row
 				local rowHeight = row.contentHeight
 				local rowWidth = row.contentWidth
-				local rowTextIndice = display.newText(row, row.index..".",  0, 0, native.systemFont, 80)
-				local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, native.systemFont, 80)
-				local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, native.systemFont, 80)
-				local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, native.systemFont, 80)
-				rowTextIndice:setFillColor(1,0,0)
+				local rowTextIndice = display.newText(row, row.index..".",  0, 0, "Manga.otf", 80)
+				local rowTextDistanza = display.newText(row, tableInfo[row.index].distanza, 0, 0, "Manga.otf", 80)
+				local rowTextPunteggio = display.newText(row, tableInfo[row.index].punteggio, 0, 0, "Manga.otf", 80)
+				local rowTextNome = display.newText(row, tableInfo[row.index].nome, 0, 0, "Manga.otf", 80)
+				rowTextIndice:setFillColor(224/255,1,1)
 				rowTextIndice.anchorX =0
 				rowTextIndice.x=200
 				rowTextIndice.y = rowHeight*0.5
-				rowTextNome:setFillColor(1,0,0)
+				rowTextNome:setFillColor(224/255,1,1)
 				rowTextNome.anchorX =0
 				rowTextNome.x=300
 				rowTextNome.y = rowHeight*0.5
-				rowTextDistanza:setFillColor(1,0,0)
+				rowTextDistanza:setFillColor(224/255,1,1)
 				rowTextDistanza.anchorX =0.5
 				rowTextDistanza.x=row.contentWidth/2+120
 				rowTextDistanza.y = rowHeight*0.5
-				rowTextPunteggio:setFillColor(1,0,0)
+				rowTextPunteggio:setFillColor(224/255,1,1)
 				rowTextPunteggio.anchorX =0.5
 				rowTextPunteggio.x=row.contentWidth-350
 				rowTextPunteggio.y = rowHeight*0.5
 			end
 
 			local tableView = widget.newTableView{
+				hideBackground = true,
 			  height = display.contentHeight-300,
 		    width = display.contentWidth,
 				y=display.contentCenterY,
@@ -311,7 +330,9 @@ function M.readDatabase()
 
 			for i=1, cont-1, 1 do
 				tableView:insertRow{
-					rowHeight=70
+					rowHeight=70,
+					rowColor = {default = {255, 255, 255, 0}, over = {255, 255, 255, 0}},
+					lineColor = {224/255,1,1}
 				}
 			end
 			if ( db and db:isopen() ) then
@@ -378,7 +399,7 @@ function M.primoInClassifica()
 
 	local primaPosizione = {distanza=0, punteggio=0}
 
-	if(newGame==1) then
+	if(composer.getVariable("newGame")==1) then
 		for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
 			primaPosizione.distanza=row.distanza
 			break
@@ -387,7 +408,7 @@ function M.primoInClassifica()
 			primaPosizione.punteggio=row.punteggio
 			break
 		end
-	elseif(newGame==2) then
+	elseif(composer.getVariable("newGame")==2) then
 		for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
 			primaPosizione.distanza=row.distanza
 			break
@@ -396,7 +417,7 @@ function M.primoInClassifica()
 			primaPosizione.punteggio=row.punteggio
 			break
 		end
-	elseif(newGame==3) then
+	elseif(composer.getVariable("newGame")==3) then
 		for row in db:nrows("SELECT * FROM ordineDistanzaT3") do
 			primaPosizione.distanza=row.distanza
 			break
@@ -405,7 +426,7 @@ function M.primoInClassifica()
 			primaPosizione.punteggio=row.punteggio
 			break
 		end
-	elseif(newGame==4) then
+	elseif(composer.getVariable("newGame")==4) then
 		for row in db:nrows("SELECT * FROM ordineDistanzaT4") do
 			primaPosizione.distanza=row.distanza
 			break

@@ -128,25 +128,22 @@ function scene:create( event )
 	maxT4Distanza.anchorX=0
 
 	bottoneM1:addEventListener("tap", function()
-																			newGame = 1
-																			--audio.stop( 1 )
+																			composer.setVariable("newGame",1)
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
 	bottoneM2:addEventListener("tap", function()
-																		  newGame = 2
-																			--audio.stop( 1 )
+																			composer.setVariable("newGame", 2)
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
 	bottoneM3:addEventListener("tap", function()
-																			newGame = 3
-																			--audio.stop( 1 )
+																			composer.setVariable("newGame", 3)
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
 	bottoneM4:addEventListener("tap", function()
-						                          newGame = 4
+																			composer.setVariable("newGame", 4)
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																			end)

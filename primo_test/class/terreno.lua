@@ -1,10 +1,11 @@
 local m={}
+local composer = require("composer")
 
 function m.newTerreno(camera)
 	--------------------------------------------------------------------------------
 --CARICAMENTO TERRENO TIPOLOGIA "GROUND"
 --------------------------------------------------------------------------------
-	if (newGame == 1) then
+	if (composer.getVariable("newGame") == 1) then
 
 	  local scaleFactor = 1.0
 	  local physicsData = (require "images.groundbase").physicsData(scaleFactor)
@@ -67,7 +68,7 @@ function m.newTerreno(camera)
 	--------------------------------------------------------------------------------
 	--CARICAMENTO TERRENO TIPOLOGIA "NEVE"
 	--------------------------------------------------------------------------------
-	elseif (newGame == 2) then
+	elseif (composer.getVariable("newGame") == 2) then
 
 	  local scaleFactor = 1.0
 	  local physicsData = (require "images.nevebase").physicsData(scaleFactor)
@@ -132,7 +133,7 @@ function m.newTerreno(camera)
 	--------------------------------------------------------------------------------
 	--CARICAMENTO TERRENO TIPOLOGIA "SUNSET"
 	--------------------------------------------------------------------------------
-	if (newGame == 3) then
+	if (composer.getVariable("newGame") == 3) then
 
 	  local scaleFactor = 1.0
 	  local physicsData = (require "images.sunsetbase").physicsData(scaleFactor)
@@ -195,7 +196,7 @@ function m.newTerreno(camera)
 	--------------------------------------------------------------------------------
 	--CARICAMENTO TERRENO TIPOLOGIA "NOTTE"
 	--------------------------------------------------------------------------------
-	if (newGame == 4) then
+	if (composer.getVariable("newGame") == 4) then
 
 	  local scaleFactor = 1.0
 	  local physicsData = (require "images.nottebase").physicsData(scaleFactor)
@@ -254,7 +255,7 @@ function m.newTerreno(camera)
 	  notte6.x=-7000
 	  camera:add(notte6, 5, false)
 	end
-	
+
 end
 
 return m

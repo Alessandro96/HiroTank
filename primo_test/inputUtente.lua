@@ -26,7 +26,7 @@ local function textListener( event )
 		composer.setVariable("score", 0)
 		composer.setVariable("metri", 0)
 		timer.performWithDelay( 200, function()
-											timer.performWithDelay( 500,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+											timer.performWithDelay( 500,composer.gotoScene( "class.classifica", { time=800, effect="crossFade" } ))
 								end)
 	elseif( event.phase == "ended" ) then
 		native.setKeyboardFocus( nil )
@@ -46,7 +46,7 @@ function scene:create( event )
 	myLevel= LD_Loader:new(self.view)
 	myLevel:loadLevel("Level01") -- set your scene/level name here
 	local sceneGroup = self.view
-	
+
 	-- Code here runs when the scene is first created but has not yet appeared on screen
 
 	home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)

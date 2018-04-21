@@ -86,22 +86,22 @@ function scene:create( event )
 								end)
 
 	bottoneScore:addEventListener("touch", function(event)
-											local t = event.target
-											if "began" == event.phase then
-												display.getCurrentStage():setFocus( event.target, event.id )
-												bottoneScore2 = display.newImageRect("images/pulsanti/scorep.png",300, 300)
-												bottoneScore2.x = 1500
-												bottoneScore2.y = 550
-												sounds.play('tap', { channel=2})
-											elseif "ended" == event.phase then
-												if (bottoneScore2~= nil)then
-												bottoneScore2:removeSelf()
-												bottoneScore2 = nil
-												end
-												timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
-												display.getCurrentStage():setFocus( event.target, nil )
-											end
-																			 end)
+																						local t = event.target
+																						if "began" == event.phase then
+																							display.getCurrentStage():setFocus( event.target, event.id )
+																							bottoneScore2 = display.newImageRect("images/pulsanti/scorep.png",300, 300)
+																							bottoneScore2.x = 1500
+																							bottoneScore2.y = 550
+																							sounds.play('tap', { channel=2})
+																						elseif "ended" == event.phase then
+																							if (bottoneScore2~= nil)then
+																							bottoneScore2:removeSelf()
+																							bottoneScore2 = nil
+																							end
+																							timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
+																							display.getCurrentStage():setFocus( event.target, nil )
+																						end
+																			 		end)
 
 	audio.setVolume( 0, { channel=7 } )
 	audio.setVolume( 0, { channel=5 } )
@@ -127,6 +127,7 @@ function scene:show( event )
 	local phase = event.phase
 
     if ( phase == "will" ) then
+			print(composer.getVariable("newGame"))
         -- Called when the scene is still off screen (but is about to come on screen).
     elseif ( phase == "did" ) then
         -- Called when the scene is now on screen.
@@ -149,6 +150,7 @@ end
 -- Called when scene is about to move offscreen:
 function scene:hide( event )
 	local sceneGroup = self.view
+		print(composer.getVariable("newGame"))
 
 	print( "1: hide event" )
 

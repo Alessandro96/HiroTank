@@ -9,7 +9,6 @@ local scene = composer.newScene()
 -- the scene is removed entirely (not recycled) via "composer.removeScene()"
 -- -----------------------------------------------------------------------------------
 
-selezioneClassifica=0
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -28,8 +27,13 @@ function scene:create( event )
 
 	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
-	home.x = 100
+	home.x = 500
 	home.y = 1000
+
+	local bottoneGioca = display.newImageRect(sceneGroup, "images/pulsanti/play.png",150, 150)
+	sceneGroup:insert( bottoneGioca )
+	bottoneGioca.x = 1300
+	bottoneGioca.y = 1000
 
 	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",800, 300)
 	sceneGroup:insert( bottoneM1 )
@@ -52,42 +56,62 @@ function scene:create( event )
 	bottoneM4.y = 750
 
 	bottoneM1:addEventListener("tap", function()
-																			selezioneClassifica=1
+																			composer.setVariable("newGame",1)
 																			sounds.play('tap', { channel=2})
-																			composer.gotoScene("classifica")
+																			composer.gotoScene("class.classifica")
 																		end)
 	bottoneM2:addEventListener("tap", function()
-																			selezioneClassifica=2
+																			composer.setVariable("newGame",2)
 																			sounds.play('tap', { channel=2})
-																			composer.gotoScene("classifica")
+																			composer.gotoScene("class.classifica")
 																		end)
   bottoneM3:addEventListener("tap", function()
-																			selezioneClassifica=3
+																			composer.setVariable("newGame",3)
 																			sounds.play('tap', { channel=2})
-																			composer.gotoScene("classifica")
+																			composer.gotoScene("class.classifica")
 																		end)
 	bottoneM4:addEventListener("tap", function()
-																			selezioneClassifica=4
+																			composer.setVariable("newGame",4)
 																			sounds.play('tap', { channel=2})
-																			composer.gotoScene("classifica")
+																			composer.gotoScene("class.classifica")
 																		end)
 	home:addEventListener("touch", function(event)
-					local t = event.target
-					if "began" == event.phase then
-						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
-						homep.x = 100
-						homep.y = 1000
-						display.getCurrentStage():setFocus( event.target, event.id )
-						sounds.play('tap', { channel=2})
-					elseif "ended" == event.phase then
-						if (homep~=nil) then
-						homep:removeSelf()
-						homep = nil
-						end
-						timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
-						display.getCurrentStage():setFocus( event.target, nil )
-					end
-					end )
+																		local t = event.target
+																		if "began" == event.phase then
+																			homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
+																			homep.x = 500
+																			homep.y = 1000
+																			display.getCurrentStage():setFocus( event.target, event.id )
+																			sounds.play('tap', { channel=2})
+																		elseif "ended" == event.phase then
+																			if (homep~=nil) then
+																			homep:removeSelf()
+																			homep = nil
+																			end
+																			timer.performWithDelay( 100,composer.gotoScene( "menu", { time=800, effect="crossFade" } ))
+																			display.getCurrentStage():setFocus( event.target, nil )
+																		end
+																end )
+
+	bottoneGioca:addEventListener("touch", function(event)
+																						local t = event.target
+																						if "began" == event.phase then
+																							display.getCurrentStage():setFocus( event.target, event.id )
+																							bottoneGioca2 = display.newImageRect("images/pulsanti/playp.png",150, 150)
+																							bottoneGioca2.x = 1300
+																							bottoneGioca2.y = 1000
+																							sounds.play('tap', { channel=2})
+																							--composer.gotoScene("menuLivelli")
+
+																						elseif "ended" == event.phase then
+																							if (bottoneGioca2 ~= nil) then
+																							bottoneGioca2:removeSelf()
+																							bottoneGioca2 = nil
+																							end
+																							timer.performWithDelay( 10,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
+																							display.getCurrentStage():setFocus( event.target, nil )
+																						end
+																		 		 end)
 
 end
 
