@@ -31,6 +31,23 @@ function scene:create( event )
 	myLevel:loadLevel("Level02") -- set your scene/level name here
 	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
 	database.createDatabase()
+	
+	local credit = display.newText(sceneGroup, "Credit", display.contentCenterX-850, display.contentCenterY+500, "Manga.otf" , 55)
+	local aboutHiroo = display.newText(sceneGroup, "About", display.contentCenterX-500, display.contentCenterY+500, "Manga.otf" , 55)
+	
+	local function goToCredit()
+		sounds.play('tap', { channel=2})
+		timer.performWithDelay( 100,composer.gotoScene( "credit", { time=800, effect="crossFade" } ))
+	end
+	
+	local function goToAbout()
+		sounds.play('tap', { channel=2})
+		timer.performWithDelay( 100,composer.gotoScene( "about", { time=800, effect="crossFade" } ))
+	end
+	
+	credit:addEventListener( "tap", goToCredit )
+	aboutHiroo:addEventListener( "tap", goToAbout)
+	
 
 	--sounds.play('menu')
 
@@ -61,7 +78,7 @@ function scene:create( event )
 													bottoneGioca2:removeSelf()
 													bottoneGioca2 = nil
 													end
-													timer.performWithDelay( 10,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
+													timer.performWithDelay( 100,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
 								 end)
@@ -86,22 +103,22 @@ function scene:create( event )
 								end)
 
 	bottoneScore:addEventListener("touch", function(event)
-																						local t = event.target
-																						if "began" == event.phase then
-																							display.getCurrentStage():setFocus( event.target, event.id )
-																							bottoneScore2 = display.newImageRect("images/pulsanti/scorep.png",300, 300)
-																							bottoneScore2.x = 1500
-																							bottoneScore2.y = 550
-																							sounds.play('tap', { channel=2})
-																						elseif "ended" == event.phase then
-																							if (bottoneScore2~= nil)then
-																							bottoneScore2:removeSelf()
-																							bottoneScore2 = nil
-																							end
-																							timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
-																							display.getCurrentStage():setFocus( event.target, nil )
-																						end
-																			 		end)
+											local t = event.target
+											if "began" == event.phase then
+												display.getCurrentStage():setFocus( event.target, event.id )
+												bottoneScore2 = display.newImageRect("images/pulsanti/scorep.png",300, 300)
+												bottoneScore2.x = 1500
+												bottoneScore2.y = 550
+												sounds.play('tap', { channel=2})
+											elseif "ended" == event.phase then
+												if (bottoneScore2~= nil)then
+												bottoneScore2:removeSelf()
+												bottoneScore2 = nil
+												end
+												timer.performWithDelay( 10,composer.gotoScene( "menuClassifica", { time=800, effect="crossFade" } ))
+												display.getCurrentStage():setFocus( event.target, nil )
+											end
+																			 end)
 
 	audio.setVolume( 0, { channel=7 } )
 	audio.setVolume( 0, { channel=5 } )
@@ -127,7 +144,6 @@ function scene:show( event )
 	local phase = event.phase
 
     if ( phase == "will" ) then
-			print(composer.getVariable("newGame"))
         -- Called when the scene is still off screen (but is about to come on screen).
     elseif ( phase == "did" ) then
         -- Called when the scene is now on screen.
@@ -150,7 +166,6 @@ end
 -- Called when scene is about to move offscreen:
 function scene:hide( event )
 	local sceneGroup = self.view
-		print(composer.getVariable("newGame"))
 
 	print( "1: hide event" )
 

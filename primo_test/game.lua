@@ -818,7 +818,7 @@ function scene:show( event )
 																					gameLoop.loop2(aereo2, aereiTable,  camera, corpoCarrarmato.corpo, metri)
 												  							end, 0)
 
-   bombLoopTimer = timer.performWithDelay(1000, function()
+   bombLoopTimer = timer.performWithDelay(1300, function()
 																					aereo.fire(aereiTable, bombeTable, camera, bombeText)
 												 								end, 0)
 
