@@ -19,35 +19,33 @@ physics.start()
 local btn = nil
 local myLevel = {}
 local musicTrack
+local sbloccoMappe
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
 
-	--local musicTrack = sounds.loadStream( "menu.wav")
-
 	local myLevel = {}
 	myLevel= LD_Loader:new(self.view)
-	myLevel:loadLevel("Level02") -- set your scene/level name here
-	--local oggettiMenu = myLevel:layerObjectsWithClass("Layer 1", "menu")
+	myLevel:loadLevel("Level02")
 	database.createDatabase()
-	
-	local credit = display.newText(sceneGroup, "Credit", display.contentCenterX-850, display.contentCenterY+500, "Manga.otf" , 55)
+
+	local credit = display.newText(sceneGroup, "Credit", display.screenOriginX+200, display.contentCenterY+500, "Manga.otf" , 55)
 	local aboutHiroo = display.newText(sceneGroup, "About", display.contentCenterX-500, display.contentCenterY+500, "Manga.otf" , 55)
-	
+
 	local function goToCredit()
 		sounds.play('tap', { channel=2})
 		timer.performWithDelay( 100,composer.gotoScene( "credit", { time=800, effect="crossFade" } ))
 	end
-	
+
 	local function goToAbout()
 		sounds.play('tap', { channel=2})
 		timer.performWithDelay( 100,composer.gotoScene( "about", { time=800, effect="crossFade" } ))
 	end
-	
+
 	credit:addEventListener( "tap", goToCredit )
 	aboutHiroo:addEventListener( "tap", goToAbout)
-	
+
 
 	--sounds.play('menu')
 

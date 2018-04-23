@@ -10,86 +10,87 @@ require("lib.LD_LoaderX")
 
 local btn = nil
 local myLevel = {}
-local bottoneM1
+local bg
+local sbloccoMappe
+local home
+local lucchetto2, lucchetto3, lucchetto4
+local bottoneM1, bottoneM2, bottoneM3, bottoneM4
+local coppa1, coppa2, coppa3, coppa4
+local piedi1, piedi2, piedi3, piedi4
 local maxT1Punteggio, maxT1Distanza
 local maxT2Punteggio, maxT2Distanza
 local maxT3Punteggio, maxT3Distanza
 local maxT4Punteggio, maxT4Distanza
+local messaggioSblocco2, messaggioSblocco3, messaggioSblocco4
 
 newGame = 0
 
 -- Called when the scene's view does not exist:
 function scene:create( event )
 	local sceneGroup = self.view
-	local bg = display.newImageRect("images/BG.png", 1800*1.3, 893*1.3)
+
+	bg = display.newImageRect("images/BG.png", 1800*1.3, 893*1.3)
 	sceneGroup:insert( bg )
 	bg.x = display.contentCenterX
 	bg.y = display.contentCenterY
 
-	local home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
+	sbloccoMappe=database.sbloccaMappe()
+
+	home = display.newImageRect(sceneGroup, "images/pulsanti/home.png",150, 150)
 	sceneGroup:insert( home )
-	home.x = 100
+	home.x = display.contentWidth/2-10
 	home.y = 1000
 
-	local bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",800, 300)
+	bottoneM1 = display.newImageRect(sceneGroup, "images/livello1.png",800, 300)
 	sceneGroup:insert( bottoneM1 )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
 
-	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
+	bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
+	if(sbloccoMappe.sbloccoM2==false) then
+		bottoneM2.alpha=0.4
+		lucchetto2 = display.newImageRect(sceneGroup, "images/lucchetto.png",300, 280)
+		sceneGroup:insert( lucchetto2 )
+		lucchetto2.x = 1400
+		lucchetto2.y = 250
+	end
 
-	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
+	bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
 	sceneGroup:insert( bottoneM3 )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
+	if(sbloccoMappe.sbloccoM3==false) then
+		bottoneM3.alpha=0.4
+		lucchetto3 = display.newImageRect(sceneGroup, "images/lucchetto.png",300, 280)
+		sceneGroup:insert( lucchetto3 )
+		lucchetto3.x = 500
+		lucchetto3.y = 750
+	end
 
-	local bottoneM4 = display.newImageRect(sceneGroup, "images/livello4.png",800, 300)
+	bottoneM4 = display.newImageRect(sceneGroup, "images/livello4.png",800, 300)
 	sceneGroup:insert( bottoneM4 )
 	bottoneM4.x = 1400
 	bottoneM4.y = 750
+	if(sbloccoMappe.sbloccoM4==false) then
+		bottoneM4.alpha=0.4
+		lucchetto4 = display.newImageRect(sceneGroup, "images/lucchetto.png",300, 280)
+		sceneGroup:insert( lucchetto4 )
+		lucchetto4.x = 1400
+		lucchetto4.y = 750
+	end
 
-	local coppa1 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+	coppa1 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
 	sceneGroup:insert( coppa1 )
 	coppa1.x = bottoneM1.x+230
 	coppa1.y = 440
 
-	local piedi1 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+	piedi1 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
 	sceneGroup:insert( piedi1 )
 	piedi1.x = bottoneM1.x-250
 	piedi1.y = 440
-
-	local coppa2 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa2 )
-	coppa2.x = bottoneM2.x+230
-	coppa2.y = 440
-
-	local piedi2 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi2 )
-	piedi2.x = bottoneM2.x-250
-	piedi2.y = 440
-
-	local coppa3 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa3 )
-	coppa3.x = bottoneM3.x+230
-	coppa3.y = 950
-
-	local piedi3 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi3 )
-	piedi3.x = bottoneM3.x-250
-	piedi3.y = 950
-
-	local coppa4 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
-	sceneGroup:insert( coppa4 )
-	coppa4.x = bottoneM4.x+230
-	coppa4.y = 950
-
-	local piedi4 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
-	sceneGroup:insert( piedi4 )
-	piedi4.x = bottoneM4.x-250
-	piedi4.y = 950
 
 	maxT1Punteggio=display.newText("cavoletto", bottoneM1.x+255, 440, "Manga.otf", 50)
 	maxT1Distanza=display.newText("cavoletto", bottoneM1.x-220, 440, "Manga.otf", 50)
@@ -108,6 +109,27 @@ function scene:create( event )
 	maxT2Distanza:setFillColor(0,0,0)
 	maxT2Punteggio.anchorX=0
 	maxT2Distanza.anchorX=0
+	maxT2Punteggio.alpha=0
+	maxT2Distanza.alpha=0
+
+	if(sbloccoMappe.sbloccoM2==true) then
+		coppa2 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+		sceneGroup:insert( coppa2 )
+		coppa2.x = bottoneM2.x+230
+		coppa2.y = 440
+
+		piedi2 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+		sceneGroup:insert( piedi2 )
+		piedi2.x = bottoneM2.x-250
+		piedi2.y = 440
+
+		maxT2Punteggio.alpha=1
+		maxT2Distanza.alpha=1
+	elseif(sbloccoMappe.sbloccoM2==false) then
+		messaggioSblocco2 = display.newText("Raggiungi 300 m e accumula 150 punti \n         nella prima mappa", bottoneM2.x, bottoneM2.y+220, "Manga.otf", 50)
+		sceneGroup:insert( messaggioSblocco2 )
+		messaggioSblocco2:setFillColor(0,0,0)
+	end
 
 	maxT3Punteggio=display.newText("cavoletto", bottoneM3.x+255, 950, "Manga.otf", 50)
 	maxT3Distanza=display.newText("cavoletto", bottoneM3.x-220, 950, "Manga.otf", 50)
@@ -117,6 +139,27 @@ function scene:create( event )
 	maxT3Distanza:setFillColor(0,0,0)
 	maxT3Punteggio.anchorX=0
 	maxT3Distanza.anchorX=0
+	maxT3Punteggio.alpha=0
+	maxT3Distanza.alpha=0
+
+	if(sbloccoMappe.sbloccoM3==true) then
+		coppa3 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+		sceneGroup:insert( coppa3 )
+		coppa3.x = bottoneM3.x+230
+		coppa3.y = 950
+
+		piedi3 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+		sceneGroup:insert( piedi3 )
+		piedi3.x = bottoneM3.x-250
+		piedi3.y = 950
+
+		maxT3Punteggio.alpha=1
+		maxT3Distanza.alpha=1
+	elseif(sbloccoMappe.sbloccoM3==false) then
+		messaggioSblocco3 = display.newText("Raggiungi 400 m e accumula 200 punti \n        nella seconda mappa", bottoneM3.x, bottoneM3.y+220, "Manga.otf", 50)
+		sceneGroup:insert( messaggioSblocco3 )
+		messaggioSblocco3:setFillColor(0,0,0)
+	end
 
 	maxT4Punteggio=display.newText("cavoletto", bottoneM4.x+255, 950, "Manga.otf", 50)
 	maxT4Distanza=display.newText("cavoletto", bottoneM4.x-220, 950, "Manga.otf", 50)
@@ -126,32 +169,61 @@ function scene:create( event )
 	maxT4Distanza:setFillColor(0,0,0)
 	maxT4Punteggio.anchorX=0
 	maxT4Distanza.anchorX=0
+	maxT4Punteggio.alpha=0
+	maxT4Distanza.alpha=0
+
+	if(sbloccoMappe.sbloccoM4==true) then
+		coppa4 = display.newImageRect(sceneGroup, "images/coppa.png",70, 70)
+		sceneGroup:insert( coppa4 )
+		coppa4.x = bottoneM4.x+230
+		coppa4.y = 950
+
+		piedi4 = display.newImageRect(sceneGroup, "images/piedi.png",80, 80)
+		sceneGroup:insert( piedi4 )
+		piedi4.x = bottoneM4.x-250
+		piedi4.y = 950
+
+		maxT4Punteggio.alpha=1
+		maxT4Distanza.alpha=1
+	elseif(sbloccoMappe.sbloccoM4==false) then
+		messaggioSblocco4 = display.newText("Raggiungi 500 m e accumula 250 punti \n        nella terza mappa", bottoneM4.x, bottoneM4.y+220, "Manga.otf", 50)
+		sceneGroup:insert( messaggioSblocco4 )
+		messaggioSblocco4:setFillColor(0,0,0)
+	end
 
 	bottoneM1:addEventListener("tap", function()
 																			composer.setVariable("newGame",1)
 																			composer.gotoScene("game")
 																			sounds.play('tap', { channel=2})
 																		end)
-	bottoneM2:addEventListener("tap", function()
-																			composer.setVariable("newGame", 2)
-																			composer.gotoScene("game")
-																			sounds.play('tap', { channel=2})
-																		end)
-	bottoneM3:addEventListener("tap", function()
-																			composer.setVariable("newGame", 3)
-																			composer.gotoScene("game")
-																			sounds.play('tap', { channel=2})
-																		end)
-	bottoneM4:addEventListener("tap", function()
-																			composer.setVariable("newGame", 4)
-																			composer.gotoScene("game")
-																			sounds.play('tap', { channel=2})
+
+	if(sbloccoMappe.sbloccoM2==true) then
+		bottoneM2:addEventListener("tap", function()
+																				composer.setVariable("newGame", 2)
+																				composer.gotoScene("game")
+																				sounds.play('tap', { channel=2})
 																			end)
+	end
+	if(sbloccoMappe.sbloccoM3==true) then
+		bottoneM3:addEventListener("tap", function()
+																				composer.setVariable("newGame", 3)
+																				composer.gotoScene("game")
+																				sounds.play('tap', { channel=2})
+																			end)
+	end
+	if(sbloccoMappe.sbloccoM4==true) then
+		bottoneM4:addEventListener("tap", function()
+																				composer.setVariable("newGame", 4)
+																				composer.gotoScene("game")
+																				sounds.play('tap', { channel=2})
+																				end)
+  end
+
 	home:addEventListener("touch", function(event)
 					local t = event.target
 					if "began" == event.phase then
 						homep = display.newImageRect("images/pulsanti/homep.png",150, 150)
-						homep.x = 100
+						homep.x = display.contentWidth/2-10
 						homep.y = 1000
 						display.getCurrentStage():setFocus( event.target, event.id )
 						sounds.play('tap', { channel=2})

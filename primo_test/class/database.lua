@@ -89,7 +89,7 @@ function M.writeDatabase(score, metri, nome)
 	local path = system.pathForFile("data.db", system.DocumentsDirectory)
 	local db=sqlite3.open(path)
 	if(composer.getVariable("newGame")==1) then
-		local query=[[INSERT INTO classificaT1 VALUES(null,]].. score..[[, ]]..metri..[[, ']]..nome..[[' );]]
+		local query=[[INSERT INTO classificaT1 VALUES(null,]]..score..[[, ]]..metri..[[, ']]..nome..[[' );]]
 		db:exec(query)
 
 	elseif(composer.getVariable("newGame")==2) then
@@ -440,6 +440,37 @@ function M.primoInClassifica()
     db:close()
 	end
 	return primaPosizione
+end
+
+function M.sbloccaMappe()
+
+	local sbloccoMappe = {sbloccoM2=false, sbloccoM3=false, sbloccoM4=false}
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT1") do
+		if(row.distanza>=300 and row.punteggio>=150)then
+			sbloccoMappe.sbloccoM2=true
+			break
+		end
+	end
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT2") do
+		if(row.distanza>=400 and row.punteggio>=200)then
+			sbloccoMappe.sbloccoM3=true
+			break
+		end
+	end
+
+	for row in db:nrows("SELECT * FROM ordineDistanzaT3")  do
+		if(row.distanza>=500 and row.punteggio>=250)then
+			sbloccoMappe.sbloccoM4=true
+			break
+		end
+	end
+
+	return sbloccoMappe
 end
 
 return M

@@ -114,7 +114,8 @@ local function enterFrame(event)
 	if (cannon.y > 1700 and inVita == true) then
 		inVita = false
 		life = 0
-		database.writeDatabase(score, metri)
+		composer.setVariable("score", score)
+		composer.setVariable("metri", metri)
 		screenOff()
 		timer.performWithDelay( 1300, function()
 									timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
@@ -498,7 +499,7 @@ function scene:create( event )
 --SCRITTE PUNTEGGIO E DISTANZA
 ------------------------------------------------------------------------------
 
-	scoreText = display.newText("score: "..score, 140, 170,"Manga.otf" , 80)
+	scoreText = display.newText("score: "..score, display.screenOriginX+200, 170,"Manga.otf" , 80)
 	scoreText:setFillColor(0,0,0)
 	posizioneText = display.newText("posizione: "..0, display.contentWidth-300, 100, "Manga.otf", 80)
 	posizioneText:setFillColor(0,0,0)
