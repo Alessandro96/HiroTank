@@ -30,6 +30,7 @@ local cloudTable = {}
 local cuoreTable = {}
 local bombeTable = {}
 local gameLoop = require("class.gameLoop")
+local animazioni = require("class.animazioni")
 m.result = "none"
 m.rotate = {}
 metri = nil
@@ -51,23 +52,26 @@ local go = nil
 local tempRotazione = 180
 local scoreText, maxScoreText, maxScoreIcon
 local posizioneText, maxPosizioneText, maxPosizioneIcon
-lifeText = ""  --serve globale, thanks
+local lifeText
 local messaggioRecordPunteggio
-local inVita = true
+composer.setVariable("inVita", true)
 local terrainTable = {}
 position = 300
-cont = -600
-metamappa = 20
-whereFrom = 0
+local cont = -600
+local metamappa = 20
+local whereFrom = 0
 local verifica = true
 local controlloPunteggio = true
 local controlloDistanza = true
 local mappaAttuale = -1
-metri = 0
+local metri = 0
 local primoInClassifica = {}
 local musicTrackTank
 local musicTrackBack
-verificaFumo = false
+local verificaFumo = false
+local fumoSheet, fumo
+local sangueSheet, sangue
+local esplosioneBombaSheet, esplosioneBomba
 
 local function screenOff()
 	go = display.newImage("images/go.jpg")
@@ -78,7 +82,7 @@ end
 
 local function sbloccaPulsante()
 	pSparo:setEnabled( true )
-	if (pulsanteSparo~= nil)then
+	if (pulsanteSparo ~= nil)then
 		pulsanteSparo:removeSelf()
 		pulsanteSparo = nil
 	end
@@ -86,7 +90,7 @@ end
 
 local function fuocoCarro( event )
 
-    if ( "ended" == event.phase and inVita==true ) then
+    if ( "ended" == event.phase and composer.getVariable("inVita")==true ) then
         print( "Button was pressed and released" )
 		local ball = proiettile.newBall({x=cannon.x, y=cannon.y, cannonRotation=cannon.rotation})
 		sounds.play('cannon', { channel=2})
@@ -107,12 +111,12 @@ local function enterFrame(event)
 	posizioneText.text="m : "..metri
 
 	if (verificaFumo == true) then
-	smoke.x = cannon.x-20
-	smoke.y = cannon.y-140
+		fumo.x = cannon.x-20
+		fumo.y = cannon.y-140
 	end
 
-	if (cannon.y > 1700 and inVita == true) then
-		inVita = false
+	if (cannon.y > 1700 and composer.getVariable("inVita")==true) then
+		composer.setVariable("inVita", false)
 		life = 0
 		composer.setVariable("score", score)
 		composer.setVariable("metri", metri)
@@ -122,7 +126,7 @@ local function enterFrame(event)
 							end)
 	end
 
-	if (inVita == true) then
+	if (composer.getVariable("inVita")==true) then
 		cannon.rotation = corpoCarrarmato.corpo.rotation+tempRotazione
 		if ((metri> metamappa )and (metri < metamappa+5)) then
 			createTerrain()
@@ -149,9 +153,11 @@ local function enterFrame(event)
 																		messaggioRecordDistanza=nil
 																 end)
 	end
+
 	if(controlloPunteggio==false)then
 		maxScoreText.text=""..score
 	end
+
 	if(controlloDistanza==false)then
 		maxPosizioneText.text=""..metri
 	end
@@ -399,12 +405,6 @@ local function cloudGen()
 
 end
 
-------------------------------
---FUMO
-------------------------------
-local options2 = {width = 256, height = 512, numFrames = 16, sheetContentWidth = 1024, sheetContentHeight = 2048}
-local sheet2 = graphics.newImageSheet("images/smoke2.png", options2 )
-local sequenceData2 = { name="seq2", sheet=sheet2, start=1, count=16, time=800, loopCount=0 }
 ---------------------------------------------------------
 --SUONI
 ---------------------------------------------------------
@@ -425,7 +425,6 @@ audio.play( musicTrackEngine, { channel=5, loops=-1 } )
 audio.play( musicTrackBack, { channel=7, loops=-1 } )
 ---------------------------------------------------------
 
-
 local function onCollision(event)
 	local ret = collisioni.onCollision(event, aereiTable, bombeTable,  corpoCarrarmato, camera)
 	--print(inVita)
@@ -433,10 +432,13 @@ local function onCollision(event)
 		score=score+10
 		scoreText.text="score: "..score
 	elseif(ret==-1) then
-		if(inVita==true)then
+		if(composer.getVariable("inVita")==true)then
+			timer.cancel(bombLoopTimer)
+			corpoCarrarmato.hiro:removeSelf()
+			sangue = sangueSheet:playSangue(camera, corpoCarrarmato.hiro)
 			composer.setVariable("score",score)
 			composer.setVariable("metri",metri)
-			inVita = false
+			composer.setVariable("inVita", false)
 			screenOff()
 			timer.performWithDelay( 1200, function()
 								timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
@@ -445,12 +447,8 @@ local function onCollision(event)
 	elseif(ret==20)then
 		if(life>0)then
 		if (life == 40 and verificaFumo == false) then
-			smoke = display.newSprite(sheet2, sequenceData2)
-			smoke.x = cannon.x-20
-			smoke.y = cannon.y-140
 			verificaFumo = true
-			camera:add(smoke, 4, false)
-			smoke:play()
+			fumo = fumoSheet:playFumo(camera, cannon)
 		end
 		cuoreDaRimuovere = #cuoreTable
 		cuoreTable[cuoreDaRimuovere]:removeSelf()
@@ -460,12 +458,15 @@ local function onCollision(event)
 		sounds.play('colpo', { channel=2})
 		elseif(life<=0)then
 			life=0
-			inVita = false
+			composer.setVariable("inVita", false)
 		end
-		if(life==0 and inVita==true)then
+		if(life==0 and composer.getVariable("inVita")==true)then
+			timer.cancel(bombLoopTimer)
+			corpoCarrarmato.hiro:removeSelf()
+			sangue = sangueSheet:playSangue(camera, corpoCarrarmato.hiro)
 			composer.setVariable("score",score)
 			composer.setVariable("metri",metri)
-			inVita = false
+			composer.setVariable("inVita", false)
 			screenOff()
 			timer.performWithDelay( 1200, function()
 								timer.performWithDelay( 500,composer.gotoScene( "inputUtente", { time=800, effect="crossFade" } ))
@@ -702,12 +703,22 @@ table.insert( cuoreTable, cuore5 )
   camera:track()
 
 
- sounds.play('start', { channel=2})
+ 	sounds.play('start', { channel=2})
+
+---------------------------------------------------------
+--ANIMAZIONI
+---------------------------------------------------------
+
+--FUMO
+	fumoSheet = animazioni.newFumo()
+
+--SANGUE
+	sangueSheet = animazioni.newSangue()
 
 --------------------------------------------------------------------------------
 --NON RICHIAMO NESSUNA FUNZIONE PERCHE' SONO TUTTE FUNZIONI ANONIME
 --------------------------------------------------------------------------------
-sx:addEventListener("touch", function(event)
+	sx:addEventListener("touch", function(event)
 									local t = event.target
 									if "began" == event.phase then
 										pulsanteSx2 = display.newImageRect("images/pulsanti/upp.png", 150, 150)

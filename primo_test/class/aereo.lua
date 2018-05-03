@@ -27,7 +27,7 @@ function M.creaAereo2(aereiTable, camera, corpoCarrarmato)
   physics.addBody(newAereo2, "dynamic", physicsData:get("aereo2") )
   newAereo2.myName = "aereo2"
   newAereo2.x = corpoCarrarmato.x+2000
-  newAereo.y = display.screenOriginY+320
+  newAereo2.y = display.screenOriginY+320
   newAereo2.gravityScale=0
   newAereo2:setLinearVelocity(-300,0 )
   newAereo2.v1.x = newAereo2.x - 50

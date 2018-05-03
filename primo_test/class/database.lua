@@ -470,7 +470,35 @@ function M.sbloccaMappe()
 		end
 	end
 
+	if ( db and db:isopen() ) then
+		db:close()
+	end
+
 	return sbloccoMappe
+end
+
+function M.aggiungiPunteggi(n)
+
+	local path = system.pathForFile("data.db", system.DocumentsDirectory)
+	local db=sqlite3.open(path)
+	local query
+
+	if (n==1) then
+		query=[[INSERT INTO classificaT1 VALUES (null, 150, 300, "Alessandro");]]
+		db:exec(query)
+
+	elseif (n==2) then
+		query=[[INSERT INTO classificaT2 VALUES (null, 200, 400, "Alessandro");]]
+		db:exec(query)
+
+	elseif (n==3) then
+		query=[[INSERT INTO classificaT3 VALUES (null, 250, 500, "Alessandro");]]
+		db:exec(query)
+	end
+
+	if ( db and db:isopen() ) then
+    db:close()
+	end
 end
 
 return M

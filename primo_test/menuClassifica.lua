@@ -1,5 +1,6 @@
 
 local composer = require( "composer")
+local database = require("class.database")
 local sounds = require('lib.sounds')
 
 local scene = composer.newScene()
@@ -39,16 +40,22 @@ function scene:create( event )
 	sceneGroup:insert( bottoneM1 )
 	bottoneM1.x = 500
 	bottoneM1.y = 250
+	local cerchio1 = display.newCircle(sceneGroup, bottoneM1.x, bottoneM1.y+170, 20)
+	cerchio1:setFillColor(0,127/255,1)
 
 	local bottoneM2 = display.newImageRect(sceneGroup, "images/livello2.png",800, 300)
 	sceneGroup:insert( bottoneM2 )
 	bottoneM2.x = 1400
 	bottoneM2.y = 250
+	local cerchio2 = display.newCircle(sceneGroup, bottoneM2.x, bottoneM2.y+170, 20)
+	cerchio2:setFillColor(0,127/255,1)
 
 	local bottoneM3 = display.newImageRect(sceneGroup, "images/livello3.png",800, 300)
 	sceneGroup:insert( bottoneM3 )
 	bottoneM3.x = 500
 	bottoneM3.y = 750
+	local cerchio3 = display.newCircle(sceneGroup, bottoneM3.x, bottoneM3.y-170, 20)
+	cerchio3:setFillColor(0,127/255,1)
 
 	local bottoneM4 = display.newImageRect(sceneGroup, "images/livello4.png",800, 300)
 	sceneGroup:insert( bottoneM4 )
@@ -75,6 +82,16 @@ function scene:create( event )
 																			sounds.play('tap', { channel=2})
 																			composer.gotoScene("class.classifica")
 																		end)
+	cerchio1:addEventListener("tap", function()
+																			database.aggiungiPunteggi(1)
+																		end)
+	cerchio2:addEventListener("tap", function()
+																			database.aggiungiPunteggi(2)
+																		end)
+	cerchio3:addEventListener("tap", function()
+																			database.aggiungiPunteggi(3)
+																		end)
+
 	home:addEventListener("touch", function(event)
 																		local t = event.target
 																		if "began" == event.phase then
