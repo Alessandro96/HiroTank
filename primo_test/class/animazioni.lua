@@ -42,7 +42,7 @@ local composer = require("composer")
   function M.newEsplosioneBomba()
     local opzioneEsplosione = {width = 96, height = 96, numFrames = 15, sheetContentWidth = 480, sheetContentHeight = 288}
     local esplosioneSheet = graphics.newImageSheet("images/esplosioneBomba.png", opzioneEsplosione)
-    local sequenzaEsplosione = {name="seq4", sheet=esplosioneSheet, start=1, count=15, time=500, loopCount=1}
+    local sequenzaEsplosione = {name="seq4", sheet=esplosioneSheet, start=1, count=15, time=300, loopCount=1}
 
     function sequenzaEsplosione:playEsplosioneBomba(camera, bomba)
       local esplosione = display.newSprite(esplosioneSheet, sequenzaEsplosione)
@@ -50,7 +50,7 @@ local composer = require("composer")
       esplosione.y = bomba.y-20
       camera:add(esplosione, 6, false)
       esplosione:play()
-      timer.performWithDelay(500, function()
+      timer.performWithDelay(300, function()
                                     if(composer.getVariable("inVita")==true) then esplosione:removeSelf() end
                                   end)
       return esplosione

@@ -65,10 +65,12 @@ local controlloPunteggio = true
 local controlloDistanza = true
 local mappaAttuale = -1
 local metri = 0
+local sbloccaMappe
 local primoInClassifica = {}
 local musicTrackTank
 local musicTrackBack
 local verificaFumo = false
+local verificaSbloccoMappe =true
 local fumoSheet, fumo
 local sangueSheet, sangue
 local esplosioneBombaSheet, esplosioneBomba
@@ -110,6 +112,39 @@ local function enterFrame(event)
 	metamappa = (math.round(((position)/100)*10)*0.1)+6.5
 	posizioneText.text="m : "..metri
 
+	if(composer.getVariable("newGame")==1) then
+		if(score >= 150 and metri >= 300 and sbloccaMappe.sbloccoM2==false and verificaSbloccoMappe==true) then 
+			verificaSbloccoMappe = false
+			local messaggioSbloccoMappe = display.newText("nuova mappa sbloccata", display.contentCenterX, display.contentCenterY-260, "manga.otf" , 60)
+			messaggioSbloccoMappe:setFillColor(95/255, 158/255, 160/255)
+			timer.performWithDelay(2000, function()
+																		messaggioSbloccoMappe:removeSelf()
+																		messaggioSbloccoMappe=nil
+																 end)
+		end
+	elseif(composer.getVariable("newGame")==2) then 
+		if(score >= 200 and metri >= 400 and sbloccaMappe.sbloccoM3==false and verificaSbloccoMappe==true) then 
+			verificaSbloccoMappe = false
+			local messaggioSbloccoMappe = display.newText("nuova mappa sbloccata", display.contentCenterX, display.contentCenterY-260, "manga.otf" , 60)
+			messaggioSbloccoMappe:setFillColor(95/255, 158/255, 160/255)
+			timer.performWithDelay(2000, function()
+																		messaggioSbloccoMappe:removeSelf()
+																		messaggioSbloccoMappe=nil
+																 end)
+		end
+	elseif(composer.getVariable("newGame")==3) then
+		if(score >= 250 and metri >= 500 and sbloccaMappe.sbloccoM4==false and verificaSbloccoMappe==true) then 
+			verificaSbloccoMappe = false
+			local messaggioSbloccoMappe = display.newText("nuova mappa sbloccata", display.contentCenterX, display.contentCenterY-260, "manga.otf" , 60)
+			messaggioSbloccoMappe:setFillColor(95/255, 158/255, 160/255)
+			timer.performWithDelay(2000, function()
+																		messaggioSbloccoMappe:removeSelf()
+																		messaggioSbloccoMappe=nil
+																 end)
+		end
+	end
+	
+	
 	if (verificaFumo == true) then
 		fumo.x = cannon.x-20
 		fumo.y = cannon.y-140
@@ -136,8 +171,8 @@ local function enterFrame(event)
 
 	end
 	if ((score>primoInClassifica.punteggio) and (controlloPunteggio==true)) then
-		local messaggioRecordPunteggio = display.newText("new best score!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
-		messaggioRecordPunteggio:setFillColor(0.6,0.5,0)
+		local messaggioRecordPunteggio = display.newText("new best score!!!", display.contentCenterX, display.contentCenterY-200, "manga.otf" , 60)
+		messaggioRecordPunteggio:setFillColor(95/255, 158/255, 160/255)
 		controlloPunteggio=false
 		timer.performWithDelay(2000, function()
 																		messaggioRecordPunteggio:removeSelf()
@@ -145,8 +180,8 @@ local function enterFrame(event)
 																 end)
 	end
 	if (metri>primoInClassifica.distanza and controlloDistanza==true) then
-		local messaggioRecordDistanza = display.newText("new record!!!", display.contentCenterX, display.contentCenterY-200, native.systemFont , 60)
-		messaggioRecordDistanza:setFillColor(0.6,0.5,0)
+		local messaggioRecordDistanza = display.newText("new record!!!", display.contentCenterX, display.contentCenterY-200, "manga.otf" , 60)
+		messaggioRecordDistanza:setFillColor(95/255, 158/255, 160/255)
 		controlloDistanza=false
 		timer.performWithDelay(2000, function()
 																		messaggioRecordDistanza:removeSelf()
@@ -490,6 +525,11 @@ function scene:create( event )
   physics.pause()
   camera = perspective.createView()
  -- physics.setDrawMode("hybrid")
+ 
+ --------------------------------------------------------------------------------
+ --SBLOCCA MAPPE
+ --------------------------------------------------------------------------------
+	sbloccaMappe = database.sbloccaMappe()
 
  --------------------------------------------------------------------------------
  --PRIMO IN CLASSIFICA

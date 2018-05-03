@@ -52,6 +52,10 @@ function scene:create( event )
 	local bottoneGioca = display.newImageRect(sceneGroup, "images/pulsanti/play.png",300, 300)
 	bottoneGioca.x = 1500
 	bottoneGioca.y = 250
+	
+	local bottoneInfo = display.newImageRect(sceneGroup, "images/pulsanti/info.png",120, 120)
+	bottoneInfo.x = 1800
+	bottoneInfo.y = 90
 
 	local bottoneScore = display.newImageRect(sceneGroup, "images/pulsanti/score.png",300, 300)
 	bottoneScore.x = 1500
@@ -77,6 +81,26 @@ function scene:create( event )
 													bottoneGioca2 = nil
 													end
 													timer.performWithDelay( 100,composer.gotoScene( "menuLivelli", { time=800, effect="crossFade" } ))
+													display.getCurrentStage():setFocus( event.target, nil )
+												end
+								 end)
+								 
+	bottoneInfo:addEventListener("touch", function(event)
+												local t = event.target
+												if "began" == event.phase then
+													display.getCurrentStage():setFocus( event.target, event.id )
+													bottoneInfo2 = display.newImageRect("images/pulsanti/info2.png",120, 120)
+													bottoneInfo2.x = 1800
+													bottoneInfo2.y = 90
+													sounds.play('tap', { channel=2})
+													--composer.gotoScene("menuLivelli")
+
+												elseif "ended" == event.phase then
+													if (bottoneInfo2 ~= nil) then
+													bottoneInfo2:removeSelf()
+													bottoneInfo2 = nil
+													end
+													timer.performWithDelay( 100,composer.gotoScene( "info", { time=800, effect="crossFade" } ))
 													display.getCurrentStage():setFocus( event.target, nil )
 												end
 								 end)

@@ -20,9 +20,7 @@ function M.loop(aereo, aereiTable, bombeTable, camera, corpoCarrarmato, position
 	for i = #bombeTable, 1, -1 do
 		local thisBomba = bombeTable[i]
 
-		if (thisBomba.y < -1000 or
-			thisBomba.y > display.contentHeight + 1000 )
-		then
+		if (thisBomba.y > display.contentHeight + 1000 ) then
 			display.remove(thisBomba)
 			table.remove(bombeTable, i)
 		end
